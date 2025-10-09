@@ -1,0 +1,819 @@
+@extends('layouts.app')
+
+@section('title', 'Nuevo Consumo')
+
+@section('content')
+<div class="container-fluid">
+    <!-- Header del módulo -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0 text-gray-800">
+                        <i class="fas fa-plus-circle text-success me-2"></i>
+                        Registrar Nuevo Consumo
+                    </h1>
+                    <p class="text-muted mt-1">Complete la información del consumo del trabajador</p>
+                </div>
+                <div>
+                    <a href="{{ route('consumos.index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Volver al listado
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-utensils me-2"></i>
+                        Información del Consumo
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Por favor corrige los siguientes errores:</h6>
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('consumos.store') }}" method="POST" id="consumoForm">
+                        @csrf
+
+                        <div class="row g-4">
+                            <!-- Trabajador -->
+                            <div class="col-12">
+                                <label for="trabajador_id" class="form-label fw-bold">
+                                    <i class="fas fa-user me-1"></i>
+                                    Trabajador *
+                                </label>
+                                <select name="trabajador_id"
+                                        id="trabajador_id"
+                                        class="form-select @error('trabajador_id') is-invalid @enderror"
+                                        required>
+                                    <option value="">Seleccione un trabajador...</option>
+                                    @foreach(\App\Models\Trabajador::with('persona')->orderBy('nombres')->get() as $trabajador)
+                                        <option value="{{ $trabajador->id }}"
+                                                {{ old('trabajador_id') == $trabajador->id ? 'selected' : '' }}
+                                                data-codigo="{{ $trabajador->codigo }}"
+                                                data-nombres="{{ $trabajador->nombres }} {{ $trabajador->apellidos }}">
+                                            {{ $trabajador->codigo }} - {{ $trabajador->nombres }} {{ $trabajador->apellidos }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('trabajador_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Seleccione el trabajador que realizará el consumo
+                                </div>
+                            </div>
+
+                            <!-- Fecha y Hora -->
+                            <div class="col-md-6">
+                                <label for="fecha_consumo" class="form-label fw-bold">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Fecha del Consumo *
+                                </label>
+                                <input type="date"
+                                       name="fecha_consumo"
+                                       id="fecha_consumo"
+                                       class="form-control @error('fecha_consumo') is-invalid @enderror"
+                                       value="{{ old('fecha_consumo', date('Y-m-d')) }}"
+                                       required>
+                                @error('fecha_consumo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="hora_consumo" class="form-label fw-bold">
+                                    <i class="fas fa-clock me-1"></i>
+                                    Hora del Consumo *
+                                </label>
+                                <input type="time"
+                                       name="hora_consumo"
+                                       id="hora_consumo"
+                                       class="form-control @error('hora_consumo') is-invalid @enderror"
+                                       value="{{ old('hora_consumo', date('H:i')) }}"
+                                       required>
+                                @error('hora_consumo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Tipo de Comida -->
+                            <div class="col-12">
+                                <label for="tipo_comida" class="form-label fw-bold">
+                                    <i class="fas fa-utensils me-1"></i>
+                                    Tipo de Comida *
+                                </label>
+                                <div class="row g-2">
+                                    @php
+                                        $tiposComida = [
+                                            'desayuno' => ['icon' => 'fas fa-sun', 'color' => 'warning', 'label' => 'Desayuno'],
+                                            'almuerzo' => ['icon' => 'fas fa-utensils', 'color' => 'success', 'label' => 'Almuerzo'],
+                                            'cena' => ['icon' => 'fas fa-moon', 'color' => 'primary', 'label' => 'Cena'],
+                                            'refrigerio' => ['icon' => 'fas fa-cookie-bite', 'color' => 'info', 'label' => 'Refrigerio']
+                                        ];
+                                    @endphp
+                                    @foreach($tiposComida as $tipo => $config)
+                                        <div class="col-md-3">
+                                            <input type="radio"
+                                                   class="btn-check"
+                                                   name="tipo_comida"
+                                                   id="tipo_{{ $tipo }}"
+                                                   value="{{ $tipo }}"
+                                                   {{ old('tipo_comida') == $tipo ? 'checked' : '' }}
+                                                   required>
+                                            <label class="btn btn-outline-{{ $config['color'] }} w-100 py-3"
+                                                   for="tipo_{{ $tipo }}">
+                                                <i class="{{ $config['icon'] }} fa-2x d-block mb-2"></i>
+                                                {{ $config['label'] }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                @error('tipo_comida')
+                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Observaciones -->
+                            <div class="col-12">
+                                <label for="observaciones" class="form-label fw-bold">
+                                    <i class="fas fa-comment me-1"></i>
+                                    Observaciones
+                                </label>
+                                <textarea name="observaciones"
+                                          id="observaciones"
+                                          class="form-control @error('observaciones') is-invalid @enderror"
+                                          rows="4"
+                                          placeholder="Detalles adicionales del consumo (opcional)...">{{ old('observaciones') }}</textarea>
+                                @error('observaciones')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Información adicional sobre el consumo, menú especial, restricciones, etc.
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('consumos.index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i>
+                                Cancelar
+                            </a>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-1"></i>
+                                    Registrar Consumo
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.btn-check:checked + .btn {
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+.card {
+    transition: all 0.3s ease;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+// Auto-rellenar hora actual
+document.addEventListener('DOMContentLoaded', function() {
+    const horaInput = document.getElementById('hora_consumo');
+    if (!horaInput.value) {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        horaInput.value = `${hours}:${minutes}`;
+    }
+});
+</script>
+@endpush
+@endsection
+<div class="container-fluid">
+    <!-- Header del módulo -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0 text-gray-800">
+                        <i class="fas fa-plus-circle text-success me-2"></i>
+                        Registrar Nuevo Consumo
+                    </h1>
+                    <p class="text-muted mt-1">Complete la información del consumo del trabajador</p>
+                </div>
+                <div>
+                    <a href="{{ route('consumos.index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Volver al listado
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-utensils me-2"></i>
+                        Información del Consumo
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Por favor corrige los siguientes errores:</h6>
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('consumos.store') }}" method="POST" id="consumoForm">
+                        @csrf
+
+                        <div class="row g-4">
+                            <!-- Trabajador -->
+                            <div class="col-12">
+                                <label for="trabajador_id" class="form-label fw-bold">
+                                    <i class="fas fa-user me-1"></i>
+                                    Trabajador *
+                                </label>
+                                <select name="trabajador_id"
+                                        id="trabajador_id"
+                                        class="form-select @error('trabajador_id') is-invalid @enderror"
+                                        required>
+                                    <option value="">Seleccione un trabajador...</option>
+                                    @foreach(\App\Models\Trabajador::with('persona')->orderBy('nombres')->get() as $trabajador)
+                                        <option value="{{ $trabajador->id }}"
+                                                {{ old('trabajador_id') == $trabajador->id ? 'selected' : '' }}
+                                                data-codigo="{{ $trabajador->codigo }}"
+                                                data-nombres="{{ $trabajador->nombres }} {{ $trabajador->apellidos }}">
+                                            {{ $trabajador->codigo }} - {{ $trabajador->nombres }} {{ $trabajador->apellidos }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('trabajador_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Seleccione el trabajador que realizará el consumo
+                                </div>
+                            </div>
+
+                            <!-- Fecha y Hora -->
+                            <div class="col-md-6">
+                                <label for="fecha_consumo" class="form-label fw-bold">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Fecha del Consumo *
+                                </label>
+                                <input type="date"
+                                       name="fecha_consumo"
+                                       id="fecha_consumo"
+                                       class="form-control @error('fecha_consumo') is-invalid @enderror"
+                                       value="{{ old('fecha_consumo', date('Y-m-d')) }}"
+                                       required>
+                                @error('fecha_consumo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="hora_consumo" class="form-label fw-bold">
+                                    <i class="fas fa-clock me-1"></i>
+                                    Hora del Consumo *
+                                </label>
+                                <input type="time"
+                                       name="hora_consumo"
+                                       id="hora_consumo"
+                                       class="form-control @error('hora_consumo') is-invalid @enderror"
+                                       value="{{ old('hora_consumo', date('H:i')) }}"
+                                       required>
+                                @error('hora_consumo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Tipo de Comida -->
+                            <div class="col-12">
+                                <label for="tipo_comida" class="form-label fw-bold">
+                                    <i class="fas fa-utensils me-1"></i>
+                                    Tipo de Comida *
+                                </label>
+                                <div class="row g-2">
+                                    @php
+                                        $tiposComida = [
+                                            'desayuno' => ['icon' => 'fas fa-sun', 'color' => 'warning', 'label' => 'Desayuno'],
+                                            'almuerzo' => ['icon' => 'fas fa-utensils', 'color' => 'success', 'label' => 'Almuerzo'],
+                                            'cena' => ['icon' => 'fas fa-moon', 'color' => 'primary', 'label' => 'Cena'],
+                                            'refrigerio' => ['icon' => 'fas fa-cookie-bite', 'color' => 'info', 'label' => 'Refrigerio']
+                                        ];
+                                    @endphp
+                                    @foreach($tiposComida as $tipo => $config)
+                                        <div class="col-md-3">
+                                            <input type="radio"
+                                                   class="btn-check"
+                                                   name="tipo_comida"
+                                                   id="tipo_{{ $tipo }}"
+                                                   value="{{ $tipo }}"
+                                                   {{ old('tipo_comida') == $tipo ? 'checked' : '' }}
+                                                   required>
+                                            <label class="btn btn-outline-{{ $config['color'] }} w-100 py-3"
+                                                   for="tipo_{{ $tipo }}">
+                                                <i class="{{ $config['icon'] }} fa-2x d-block mb-2"></i>
+                                                {{ $config['label'] }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                @error('tipo_comida')
+                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Observaciones -->
+                            <div class="col-12">
+                                <label for="observaciones" class="form-label fw-bold">
+                                    <i class="fas fa-comment me-1"></i>
+                                    Observaciones
+                                </label>
+                                <textarea name="observaciones"
+                                          id="observaciones"
+                                          class="form-control @error('observaciones') is-invalid @enderror"
+                                          rows="4"
+                                          placeholder="Detalles adicionales del consumo (opcional)...">{{ old('observaciones') }}</textarea>
+                                @error('observaciones')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Información adicional sobre el consumo, menú especial, restricciones, etc.
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('consumos.index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i>
+                                Cancelar
+                            </a>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-primary" onclick="previewConsumo()">
+                                    <i class="fas fa-eye me-1"></i>
+                                    Vista previa
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-1"></i>
+                                    Registrar Consumo
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Vista Previa -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-eye me-2"></i>
+                    Vista Previa del Consumo
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="previewContent">
+                    <!-- Contenido dinámico -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+                <button type="button" class="btn btn-success" onclick="$('#consumoForm').submit()">
+                    <i class="fas fa-save me-1"></i>
+                    Confirmar y Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.btn-check:checked + .btn {
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+.card {
+    transition: all 0.3s ease;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+function previewConsumo() {
+    const trabajadorSelect = document.getElementById('trabajador_id');
+    const trabajadorOption = trabajadorSelect.options[trabajadorSelect.selectedIndex];
+    const fecha = document.getElementById('fecha_consumo').value;
+    const hora = document.getElementById('hora_consumo').value;
+    const tipoComida = document.querySelector('input[name="tipo_comida"]:checked');
+    const observaciones = document.getElementById('observaciones').value;
+
+    if (!trabajadorSelect.value || !fecha || !hora || !tipoComida) {
+        alert('Por favor complete todos los campos obligatorios antes de la vista previa.');
+        return;
+    }
+
+    const tipoIcons = {
+        'desayuno': 'fas fa-sun text-warning',
+        'almuerzo': 'fas fa-utensils text-success',
+        'cena': 'fas fa-moon text-primary',
+        'refrigerio': 'fas fa-cookie-bite text-info'
+    };
+
+    const previewHTML = `
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-success">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>Resumen del Consumo</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <strong><i class="fas fa-user me-2"></i>Trabajador:</strong><br>
+                                <span class="text-primary">${trabajadorOption.text}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <strong><i class="fas fa-calendar me-2"></i>Fecha:</strong><br>
+                                ${new Date(fecha).toLocaleDateString('es-ES')}
+                            </div>
+                            <div class="col-md-3">
+                                <strong><i class="fas fa-clock me-2"></i>Hora:</strong><br>
+                                ${hora}
+                            </div>
+                            <div class="col-12">
+                                <strong><i class="fas fa-utensils me-2"></i>Tipo de Comida:</strong><br>
+                                <span class="badge bg-success fs-6">
+                                    <i class="${tipoIcons[tipoComida.value]} me-1"></i>
+                                    ${tipoComida.value.charAt(0).toUpperCase() + tipoComida.value.slice(1)}
+                                </span>
+                            </div>
+                            ${observaciones ? `
+                            <div class="col-12">
+                                <strong><i class="fas fa-comment me-2"></i>Observaciones:</strong><br>
+                                <div class="bg-light p-3 rounded">${observaciones}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('previewContent').innerHTML = previewHTML;
+    new bootstrap.Modal(document.getElementById('previewModal')).show();
+}
+
+// Auto-rellenar hora actual
+document.addEventListener('DOMContentLoaded', function() {
+    const horaInput = document.getElementById('hora_consumo');
+    if (!horaInput.value) {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        horaInput.value = `${hours}:${minutes}`;
+    }
+});
+</script>
+@endpush
+@endsectionx-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Consumos
+        </h2>
+    </x-slot>
+
+@push('styles')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+    .form-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    }
+    .form-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px 15px 0 0;
+    }
+    .btn-floating {
+        border-radius: 50px;
+        padding: 0.6rem 2rem;
+    }
+    .icon-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+    }
+</style>
+@endpush
+
+<div class="container-fluid my-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('consumos.index') }}">Consumos</a></li>
+                    <li class="breadcrumb-item active">Nuevo Consumo</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card form-card">
+                <div class="card-header form-header">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle bg-white bg-opacity-20">
+                            <i class="fas fa-utensils fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-0">Registrar Nuevo Consumo</h4>
+                            <small class="opacity-75">Complete la información del consumo</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{{ route('consumos.store') }}" method="POST">
+                        @csrf
+
+                        <div class="row g-3">
+                            <!-- Búsqueda de Trabajador -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-search me-2 text-primary"></i>Buscar Trabajador
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="buscarTrabajador"
+                                           placeholder="Código, DNI o nombre del trabajador">
+                                    <button type="button" class="btn btn-outline-primary" onclick="buscarTrabajador()">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">Puede buscar por código, DNI o nombre</small>
+                            </div>
+
+                            <!-- Trabajador Seleccionado -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-user me-2 text-primary"></i>Trabajador *
+                                </label>
+                                <select name="trabajador_id" class="form-select @error('trabajador_id') is-invalid @enderror"
+                                        id="trabajadorSelect" required>
+                                    <option value="">Seleccione un trabajador</option>
+                                    @foreach($trabajadores as $trabajador)
+                                        <option value="{{ $trabajador->id }}"
+                                                {{ old('trabajador_id') == $trabajador->id ? 'selected' : '' }}>
+                                            [{{ $trabajador->codigo }}] {{ $trabajador->nombres }} {{ $trabajador->apellidos }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('trabajador_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Fecha de Consumo -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-calendar me-2 text-primary"></i>Fecha de Consumo *
+                                </label>
+                                <input type="date" name="fecha_consumo"
+                                       class="form-control @error('fecha_consumo') is-invalid @enderror"
+                                       value="{{ old('fecha_consumo', date('Y-m-d')) }}" required>
+                                @error('fecha_consumo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Hora de Consumo -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-clock me-2 text-primary"></i>Hora de Consumo *
+                                </label>
+                                <input type="time" name="hora_consumo"
+                                       class="form-control @error('hora_consumo') is-invalid @enderror"
+                                       value="{{ old('hora_consumo', date('H:i')) }}" required>
+                                @error('hora_consumo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Tipo de Comida -->
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-hamburger me-2 text-primary"></i>Tipo de Comida *
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline w-100">
+                                            <input class="form-check-input" type="radio" name="tipo_comida"
+                                                   id="desayuno" value="desayuno"
+                                                   {{ old('tipo_comida') == 'desayuno' ? 'checked' : '' }}>
+                                            <label class="form-check-label w-100 p-3 border rounded text-center" for="desayuno">
+                                                <i class="fas fa-coffee fa-2x text-warning d-block mb-2"></i>
+                                                <strong>Desayuno</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline w-100">
+                                            <input class="form-check-input" type="radio" name="tipo_comida"
+                                                   id="almuerzo" value="almuerzo"
+                                                   {{ old('tipo_comida') == 'almuerzo' ? 'checked' : '' }}>
+                                            <label class="form-check-label w-100 p-3 border rounded text-center" for="almuerzo">
+                                                <i class="fas fa-hamburger fa-2x text-success d-block mb-2"></i>
+                                                <strong>Almuerzo</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check form-check-inline w-100">
+                                            <input class="form-check-input" type="radio" name="tipo_comida"
+                                                   id="cena" value="cena"
+                                                   {{ old('tipo_comida') == 'cena' ? 'checked' : '' }}>
+                                            <label class="form-check-label w-100 p-3 border rounded text-center" for="cena">
+                                                <i class="fas fa-moon fa-2x text-info d-block mb-2"></i>
+                                                <strong>Cena</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                @error('tipo_comida')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Observaciones -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-sticky-note me-2 text-primary"></i>Observaciones
+                                </label>
+                                <textarea name="observaciones" rows="3"
+                                          class="form-control @error('observaciones') is-invalid @enderror"
+                                          placeholder="Observaciones adicionales sobre el consumo (opcional)">{{ old('observaciones') }}</textarea>
+                                @error('observaciones')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="row mt-4">
+                            <div class="col-12 d-flex justify-content-end gap-2">
+                                <a href="{{ route('consumos.index') }}" class="btn btn-outline-secondary btn-floating">
+                                    <i class="fas fa-times me-2"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary btn-floating">
+                                    <i class="fas fa-save me-2"></i>Registrar Consumo
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+async function buscarTrabajador() {
+    const termino = document.getElementById('buscarTrabajador').value.trim();
+
+    if (termino.length < 2) {
+        alert('Ingrese al menos 2 caracteres para buscar');
+        return;
+    }
+
+    try {
+        const response = await fetch(`{{ route('consumos.buscar-trabajador') }}?termino=${encodeURIComponent(termino)}`);
+        const trabajadores = await response.json();
+
+        const select = document.getElementById('trabajadorSelect');
+
+        // Limpiar opciones existentes excepto la primera
+        select.innerHTML = '<option value="">Seleccione un trabajador</option>';
+
+        // Agregar trabajadores encontrados
+        trabajadores.forEach(trabajador => {
+            const option = document.createElement('option');
+            option.value = trabajador.id;
+            option.textContent = `[${trabajador.codigo}] ${trabajador.nombres} ${trabajador.apellidos}`;
+            select.appendChild(option);
+        });
+
+        if (trabajadores.length === 1) {
+            // Si solo hay un resultado, seleccionarlo automáticamente
+            select.value = trabajadores[0].id;
+        }
+
+        if (trabajadores.length === 0) {
+            alert('No se encontraron trabajadores con ese criterio');
+        }
+
+    } catch (error) {
+        console.error('Error al buscar trabajador:', error);
+        alert('Error al buscar trabajador');
+    }
+}
+
+// Permitir búsqueda con Enter
+document.getElementById('buscarTrabajador').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        buscarTrabajador();
+    }
+});
+
+// Mejorar estilo de radio buttons
+document.querySelectorAll('input[name="tipo_comida"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('label[for="desayuno"], label[for="almuerzo"], label[for="cena"]').forEach(label => {
+            label.classList.remove('border-primary', 'bg-light');
+        });
+
+        if (this.checked) {
+            document.querySelector(`label[for="${this.id}"]`).classList.add('border-primary', 'bg-light');
+        }
+    });
+});
+
+// Aplicar estilo inicial si hay un valor seleccionado
+document.addEventListener('DOMContentLoaded', function() {
+    const selectedRadio = document.querySelector('input[name="tipo_comida"]:checked');
+    if (selectedRadio) {
+        document.querySelector(`label[for="${selectedRadio.id}"]`).classList.add('border-primary', 'bg-light');
+    }
+});
+</script>
+@endpush
+
+@endsection

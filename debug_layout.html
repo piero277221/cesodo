@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Layout - Espacio en Blanco</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid #ccc;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .content {
+            margin-top: 64px; /* Exactamente la altura del navbar */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            margin: 0; /* Sin margen */
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <strong>NAVBAR FIJO - 64px</strong>
+    </div>
+    
+    <div class="content">
+        <h1>Dashboard - Sistema SCM Cesodo</h1>
+        <p>Este contenido debe aparecer inmediatamente debajo del navbar</p>
+        <p><strong>Sin espacio en blanco</strong></p>
+    </div>
+    
+    <div class="debug-info">
+        <h3>🔍 Información de Debug:</h3>
+        <ul>
+            <li><strong>Navbar height:</strong> 64px</li>
+            <li><strong>Content margin-top:</strong> 64px</li>
+            <li><strong>Sin espacios adicionales</strong></li>
+        </ul>
+        
+        <h4>📋 Pasos para resolver:</h4>
+        <ol>
+            <li>Abre las herramientas de desarrollador (F12)</li>
+            <li>Inspecciona el elemento con espacio en blanco</li>
+            <li>Busca en la pestaña "Computed" qué CSS está aplicando margin-top o padding-top</li>
+            <li>Identifica la regla CSS específica que causa el espacio</li>
+        </ol>
+        
+        <h4>🎯 CSS que debería estar aplicado:</h4>
+        <pre>
+main {
+    margin-top: 64px; /* Compensación para navbar fijo */
+    padding: 0;
+}
+
+.container-fluid {
+    margin: 0;
+    padding: 0 15px;
+}
+        </pre>
+    </div>
+    
+    <script>
+        console.log('🔍 Debug Layout cargado');
+        console.log('Navbar height:', document.querySelector('.navbar').offsetHeight);
+        console.log('Content margin-top:', getComputedStyle(document.querySelector('.content')).marginTop);
+    </script>
+</body>
+</html>

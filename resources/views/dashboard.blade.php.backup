@@ -1,0 +1,525 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Views
+        </h2>
+    </x-slot>
+
+@push('styles')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .dashboard-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .dashboard-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+    .chart-container {
+        position: relative;
+        height: 300px;
+    }
+    .table-card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .welcome-header {
+        background: #2d3436;
+        color: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .avatar-sm {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    .bg-gradient-primary {
+        background: #2d3436;
+    }
+    .bg-gradient-success {
+        background: #00b894;
+    }
+    .bg-gradient-warning {
+        background: #fd7900;
+    }
+    .bg-gradient-danger {
+        background: #e74c3c;
+    }
+</style>
+@endpush
+
+<div class="container-fluid py-4">
+    @if(isset($error))
+        <div class="alert alert-danger">
+            <h5><i class="fas fa-exclamation-triangle me-2"></i>Error en el Dashboard</h5>
+            <p>{{ $error }}</p>
+        </div>
+    @endif
+
+    <!-- Header de Bienvenida -->
+    <div class="welcome-header animate-fade-in">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h2 mb-2">
+                    <i class="fas fa-tachometer-alt me-3"></i>
+                    Dashboard - Sistema SCM Cesodo
+                </h1>
+                <p class="mb-0 opacity-90">
+                    Bienvenido de vuelta, {{ Auth::user()->name }}.
+                    Panel de control y análisis del sistema.
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="d-flex flex-column align-items-md-end">
+                    <div class="h4 mb-1">{{ now()->locale('es')->translatedFormat('d/m/Y') }}</div>
+                    <div class="opacity-75">{{ now()->locale('es')->translatedFormat('l, j \d\e F') }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjetas de Estadísticas Principales -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card dashboard-card animate-fade-in bg-gradient-primary text-white">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon bg-white bg-opacity-20 me-3">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="small text-uppercase fw-bold opacity-75">Consumos Hoy</div>
+                            <div class="h2 mb-0">{{ $stats['consumos_hoy'] ?? 0 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card dashboard-card animate-fade-in bg-gradient-success text-white">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon bg-white bg-opacity-20 me-3">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="small text-uppercase fw-bold opacity-75">Trabajadores Activos</div>
+                            <div class="h2 mb-0">{{ $stats['trabajadores_activos'] ?? 0 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card dashboard-card animate-fade-in bg-gradient-warning text-white">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon bg-white bg-opacity-20 me-3">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="small text-uppercase fw-bold opacity-75">Stock Bajo</div>
+                            <div class="h2 mb-0">{{ $stats['productos_stock_bajo'] ?? 0 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card dashboard-card animate-fade-in bg-gradient-danger text-white">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon bg-white bg-opacity-20 me-3">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="small text-uppercase fw-bold opacity-75">Pedidos Pendientes</div>
+                            <div class="h2 mb-0">{{ $stats['pedidos_pendientes'] ?? 0 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos y Análisis -->
+    <div class="row mb-4">
+        <!-- Gráfico de Consumos por Tipo -->
+        <div class="col-md-6 mb-4">
+            <div class="card table-card animate-fade-in">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie me-2 text-primary"></i>
+                        Consumos de Hoy por Tipo
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if(isset($consumosHoy) && $consumosHoy->count() > 0)
+                        <div class="chart-container">
+                            <canvas id="consumosTipoChart"></canvas>
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-pie fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No hay consumos registrados hoy</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Consumos de la Semana -->
+        <div class="col-md-6 mb-4">
+            <div class="card table-card animate-fade-in">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line me-2 text-success"></i>
+                        Consumos de la Semana
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if(isset($consumosSemana) && $consumosSemana->count() > 0)
+                        <div class="chart-container">
+                            <canvas id="consumosSemanaChart"></canvas>
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No hay datos de la semana</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tablas de Información -->
+    <div class="row">
+        <!-- Productos con Stock Bajo -->
+        <div class="col-md-6 mb-4">
+            <div class="card table-card animate-fade-in">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-boxes me-2 text-warning"></i>
+                        Productos con Stock Bajo
+                    </h5>
+                    @can('inventarios.index')
+                    <a href="{{ route('inventarios.index') }}" class="btn btn-outline-warning btn-sm">
+                        Ver Todos
+                    </a>
+                    @endcan
+                </div>
+                <div class="card-body p-0">
+                    @if(isset($productosStockBajo) && $productosStockBajo->count() > 0)
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Stock Actual</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($productosStockBajo as $inventario)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-warning rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-box text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bold">{{ $inventario->producto->nombre ?? 'N/A' }}</div>
+                                                        <small class="text-muted">{{ $inventario->producto->codigo ?? 'N/A' }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-warning">{{ number_format($inventario->stock_disponible ?? 0, 2) }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-warning">Stock Bajo</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="text-center py-4">
+                            <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                            <p class="text-muted mb-0">No hay productos con stock bajo</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Últimos Consumos -->
+        <div class="col-md-6 mb-4">
+            <div class="card table-card animate-fade-in">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-utensils me-2 text-info"></i>
+                        Últimos Consumos
+                    </h5>
+                    @can('consumos.index')
+                    <a href="{{ route('consumos.index') }}" class="btn btn-outline-info btn-sm">
+                        Ver Todos
+                    </a>
+                    @endcan
+                </div>
+                <div class="card-body p-0">
+                    @if(isset($ultimosConsumos) && $ultimosConsumos->count() > 0)
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Trabajador</th>
+                                        <th>Tipo</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($ultimosConsumos as $consumo)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-info rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-user text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bold">{{ ($consumo->trabajador->nombres ?? '') . ' ' . ($consumo->trabajador->apellidos ?? '') }}</div>
+                                                        <small class="text-muted">{{ $consumo->trabajador->codigo ?? 'N/A' }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $tipoComida = $consumo->tipo_comida ?? 'otro';
+                                                    $badgeClass = [
+                                                        'desayuno' => 'bg-warning',
+                                                        'almuerzo' => 'bg-success',
+                                                        'cena' => 'bg-info'
+                                                    ][$tipoComida] ?? 'bg-secondary';
+                                                @endphp
+                                                <span class="badge {{ $badgeClass }}">
+                                                    {{ ucfirst($tipoComida) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <small>{{ $consumo->created_at ? $consumo->created_at->format('d/m H:i') : 'N/A' }}</small>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="text-center py-4">
+                            <i class="fas fa-utensils fa-2x text-muted mb-2"></i>
+                            <p class="text-muted mb-0">No hay consumos registrados</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pedidos Pendientes (si existen) -->
+    @if(isset($pedidosPendientes) && $pedidosPendientes->count() > 0)
+    <div class="row">
+        <div class="col-12">
+            <div class="card table-card animate-fade-in">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock me-2 text-danger"></i>
+                        Pedidos Pendientes de Atención
+                    </h5>
+                    @can('pedidos.index')
+                    <a href="{{ route('pedidos.index') }}" class="btn btn-outline-danger btn-sm">
+                        Ver Todos
+                    </a>
+                    @endcan
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Fecha Pedido</th>
+                                    <th>Total</th>
+                                    <th>Días Pendiente</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pedidosPendientes as $pedido)
+                                    <tr>
+                                        <td>
+                                            <div class="fw-bold">{{ $pedido->proveedor->nombre ?? 'N/A' }}</div>
+                                            <small class="text-muted">{{ $pedido->proveedor->ruc ?? 'N/A' }}</small>
+                                        </td>
+                                        <td>{{ $pedido->fecha_pedido ? $pedido->fecha_pedido->format('d/m/Y') : 'N/A' }}</td>
+                                        <td class="fw-bold">S/. {{ number_format($pedido->total ?? 0, 2) }}</td>
+                                        <td>
+                                            @php
+                                                $dias = $pedido->fecha_pedido ? $pedido->fecha_pedido->diffInDays(now()) : 0;
+                                                $urgenciaClass = $dias > 5 ? 'text-danger' : ($dias > 2 ? 'text-warning' : 'text-muted');
+                                            @endphp
+                                            <span class="{{ $urgenciaClass }} fw-bold">{{ $dias }} días</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-danger">Pendiente</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+</div>
+@endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard cargado');
+
+    // Datos para gráfico de consumos por tipo
+    const consumosTipoData = @json($consumosHoy ?? []);
+    console.log('Consumos hoy:', consumosTipoData);
+
+    // Gráfico de Consumos por Tipo (Dona)
+    if (consumosTipoData && consumosTipoData.length > 0) {
+        const ctxTipo = document.getElementById('consumosTipoChart');
+        if (ctxTipo) {
+            new Chart(ctxTipo.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: consumosTipoData.map(item =>
+                        item.tipo_comida ? item.tipo_comida.charAt(0).toUpperCase() + item.tipo_comida.slice(1) : 'Sin Tipo'
+                    ),
+                    datasets: [{
+                        data: consumosTipoData.map(item => item.total || 0),
+                        backgroundColor: [
+                            '#fdcb6e', // Desayuno - Amarillo
+                            '#00b894', // Almuerzo - Verde
+                            '#2d3436'  // Cena - Gris oscuro
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // Datos para gráfico de consumos de la semana
+    const consumosSemanaData = @json($consumosSemana ?? []);
+    console.log('Consumos semana:', consumosSemanaData);
+
+    // Gráfico de Consumos de la Semana (Línea)
+    if (consumosSemanaData && consumosSemanaData.length > 0) {
+        const ctxSemana = document.getElementById('consumosSemanaChart');
+        if (ctxSemana) {
+            new Chart(ctxSemana.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: consumosSemanaData.map(item => item.dia || 'Sin Fecha'),
+                    datasets: [{
+                        label: 'Consumos',
+                        data: consumosSemanaData.map(item => item.total || 0),
+                        borderColor: '#00b894',
+                        backgroundColor: 'rgba(0, 184, 148, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00b894',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 3,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+});
+</script>
+@endpush
+
+</x-app-layout>

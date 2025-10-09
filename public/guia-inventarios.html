@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Guía - Gestión de Productos e Inventarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 15px 0; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        .warning { background-color: #fff3cd; border-color: #ffeaa7; }
+        h1, h2 { color: #333; }
+        .btn { padding: 10px 15px; margin: 5px; border: none; border-radius: 5px; text-decoration: none; display: inline-block; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        code { background-color: #f8f9fa; padding: 2px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>🏪 Gestión de Productos e Inventarios - CESODO</h1>
+
+    <div class="card success">
+        <h2>✅ Estado Actual del Sistema</h2>
+        <p><strong>Productos existentes:</strong></p>
+        <ul>
+            <li><code>Aceite 1 litro</code> - ✅ Ya tiene inventario asignado (Stock: 20 unidades)</li>
+            <li><code>Test</code> - ⏳ Sin inventario (disponible para asignar)</li>
+        </ul>
+        <p><strong>Resultado:</strong> Solo "Test" aparece en el dropdown porque es el único sin inventario.</p>
+    </div>
+
+    <div class="card info">
+        <h2>📋 Cómo Funciona el Sistema</h2>
+        <h3>Módulo de Productos:</h3>
+        <ul>
+            <li>Crear/editar información básica del producto</li>
+            <li>Definir categorías, precios, códigos</li>
+            <li>Establecer stock mínimo</li>
+        </ul>
+
+        <h3>Módulo de Inventarios:</h3>
+        <ul>
+            <li>Asignar stock inicial a productos <strong>nuevos</strong></li>
+            <li>Solo muestra productos que NO tienen inventario</li>
+            <li>Una vez asignado, se gestiona desde "Lista de Inventarios"</li>
+        </ul>
+    </div>
+
+    <div class="card warning">
+        <h2>🔧 Soluciones Disponibles</h2>
+
+        <h3>Para agregar MÁS productos al inventario:</h3>
+        <ol>
+            <li><a href="/productos/create" class="btn btn-primary">➕ Crear Nuevos Productos</a></li>
+            <li>Luego ir a <a href="/inventarios/create" class="btn btn-success">📦 Asignar al Inventario</a></li>
+        </ol>
+
+        <h3>Para gestionar inventarios existentes:</h3>
+        <ol>
+            <li><a href="/inventarios" class="btn btn-primary">📋 Ver Lista de Inventarios</a></li>
+            <li>Editar stock de productos existentes</li>
+            <li>Realizar movimientos de entrada/salida</li>
+        </ol>
+    </div>
+
+    <div class="card info">
+        <h2>💡 Recomendaciones</h2>
+        <h3>Si necesitas más productos:</h3>
+        <ul>
+            <li>Crea productos con información completa (código, nombre, categoría)</li>
+            <li>Define stock mínimo adecuado</li>
+            <li>Asegúrate de que el estado sea "activo"</li>
+        </ul>
+
+        <h3>Si solo necesitas gestionar stock:</h3>
+        <ul>
+            <li>Ve a la lista de inventarios existentes</li>
+            <li>Edita las cantidades según necesites</li>
+            <li>Usa movimientos de inventario para control detallado</li>
+        </ul>
+    </div>
+
+    <div class="card success">
+        <h2>🎯 Estado: Sistema Funcionando Correctamente</h2>
+        <p>No hay errores. El comportamiento es el esperado según el diseño del sistema.</p>
+        <p><strong>Próximo paso sugerido:</strong> Crear más productos si los necesitas, o gestionar los inventarios existentes.</p>
+    </div>
+
+    <script>
+        console.log('Sistema de inventarios funcionando correctamente');
+        console.log('Productos sin inventario: 1 (Test)');
+        console.log('Productos con inventario: 1 (Aceite 1 litro)');
+    </script>
+</body>
+</html>

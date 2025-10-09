@@ -1,0 +1,587 @@
+/* ==============================================
+   ESTILOS GLOBALES MODERNOS PARA CESODO2
+   ============================================== */
+
+/* Variables CSS globales - Paleta de colores sólidos y armoniosos */
+:root {
+    /* Colores principales sólidos */
+    --primary-color: #2563eb;        /* Azul profesional */
+    --success-color: #16a34a;        /* Verde fresco */
+    --info-color: #0891b2;           /* Cian elegante */
+    --warning-color: #ea580c;        /* Naranja cálido */
+    --danger-color: #dc2626;         /* Rojo sólido */
+
+    /* Colores secundarios */
+    --primary-light: #3b82f6;
+    --primary-dark: #1d4ed8;
+    --success-light: #22c55e;
+    --success-dark: #15803d;
+    --info-light: #06b6d4;
+    --info-dark: #0e7490;
+    --warning-light: #f97316;
+    --warning-dark: #c2410c;
+    --danger-light: #ef4444;
+    --danger-dark: #b91c1c;
+
+    /* Colores neutros */
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+
+    /* Propiedades de diseño */
+    --border-radius-modern: 0.75rem;
+    --border-radius-small: 0.5rem;
+    --shadow-modern: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --transition-modern: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset y mejoras básicas */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Eliminar espacios en blanco del body y elementos principales */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+}
+
+/* Eliminar espacios del main container */
+main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.main-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Compensación específica para navbar fixed */
+.main-content {
+    padding-top: 64px !important;
+    margin-top: 0 !important;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-700);
+    background: var(--gray-50);
+}
+
+/* Clases utilitarias modernas */
+.bg-primary {
+    background: var(--primary-color);
+}
+
+.bg-primary-light {
+    background: var(--primary-light);
+}
+
+.shadow-modern {
+    box-shadow: var(--shadow-modern);
+}
+
+.shadow-hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.border-radius-modern {
+    border-radius: var(--border-radius-modern);
+}
+
+.transition-modern {
+    transition: var(--transition-modern);
+}
+
+/* Cards modernos */
+.card {
+    border: none;
+    border-radius: var(--border-radius-modern);
+    box-shadow: var(--shadow-modern);
+    transition: var(--transition-modern);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid #f3f4f6;
+    padding: 1.5rem;
+    border-radius: var(--border-radius-modern) var(--border-radius-modern) 0 0;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Botones modernos */
+.btn {
+    border-radius: var(--border-radius-small);
+    font-weight: 600;
+    transition: var(--transition-modern);
+    text-transform: none;
+    letter-spacing: 0.025em;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    color: white;
+}
+
+.btn-success {
+    background: var(--success-color);
+    border: 1px solid var(--success-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background: var(--success-dark);
+    border-color: var(--success-dark);
+    color: white;
+}
+
+.btn-info {
+    background: var(--info-color);
+    border: 1px solid var(--info-color);
+    color: white;
+}
+
+.btn-info:hover {
+    background: var(--info-dark);
+    border-color: var(--info-dark);
+    color: white;
+}
+
+.btn-warning {
+    background: var(--warning-color);
+    border: 1px solid var(--warning-color);
+    color: white;
+}
+
+.btn-warning:hover {
+    background: var(--warning-dark);
+    border-color: var(--warning-dark);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: var(--danger-dark);
+    border-color: var(--danger-dark);
+    color: white;
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* Formularios modernos */
+.form-control, .form-select {
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--gray-300);
+    padding: 0.75rem 1rem;
+    transition: var(--transition-modern);
+    background: white;
+    font-size: 0.875rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 0.5rem;
+}
+
+.input-group-text {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius-small) 0 0 var(--border-radius-small);
+    color: var(--gray-500);
+}
+
+/* Tablas modernas */
+.table {
+    border-radius: var(--border-radius-modern);
+    overflow: hidden;
+    box-shadow: var(--shadow-modern);
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border: none;
+    padding: 1rem 0.75rem;
+}
+
+.table tbody tr {
+    transition: var(--transition-modern);
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.table tbody tr:hover {
+    background-color: #f9fafb;
+    transform: scale(1.005);
+}
+
+.table tbody td {
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
+    border: none;
+}
+
+/* Badges modernos */
+.badge {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius-small);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.badge-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.badge-success {
+    background: var(--success-color);
+    color: white;
+}
+
+.badge-info {
+    background: var(--info-color);
+    color: white;
+}
+
+.badge-warning {
+    background: var(--warning-color);
+    color: white;
+}
+
+.badge-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* Alertas modernas */
+.alert {
+    border: none;
+    border-radius: var(--border-radius-modern);
+    box-shadow: var(--shadow-modern);
+    padding: 1rem 1.5rem;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    color: #166534;
+    border-left: 4px solid var(--success-color);
+}
+
+.alert-danger {
+    background: #fef2f2;
+    color: #991b1b;
+    border-left: 4px solid var(--danger-color);
+}
+
+.alert-warning {
+    background: #fff7ed;
+    color: #9a3412;
+    border-left: 4px solid var(--warning-color);
+}
+
+.alert-info {
+    background: #f0f9ff;
+    color: #0c4a6e;
+    border-left: 4px solid var(--info-color);
+}
+
+/* Dropdowns modernos */
+.dropdown-menu {
+    border: none;
+    border-radius: var(--border-radius-modern);
+    box-shadow: var(--shadow-hover);
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: var(--border-radius-small);
+    padding: 0.5rem 0.75rem;
+    transition: var(--transition-modern);
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background: #f3f4f6;
+    color: #374151;
+    transform: translateX(2px);
+}
+
+/* Paginación moderna */
+.pagination {
+    gap: 0.25rem;
+}
+
+.page-link {
+    border: none;
+    border-radius: var(--border-radius-small);
+    padding: 0.5rem 0.75rem;
+    color: var(--gray-500);
+    transition: var(--transition-modern);
+    margin: 0 0.125rem;
+}
+
+.page-link:hover {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    transform: translateY(-1px);
+}
+
+.page-item.active .page-link {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+}
+
+/* Iconos y avatares */
+.icon-shape {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.avatar {
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Estados específicos */
+.estado-activo {
+    background: var(--success-color);
+    color: white;
+}
+
+.estado-inactivo {
+    background: var(--danger-color);
+    color: white;
+}
+
+.estado-pendiente {
+    background: var(--warning-color);
+    color: white;
+}
+
+.estado-completado {
+    background: var(--info-color);
+    color: white;
+}
+
+/* Efectos de loading */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        border-radius: var(--border-radius-small);
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .table-responsive {
+        border-radius: var(--border-radius-modern);
+    }
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Utilidades adicionales */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.text-info {
+    color: var(--info-color) !important;
+}
+
+.text-warning {
+    color: var(--warning-color) !important;
+}
+
+.text-danger {
+    color: var(--danger-color) !important;
+}
+
+.border-primary {
+    border: 2px solid var(--primary-color) !important;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Dark mode support (opcional) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: var(--gray-100);
+        --bg-color: var(--gray-800);
+        --card-bg: var(--gray-700);
+    }
+}
+
+/* 🔧 SOLUCIÓN DEFINITIVA: Eliminar espacio en blanco superior */
+body, main, .min-h-screen, .container-fluid, .container {
+    margin-top: 0 !important;
+}
+
+.min-h-screen {
+    padding-top: 64px !important;
+}
+
+main {
+    padding-top: 0 !important;
+}
+
+.container-fluid, .container {
+    padding-top: 0 !important;
+}

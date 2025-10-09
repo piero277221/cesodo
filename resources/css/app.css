@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🔧 Eliminar espacio en blanco superior en todas las vistas */
+body, main, .content-wrapper, .main-content, .page-content, .container-fluid {
+    margin-top: 0 !important;
+}
+
+/* Cuando el navbar es fijo */
+.navbar.fixed-top + .content-wrapper,
+.navbar.fixed-top + main,
+.navbar.fixed-top + .container-fluid {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Compensación correcta para navbar fijo */
+.fixed-top + * {
+    margin-top: 0 !important;
+}
+
+/* Asegurar que el contenido principal no tenga espacios extra */
+main > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}

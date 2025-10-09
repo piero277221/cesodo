@@ -1,0 +1,137 @@
+/* 🚀 ELIMINADOR RADICAL DE ESPACIOS EN BLANCO CESODO4 */
+
+/* RESET COMPLETO - Nivel Nuclear */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* HTML Y BODY - Sin espacios */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+/* NAVBAR FIXED - Posición correcta */
+.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1050 !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* USER DROPDOWN - FORZADO A LA DERECHA */
+.user-dropdown-right {
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1060 !important;
+}
+
+/* Asegurar que el navbar tenga posición relativa */
+nav.fixed-top {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1050 !important;
+}
+
+/* El contenedor principal del navbar */
+nav .max-w-7xl {
+    position: relative !important;
+}
+
+/* CONTENEDOR PRINCIPAL - Compensación para navbar */
+.min-h-screen {
+    margin: 0 !important;
+    padding-top: 64px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+    min-height: 100vh;
+}
+
+/* MAIN - Sin espacios adicionales */
+main {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+}
+
+/* CONTAINERS - Sin espacios superiores */
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* ELEMENTOS ESPECÍFICOS DEL DASHBOARD */
+.welcome-header {
+    margin-top: 0 !important;
+}
+
+.dashboard-card,
+.card {
+    margin-top: 1rem !important;
+}
+
+.alert {
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+}
+
+/* BOOTSTRAP OVERRIDES */
+.row {
+    margin-top: 0 !important;
+}
+
+.col,
+[class*="col-"] {
+    padding-top: 0 !important;
+}
+
+/* ELIMINAR CUALQUIER ESPACIO PHANTOM */
+.navbar + * {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* SISTEMA DE NAVEGACIÓN */
+.navbar-nav {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* FORZAR ELIMINACIÓN DE ESPACIOS EN WEBKIT */
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+/* DEBUG - Borde rojo para identificar elementos con espacios */
+/*
+.debug * {
+    border: 1px solid red !important;
+}
+*/

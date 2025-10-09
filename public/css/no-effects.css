@@ -1,0 +1,80 @@
+/* Eliminar efectos de blur y transiciones */
+:root {
+    --transition-modern: none !important;
+    --shadow-modern: none !important;
+    --shadow-hover: none !important;
+}
+
+* {
+    filter: none !important;
+    backdrop-filter: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    -webkit-filter: none !important;
+    -moz-filter: none !important;
+    -o-filter: none !important;
+    -ms-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    -moz-backdrop-filter: none !important;
+    -o-backdrop-filter: none !important;
+    -ms-backdrop-filter: none !important;
+}
+
+.card,
+.form-control,
+.form-select,
+.input-group-text,
+.btn,
+input,
+textarea,
+select {
+    backdrop-filter: none !important;
+    filter: none !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.card:hover,
+.form-control:hover,
+.form-select:hover,
+.btn:hover,
+input:hover,
+textarea:hover,
+select:hover,
+.card:focus,
+.form-control:focus,
+.form-select:focus,
+.btn:focus,
+input:focus,
+textarea:focus,
+select:focus,
+.card:active,
+.form-control:active,
+.form-select:active,
+.btn:active,
+input:active,
+textarea:active,
+select:active {
+    backdrop-filter: none !important;
+    filter: none !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Deshabilitar específicamente las clases de modern-styles.css */
+.transition-modern,
+.shadow-modern,
+.shadow-hover {
+    transition: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* Eliminar efectos en tarjetas */
+.card {
+    background: white !important;
+    backdrop-filter: none !important;
+}
