@@ -162,7 +162,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                          id="descripcion" name="descripcion" rows="4" 
+                                          id="descripcion" name="descripcion" rows="4"
                                           placeholder="Escribe la descripción de la receta. Puedes incluir los ingredientes aquí y se extraerán automáticamente..."><?php echo e(old('descripcion')); ?></textarea>
                                 <button type="button" class="btn btn-outline-success mt-2" id="analizar-ingredientes">
                                     <i class="fas fa-search me-2"></i>Analizar ingredientes desde descripción
@@ -624,11 +624,11 @@ $(document).ready(function() {
     $('#descripcion').on('input', function() {
         clearTimeout(descripcionTimer);
         const texto = $(this).val().trim();
-        
+
         if (texto.length > 20) { // Si hay al menos 20 caracteres
             // Mostrar el botón de análisis más prominente
             $('#analizar-ingredientes').removeClass('btn-outline-success').addClass('btn-success').fadeIn();
-            
+
             // Opcional: Análisis automático después de 3 segundos sin escribir
             descripcionTimer = setTimeout(function() {
                 if (texto.length > 50 && $('#ingredientes-container').children().length === 0) {
