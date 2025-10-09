@@ -26,6 +26,8 @@
         <link href="{{ asset('css/navigation-new.css') }}" rel="stylesheet">
         <!-- Whitespace Fix -->
         <link href="{{ asset('css/whitespace-fix.css') }}" rel="stylesheet">
+        <!-- Remove Blur Effects -->
+        <link href="{{ asset('css/no-effects.css') }}" rel="stylesheet">
 
         <!-- Google Fonts - Inter -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,6 +45,23 @@
                 font-family: 'Inter', sans-serif;
                 margin: 0;
                 padding: 0;
+            }
+
+            /* 🚫 ELIMINAR TODOS LOS EFECTOS DE BLUR Y HOVER */
+            * {
+                filter: none !important;
+                backdrop-filter: none !important;
+                transition: none !important;
+                -webkit-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            *:hover, *:focus, *:active {
+                filter: none !important;
+                backdrop-filter: none !important;
+                transition: none !important;
+                transform: none !important;
+                box-shadow: none !important;
             }
 
             /* Contenedor principal con padding-top para navbar fijo */

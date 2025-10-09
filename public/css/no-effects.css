@@ -78,3 +78,65 @@ select:active {
     background: white !important;
     backdrop-filter: none !important;
 }
+
+/* Eliminar efectos específicos del dashboard y navegación */
+.dashboard-card:hover,
+.hover-shadow,
+.hover-shadow:hover,
+.nav-dropdown-trigger:hover,
+.nav-dropdown-item:hover,
+.nav-scroll-btn:hover,
+.nav-inner a:hover,
+.table-hover tbody tr:hover,
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+    background-color: inherit !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+/* Remover todas las transiciones de hover globalmente */
+*:hover,
+*:focus,
+*:active {
+    transition: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Desactivar específicamente clases de Bootstrap hover */
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+    filter: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    transition: none !important;
+}
+
+/* Eliminar efectos de Tailwind CSS */
+.hover\:text-gray-800:hover,
+.hover\:bg-gray-50:hover,
+.hover\:text-gray-700:hover,
+.hover\:bg-gray-100:hover {
+    filter: none !important;
+    backdrop-filter: none !important;
+    transition: none !important;
+}
+
+/* Desactivar todos los filtros de Tailwind */
+.filter,
+.\!filter {
+    filter: none !important;
+}
