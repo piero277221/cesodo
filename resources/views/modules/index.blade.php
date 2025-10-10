@@ -267,6 +267,21 @@
                 </a>
             </div>
             @endcan
+
+            <!-- Configuraciones del Sistema -->
+            @can('ver-configuraciones')
+            <div class="module-card group">
+                <a href="{{ route('configurations.index') }}" class="block h-full">
+                    <div class="module-icon" style="background: linear-gradient(45deg, #6366f1, #8b5cf6);">
+                        <i class="bi bi-gear-fill"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">Configuraciones</h3>
+                        <p class="module-description">Administración y configuración del sistema</p>
+                    </div>
+                </a>
+            </div>
+            @endcan
         </div>
 
         <!-- Estadísticas rápidas - En 6 columnas más compactas -->

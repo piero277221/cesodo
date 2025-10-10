@@ -290,6 +290,17 @@
                                 </div>
                             </a>
                         </div>
+
+                        @can('ver-configuraciones')
+                        <div class="col-md-2 col-sm-4 col-6 mb-3">
+                            <a href="{{ route('configurations.index') }}" class="text-decoration-none">
+                                <div class="text-center p-3 bg-light rounded hover-shadow">
+                                    <i class="fas fa-cogs fa-2x text-purple mb-2" style="color: #8b5cf6 !important;"></i>
+                                    <div class="small text-dark">Configuraciones</div>
+                                </div>
+                            </a>
+                        </div>
+                        @endcan
                     </div>
                 </div>
             </div>

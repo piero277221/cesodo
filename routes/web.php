@@ -22,6 +22,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\CompraController;
+use App\Http\Controllers\ConfigurationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -146,6 +147,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('{usuario}/reset-password', [UsuarioController::class, 'resetPassword'])->name('usuarios.reset-password');
         Route::post('{usuario}/enviar-credenciales', [UsuarioController::class, 'enviarCredenciales'])->name('usuarios.enviar-credenciales');
         Route::post('{usuario}/toggle', [UsuarioController::class, 'toggle'])->name('usuarios.toggle');
+    });
+
+    // Configuraciones del Sistema - Módulo de Administración de Configuraciones
+    Route::middleware(['permission:ver-configuraciones'])->group(function () {
+        Route::resource('configurations', ConfigurationController::class);
+        
+        // Rutas adicionales para configuraciones
+        Route::prefix('configurations')->group(function () {
+            Route::post('bulk-update', [ConfigurationController::class, 'bulkUpdate'])->name('configurations.bulk-update');
+            Route::get('export', [ConfigurationController::class, 'export'])->name('configurations.export');
+        });
     });
 
     // Contratos - Sistema de Gestión de Contratos

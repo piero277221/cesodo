@@ -63,19 +63,26 @@ class RoleSeeder extends Seeder
             'ver-reportes',
             'exportar-reportes',
 
+            // Configuraciones del Sistema
+            'ver-configuraciones',
+            'crear-configuraciones',
+            'editar-configuraciones',
+            'eliminar-configuraciones',
+            'gestionar-configuraciones',
+
             // Dashboard
             'ver-dashboard',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Crear roles
-        $adminRole = Role::create(['name' => 'Administrador']);
-        $almaceneroRole = Role::create(['name' => 'Almacenero']);
-        $supervisorRole = Role::create(['name' => 'Supervisor']);
-        $personalRole = Role::create(['name' => 'Personal de Atención']);
+        $adminRole = Role::firstOrCreate(['name' => 'Administrador']);
+        $almaceneroRole = Role::firstOrCreate(['name' => 'Almacenero']);
+        $supervisorRole = Role::firstOrCreate(['name' => 'Supervisor']);
+        $personalRole = Role::firstOrCreate(['name' => 'Personal de Atención']);
 
         // Asignar permisos a roles
 
