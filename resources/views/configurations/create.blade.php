@@ -32,17 +32,17 @@
                         <div class="card-body">
                             <form method="POST" action="{{ route('configurations.store') }}">
                                 @csrf
-                                
+
                                 <!-- Información básica -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Clave <span class="text-danger">*</span></label>
-                                            <input type="text" 
-                                                   class="form-control @error('key') is-invalid @enderror" 
-                                                   name="key" 
-                                                   value="{{ old('key') }}" 
-                                                   placeholder="ej: empresa_nombre" 
+                                            <input type="text"
+                                                   class="form-control @error('key') is-invalid @enderror"
+                                                   name="key"
+                                                   value="{{ old('key') }}"
+                                                   placeholder="ej: empresa_nombre"
                                                    required>
                                             <div class="form-text">Identificador único de la configuración (sin espacios)</div>
                                             @error('key')
@@ -108,10 +108,10 @@
                                     <label class="form-label">Valor</label>
                                     <div id="valueContainer">
                                         <!-- El contenido se generará dinámicamente según el tipo -->
-                                        <input type="text" 
-                                               class="form-control @error('value') is-invalid @enderror" 
-                                               name="value" 
-                                               value="{{ old('value') }}" 
+                                        <input type="text"
+                                               class="form-control @error('value') is-invalid @enderror"
+                                               name="value"
+                                               value="{{ old('value') }}"
                                                id="defaultValueInput">
                                     </div>
                                     <div class="form-text" id="valueHelp">Ingrese el valor para esta configuración</div>
@@ -123,9 +123,9 @@
                                 <!-- Descripción -->
                                 <div class="mb-3">
                                     <label class="form-label">Descripción</label>
-                                    <textarea class="form-control @error('description') is-invalid @enderror" 
-                                              name="description" 
-                                              rows="3" 
+                                    <textarea class="form-control @error('description') is-invalid @enderror"
+                                              name="description"
+                                              rows="3"
                                               placeholder="Describe qué hace esta configuración y cómo se usa">{{ old('description') }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -137,10 +137,10 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <div class="form-check">
-                                                <input class="form-check-input" 
-                                                       type="checkbox" 
-                                                       name="editable" 
-                                                       value="1" 
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       name="editable"
+                                                       value="1"
                                                        id="editable"
                                                        {{ old('editable', '1') ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="editable">
@@ -154,10 +154,10 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Orden de Visualización</label>
-                                            <input type="number" 
-                                                   class="form-control @error('sort_order') is-invalid @enderror" 
-                                                   name="sort_order" 
-                                                   value="{{ old('sort_order', 0) }}" 
+                                            <input type="number"
+                                                   class="form-control @error('sort_order') is-invalid @enderror"
+                                                   name="sort_order"
+                                                   value="{{ old('sort_order', 0) }}"
                                                    min="0">
                                             <div class="form-text">Número para ordenar las configuraciones (0 = primero)</div>
                                             @error('sort_order')
@@ -242,12 +242,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const typeSelect = document.querySelector('select[name="type"]');
     const valueContainer = document.getElementById('valueContainer');
     const valueHelp = document.getElementById('valueHelp');
-    
+
     function updateValueField() {
         const type = typeSelect.value;
         let html = '';
         let help = '';
-        
+
         switch(type) {
             case 'boolean':
                 html = `<div class="form-check form-switch">
@@ -256,48 +256,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>`;
                 help = 'Marque para establecer como verdadero, deje sin marcar para falso';
                 break;
-                
+
             case 'number':
                 html = `<input type="number" step="any" class="form-control" name="value" value="{{ old('value') }}" placeholder="0">`;
                 help = 'Ingrese un número entero o decimal';
                 break;
-                
+
             case 'text':
                 html = `<textarea class="form-control" name="value" rows="4" placeholder="Texto largo...">{{ old('value') }}</textarea>`;
                 help = 'Ingrese texto de múltiples líneas';
                 break;
-                
+
             case 'json':
                 html = `<textarea class="form-control font-monospace" name="value" rows="6" placeholder='{"key": "value"}'>{{ old('value') }}</textarea>`;
                 help = 'Ingrese un objeto JSON válido';
                 break;
-                
+
             case 'date':
                 html = `<input type="date" class="form-control" name="value" value="{{ old('value') }}">`;
                 help = 'Seleccione una fecha';
                 break;
-                
+
             case 'email':
                 html = `<input type="email" class="form-control" name="value" value="{{ old('value') }}" placeholder="usuario@ejemplo.com">`;
                 help = 'Ingrese una dirección de correo electrónico válida';
                 break;
-                
+
             case 'url':
                 html = `<input type="url" class="form-control" name="value" value="{{ old('value') }}" placeholder="https://ejemplo.com">`;
                 help = 'Ingrese una URL válida';
                 break;
-                
+
             default:
                 html = `<input type="text" class="form-control" name="value" value="{{ old('value') }}" placeholder="Valor...">`;
                 help = 'Ingrese el valor para esta configuración';
         }
-        
+
         valueContainer.innerHTML = html;
         valueHelp.textContent = help;
     }
-    
+
     typeSelect.addEventListener('change', updateValueField);
-    
+
     // Inicializar con el tipo seleccionado
     if (typeSelect.value) {
         updateValueField();

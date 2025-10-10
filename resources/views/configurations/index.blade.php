@@ -122,7 +122,7 @@
                                                     <span class="badge bg-secondary">{{ ucfirst($config->category) }}</span>
                                                 </td>
                                                 <td class="py-3">
-                                                    <span class="badge 
+                                                    <span class="badge
                                                         @switch($config->type)
                                                             @case('boolean') bg-success @break
                                                             @case('number') bg-primary @break
@@ -138,18 +138,18 @@
                                                     @if($config->editable && !$config->is_system)
                                                         @if($config->type === 'boolean')
                                                             <div class="form-check form-switch">
-                                                                <input class="form-check-input" 
-                                                                       type="checkbox" 
+                                                                <input class="form-check-input"
+                                                                       type="checkbox"
                                                                        name="configurations[{{ $config->id }}][value]"
                                                                        {{ $config->value ? 'checked' : '' }}>
                                                             </div>
                                                         @elseif($config->type === 'text')
-                                                            <textarea class="form-control form-control-sm" 
-                                                                      name="configurations[{{ $config->id }}][value]" 
+                                                            <textarea class="form-control form-control-sm"
+                                                                      name="configurations[{{ $config->id }}][value]"
                                                                       rows="2">{{ $config->value }}</textarea>
                                                         @else
-                                                            <input type="text" 
-                                                                   class="form-control form-control-sm" 
+                                                            <input type="text"
+                                                                   class="form-control form-control-sm"
                                                                    name="configurations[{{ $config->id }}][value]"
                                                                    value="{{ $config->value }}">
                                                         @endif
@@ -170,28 +170,28 @@
                                                 </td>
                                                 <td class="py-3 text-center">
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('configurations.show', $config) }}" 
-                                                           class="btn btn-outline-info btn-sm" 
+                                                        <a href="{{ route('configurations.show', $config) }}"
+                                                           class="btn btn-outline-info btn-sm"
                                                            title="Ver detalles">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                         @if($config->editable && !$config->is_system)
                                                             @can('editar-configuraciones')
-                                                                <a href="{{ route('configurations.edit', $config) }}" 
-                                                                   class="btn btn-outline-warning btn-sm" 
+                                                                <a href="{{ route('configurations.edit', $config) }}"
+                                                                   class="btn btn-outline-warning btn-sm"
                                                                    title="Editar">
                                                                     <i class="fas fa-edit"></i>
                                                                 </a>
                                                             @endcan
                                                             @can('eliminar-configuraciones')
-                                                                <form method="POST" 
-                                                                      action="{{ route('configurations.destroy', $config) }}" 
+                                                                <form method="POST"
+                                                                      action="{{ route('configurations.destroy', $config) }}"
                                                                       class="d-inline"
                                                                       onsubmit="return confirm('¿Estás seguro de eliminar esta configuración?')">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" 
-                                                                            class="btn btn-outline-danger btn-sm" 
+                                                                    <button type="submit"
+                                                                            class="btn btn-outline-danger btn-sm"
                                                                             title="Eliminar">
                                                                         <i class="fas fa-trash"></i>
                                                                     </button>
@@ -204,7 +204,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                
+
                                 @if($configurations->where('editable', true)->where('is_system', false)->count() > 0)
                                     <div class="p-3 bg-light border-top">
                                         <button type="submit" class="btn btn-success">

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->json('validation_rules')->nullable(); // reglas de validación en formato JSON
             $table->integer('sort_order')->default(0); // orden de visualización
             $table->timestamps();
-            
+
             // Índices para mejor rendimiento
             $table->index(['module', 'category']);
             $table->index('editable');

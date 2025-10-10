@@ -39,16 +39,16 @@
                             <form method="POST" action="{{ route('configurations.update', $configuration) }}">
                                 @csrf
                                 @method('PUT')
-                                
+
                                 <!-- Información básica -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Clave <span class="text-danger">*</span></label>
-                                            <input type="text" 
-                                                   class="form-control @error('key') is-invalid @enderror" 
-                                                   name="key" 
-                                                   value="{{ old('key', $configuration->key) }}" 
+                                            <input type="text"
+                                                   class="form-control @error('key') is-invalid @enderror"
+                                                   name="key"
+                                                   value="{{ old('key', $configuration->key) }}"
                                                    required>
                                             <div class="form-text">Identificador único de la configuración</div>
                                             @error('key')
@@ -113,44 +113,44 @@
                                     <div id="valueContainer">
                                         @if($configuration->type === 'boolean')
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" 
-                                                       type="checkbox" 
-                                                       name="value" 
-                                                       value="1" 
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       name="value"
+                                                       value="1"
                                                        id="booleanValue"
                                                        {{ old('value', $configuration->value) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="booleanValue">Activado</label>
                                             </div>
                                         @elseif($configuration->type === 'text' || $configuration->type === 'json')
-                                            <textarea class="form-control @if($configuration->type === 'json') font-monospace @endif @error('value') is-invalid @enderror" 
-                                                      name="value" 
+                                            <textarea class="form-control @if($configuration->type === 'json') font-monospace @endif @error('value') is-invalid @enderror"
+                                                      name="value"
                                                       rows="{{ $configuration->type === 'json' ? '6' : '4' }}"
                                                       placeholder="{{ $configuration->type === 'json' ? '{"key": "value"}' : 'Texto largo...' }}">{{ old('value', $configuration->value) }}</textarea>
                                         @elseif($configuration->type === 'number')
-                                            <input type="number" 
-                                                   step="any" 
-                                                   class="form-control @error('value') is-invalid @enderror" 
-                                                   name="value" 
+                                            <input type="number"
+                                                   step="any"
+                                                   class="form-control @error('value') is-invalid @enderror"
+                                                   name="value"
                                                    value="{{ old('value', $configuration->value) }}">
                                         @elseif($configuration->type === 'date')
-                                            <input type="date" 
-                                                   class="form-control @error('value') is-invalid @enderror" 
-                                                   name="value" 
+                                            <input type="date"
+                                                   class="form-control @error('value') is-invalid @enderror"
+                                                   name="value"
                                                    value="{{ old('value', $configuration->value) }}">
                                         @elseif($configuration->type === 'email')
-                                            <input type="email" 
-                                                   class="form-control @error('value') is-invalid @enderror" 
-                                                   name="value" 
+                                            <input type="email"
+                                                   class="form-control @error('value') is-invalid @enderror"
+                                                   name="value"
                                                    value="{{ old('value', $configuration->value) }}">
                                         @elseif($configuration->type === 'url')
-                                            <input type="url" 
-                                                   class="form-control @error('value') is-invalid @enderror" 
-                                                   name="value" 
+                                            <input type="url"
+                                                   class="form-control @error('value') is-invalid @enderror"
+                                                   name="value"
                                                    value="{{ old('value', $configuration->value) }}">
                                         @else
-                                            <input type="text" 
-                                                   class="form-control @error('value') is-invalid @enderror" 
-                                                   name="value" 
+                                            <input type="text"
+                                                   class="form-control @error('value') is-invalid @enderror"
+                                                   name="value"
                                                    value="{{ old('value', $configuration->value) }}">
                                         @endif
                                     </div>
@@ -162,9 +162,9 @@
                                 <!-- Descripción -->
                                 <div class="mb-3">
                                     <label class="form-label">Descripción</label>
-                                    <textarea class="form-control @error('description') is-invalid @enderror" 
-                                              name="description" 
-                                              rows="3" 
+                                    <textarea class="form-control @error('description') is-invalid @enderror"
+                                              name="description"
+                                              rows="3"
                                               placeholder="Describe qué hace esta configuración y cómo se usa">{{ old('description', $configuration->description) }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -176,10 +176,10 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <div class="form-check">
-                                                <input class="form-check-input" 
-                                                       type="checkbox" 
-                                                       name="editable" 
-                                                       value="1" 
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       name="editable"
+                                                       value="1"
                                                        id="editable"
                                                        {{ old('editable', $configuration->editable) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="editable">
@@ -193,10 +193,10 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Orden de Visualización</label>
-                                            <input type="number" 
-                                                   class="form-control @error('sort_order') is-invalid @enderror" 
-                                                   name="sort_order" 
-                                                   value="{{ old('sort_order', $configuration->sort_order) }}" 
+                                            <input type="number"
+                                                   class="form-control @error('sort_order') is-invalid @enderror"
+                                                   name="sort_order"
+                                                   value="{{ old('sort_order', $configuration->sort_order) }}"
                                                    min="0">
                                             <div class="form-text">Número para ordenar las configuraciones</div>
                                             @error('sort_order')
@@ -237,13 +237,13 @@
                             <dl class="row">
                                 <dt class="col-4">ID:</dt>
                                 <dd class="col-8">{{ $configuration->id }}</dd>
-                                
+
                                 <dt class="col-4">Creada:</dt>
                                 <dd class="col-8">{{ $configuration->created_at->format('d/m/Y H:i') }}</dd>
-                                
+
                                 <dt class="col-4">Actualizada:</dt>
                                 <dd class="col-8">{{ $configuration->updated_at->format('d/m/Y H:i') }}</dd>
-                                
+
                                 <dt class="col-4">Sistema:</dt>
                                 <dd class="col-8">
                                     @if($configuration->is_system)
@@ -280,12 +280,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const typeSelect = document.querySelector('select[name="type"]');
     const valueContainer = document.getElementById('valueContainer');
-    
+
     function updateValueField() {
         const type = typeSelect.value;
         const currentValue = '{{ old('value', $configuration->value) }}';
         let html = '';
-        
+
         switch(type) {
             case 'boolean':
                 const checked = currentValue ? 'checked' : '';
@@ -294,38 +294,38 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label class="form-check-label" for="booleanValue">Activado</label>
                 </div>`;
                 break;
-                
+
             case 'number':
                 html = `<input type="number" step="any" class="form-control" name="value" value="${currentValue}">`;
                 break;
-                
+
             case 'text':
                 html = `<textarea class="form-control" name="value" rows="4">${currentValue}</textarea>`;
                 break;
-                
+
             case 'json':
                 html = `<textarea class="form-control font-monospace" name="value" rows="6">${currentValue}</textarea>`;
                 break;
-                
+
             case 'date':
                 html = `<input type="date" class="form-control" name="value" value="${currentValue}">`;
                 break;
-                
+
             case 'email':
                 html = `<input type="email" class="form-control" name="value" value="${currentValue}">`;
                 break;
-                
+
             case 'url':
                 html = `<input type="url" class="form-control" name="value" value="${currentValue}">`;
                 break;
-                
+
             default:
                 html = `<input type="text" class="form-control" name="value" value="${currentValue}">`;
         }
-        
+
         valueContainer.innerHTML = html;
     }
-    
+
     typeSelect.addEventListener('change', updateValueField);
 });
 </script>

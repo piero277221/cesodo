@@ -152,11 +152,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Configuraciones del Sistema - Módulo de Administración de Configuraciones
     Route::middleware(['permission:ver-configuraciones'])->group(function () {
         Route::resource('configurations', ConfigurationController::class);
-        
+
         // Rutas adicionales para configuraciones
         Route::prefix('configurations')->group(function () {
             Route::post('bulk-update', [ConfigurationController::class, 'bulkUpdate'])->name('configurations.bulk-update');
             Route::get('export', [ConfigurationController::class, 'export'])->name('configurations.export');
+        });
+    });
+
+    // Gestión de Roles Avanzada - Módulo de Administración de Roles y Permisos
+    Route::middleware(['permission:ver-configuraciones'])->group(function () {
+        Route::resource('role-management', \App\Http\Controllers\RoleManagementController::class);
+
+        // Rutas adicionales para gestión de roles
+        Route::prefix('role-management')->group(function () {
+            Route::get('matrix', [\App\Http\Controllers\RoleManagementController::class, 'matrix'])->name('role-management.matrix');
+            Route::post('update-matrix', [\App\Http\Controllers\RoleManagementController::class, 'updateMatrix'])->name('role-management.update-matrix');
+            Route::post('{role_management}/clone', [\App\Http\Controllers\RoleManagementController::class, 'clone'])->name('role-management.clone');
+            Route::get('stats', [\App\Http\Controllers\RoleManagementController::class, 'stats'])->name('role-management.stats');
         });
     });
 

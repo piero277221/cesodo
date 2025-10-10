@@ -36,14 +36,14 @@ class SystemSetting extends Model
     public static function getValue($key, $default = null)
     {
         $cacheKey = "system_setting_{$key}";
-        
+
         return Cache::remember($cacheKey, 3600, function () use ($key, $default) {
             $setting = self::where('key', $key)->first();
-            
+
             if (!$setting) {
                 return $default;
             }
-            
+
             return self::castValue($setting->value, $setting->type);
         });
     }
@@ -63,7 +63,7 @@ class SystemSetting extends Model
 
         // Limpiar caché
         Cache::forget("system_setting_{$key}");
-        
+
         return $setting;
     }
 
@@ -104,11 +104,11 @@ class SystemSetting extends Model
     public static function getByCategory($category, $module = null)
     {
         $query = self::where('category', $category);
-        
+
         if ($module) {
             $query->where('module', $module);
         }
-        
+
         return $query->orderBy('sort_order')->orderBy('key')->get();
     }
 

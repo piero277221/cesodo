@@ -282,6 +282,21 @@
                 </a>
             </div>
             @endcan
+
+            <!-- Gestión Avanzada de Roles -->
+            @can('ver-configuraciones')
+            <div class="module-card group">
+                <a href="{{ route('role-management.index') }}" class="block h-full">
+                    <div class="module-icon" style="background: linear-gradient(45deg, #dc2626, #f59e0b);">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">Gestión de Roles</h3>
+                        <p class="module-description">Administración avanzada de roles y permisos</p>
+                    </div>
+                </a>
+            </div>
+            @endcan
         </div>
 
         <!-- Estadísticas rápidas - En 6 columnas más compactas -->

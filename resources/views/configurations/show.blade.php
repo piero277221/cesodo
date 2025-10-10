@@ -51,10 +51,10 @@
                                         <dd class="col-7">
                                             <code class="bg-light px-2 py-1 rounded">{{ $configuration->key }}</code>
                                         </dd>
-                                        
+
                                         <dt class="col-5">Tipo:</dt>
                                         <dd class="col-7">
-                                            <span class="badge 
+                                            <span class="badge
                                                 @switch($configuration->type)
                                                     @case('boolean') bg-success @break
                                                     @case('number') bg-primary @break
@@ -66,7 +66,7 @@
                                                 {{ ucfirst($configuration->type) }}
                                             </span>
                                         </dd>
-                                        
+
                                         <dt class="col-5">Módulo:</dt>
                                         <dd class="col-7">
                                             @if($configuration->module)
@@ -75,7 +75,7 @@
                                                 <span class="text-muted">Sin módulo específico</span>
                                             @endif
                                         </dd>
-                                        
+
                                         <dt class="col-5">Categoría:</dt>
                                         <dd class="col-7">
                                             <span class="badge bg-secondary">{{ ucfirst($configuration->category) }}</span>
@@ -96,7 +96,7 @@
                                                 </span>
                                             @endif
                                         </dd>
-                                        
+
                                         <dt class="col-5">Sistema:</dt>
                                         <dd class="col-7">
                                             @if($configuration->is_system)
@@ -109,10 +109,10 @@
                                                 </span>
                                             @endif
                                         </dd>
-                                        
+
                                         <dt class="col-5">Orden:</dt>
                                         <dd class="col-7">{{ $configuration->sort_order }}</dd>
-                                        
+
                                         <dt class="col-5">ID:</dt>
                                         <dd class="col-7">#{{ $configuration->id }}</dd>
                                     </dl>
@@ -159,7 +159,7 @@
                                     </div>
                                 @endif
                             </div>
-                            
+
                             @if($configuration->type === 'json')
                                 <div class="mt-3">
                                     <small class="text-muted">
@@ -200,16 +200,16 @@
                         <div class="card-body">
                             @if($configuration->editable && !$configuration->is_system)
                                 @can('editar-configuraciones')
-                                    <a href="{{ route('configurations.edit', $configuration) }}" 
+                                    <a href="{{ route('configurations.edit', $configuration) }}"
                                        class="btn btn-warning btn-sm w-100 mb-2">
                                         <i class="fas fa-edit me-2"></i>
                                         Editar Configuración
                                     </a>
                                 @endcan
-                                
+
                                 @can('eliminar-configuraciones')
-                                    <form method="POST" 
-                                          action="{{ route('configurations.destroy', $configuration) }}" 
+                                    <form method="POST"
+                                          action="{{ route('configurations.destroy', $configuration) }}"
                                           onsubmit="return confirm('¿Estás seguro de eliminar esta configuración?')"
                                           class="mb-2">
                                         @csrf
@@ -222,13 +222,13 @@
                                 @endcan
                             @endif
 
-                            <a href="{{ route('configurations.index') }}?module={{ $configuration->module }}" 
+                            <a href="{{ route('configurations.index') }}?module={{ $configuration->module }}"
                                class="btn btn-outline-info btn-sm w-100 mb-2">
                                 <i class="fas fa-filter me-2"></i>
                                 Ver del Mismo Módulo
                             </a>
 
-                            <a href="{{ route('configurations.index') }}?category={{ $configuration->category }}" 
+                            <a href="{{ route('configurations.index') }}?category={{ $configuration->category }}"
                                class="btn btn-outline-secondary btn-sm w-100">
                                 <i class="fas fa-tags me-2"></i>
                                 Ver de Misma Categoría
@@ -251,7 +251,7 @@
                                     <i class="fas fa-calendar-plus text-success me-1"></i>
                                     {{ $configuration->created_at->format('d/m/Y H:i:s') }}
                                 </dd>
-                                
+
                                 <dt class="small text-muted">Última Actualización:</dt>
                                 <dd class="mb-2">
                                     <i class="fas fa-calendar-check text-warning me-1"></i>
@@ -260,7 +260,7 @@
                                         <br><small class="text-muted">({{ $configuration->updated_at->diffForHumans() }})</small>
                                     @endif
                                 </dd>
-                                
+
                                 @if($configuration->validation_rules)
                                     <dt class="small text-muted">Reglas de Validación:</dt>
                                     <dd class="mb-0">

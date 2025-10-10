@@ -15,37 +15,37 @@ class ConfigurationController extends Controller
     {
         $module = $request->get('module', 'all');
         $category = $request->get('category', 'all');
-        
+
         $query = SystemSetting::query();
-        
+
         // Filtrar por módulo
         if ($module !== 'all') {
             $query->where('module', $module);
         }
-        
+
         // Filtrar por categoría
         if ($category !== 'all') {
             $query->where('category', $category);
         }
-        
+
         $configurations = $query->orderBy('module')
                                ->orderBy('category')
                                ->orderBy('sort_order')
                                ->orderBy('key')
                                ->paginate(15);
-        
+
         // Obtener módulos y categorías únicos para filtros
         $modules = SystemSetting::select('module')
                               ->whereNotNull('module')
                               ->distinct()
                               ->orderBy('module')
                               ->pluck('module');
-        
+
         $categories = SystemSetting::select('category')
                                  ->distinct()
                                  ->orderBy('category')
                                  ->pluck('category');
-        
+
         return view('configurations.index', compact('configurations', 'modules', 'categories', 'module', 'category'));
     }
 
@@ -57,7 +57,7 @@ class ConfigurationController extends Controller
         $modules = ['general', 'usuarios', 'trabajadores', 'productos', 'inventario', 'proveedores', 'pedidos', 'consumos', 'menus', 'reportes'];
         $categories = ['general', 'empresa', 'seguridad', 'interfaz', 'notificaciones', 'reportes', 'integración'];
         $types = ['string', 'number', 'boolean', 'json', 'text', 'date', 'email', 'url'];
-        
+
         return view('configurations.create', compact('modules', 'categories', 'types'));
     }
 
@@ -127,7 +127,7 @@ class ConfigurationController extends Controller
         $modules = ['general', 'usuarios', 'trabajadores', 'productos', 'inventario', 'proveedores', 'pedidos', 'consumos', 'menus', 'reportes'];
         $categories = ['general', 'empresa', 'seguridad', 'interfaz', 'notificaciones', 'reportes', 'integración'];
         $types = ['string', 'number', 'boolean', 'json', 'text', 'date', 'email', 'url'];
-        
+
         return view('configurations.edit', compact('configuration', 'modules', 'categories', 'types'));
     }
 
@@ -194,7 +194,7 @@ class ConfigurationController extends Controller
         }
 
         $configuration->delete();
-        
+
         // Limpiar caché
         SystemSetting::clearCache();
 
@@ -208,31 +208,31 @@ class ConfigurationController extends Controller
     public function bulkUpdate(Request $request)
     {
         $configurations = $request->input('configurations', []);
-        
+
         try {
             DB::beginTransaction();
-            
+
             foreach ($configurations as $id => $data) {
                 $config = SystemSetting::findOrFail($id);
-                
+
                 if ($config->editable && !$config->is_system) {
                     $value = $data['value'] ?? '';
-                    
+
                     // Procesar según tipo
                     if ($config->type === 'boolean') {
                         $value = isset($data['value']) ? '1' : '0';
                     }
-                    
+
                     $config->update(['value' => $value]);
                 }
             }
-            
+
             DB::commit();
             SystemSetting::clearCache();
-            
+
             return redirect()->route('configurations.index')
                 ->with('success', 'Configuraciones actualizadas exitosamente');
-                
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('configurations.index')
@@ -246,7 +246,7 @@ class ConfigurationController extends Controller
     public function export()
     {
         $configurations = SystemSetting::where('editable', true)->get();
-        
+
         $exportData = $configurations->map(function ($config) {
             return [
                 'key' => $config->key,
@@ -259,7 +259,7 @@ class ConfigurationController extends Controller
         });
 
         $filename = 'configuraciones_sistema_' . date('Y-m-d_H-i-s') . '.json';
-        
+
         return response()->json($exportData, 200, [
             'Content-Type' => 'application/json',
             'Content-Disposition' => 'attachment; filename="' . $filename . '"'
