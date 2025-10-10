@@ -2,13 +2,44 @@
 
 @section('title', 'Nueva Persona')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/cesodo-theme.css') }}">
+<style>
+    .fecha-nacimiento-enhanced {
+        transition: all 0.3s ease;
+    }
+    
+    .fecha-nacimiento-enhanced:focus {
+        border-color: var(--cesodo-red);
+        box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+    }
+    
+    .accesos-rapidos .btn {
+        transition: all 0.2s ease;
+        margin-bottom: 0.25rem;
+    }
+    
+    .accesos-rapidos .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .edad-feedback {
+        background: linear-gradient(90deg, var(--cesodo-red-lighter), transparent);
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        border-left: 3px solid var(--cesodo-red);
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="mb-0">
-                    <i class="fas fa-user-plus text-success me-2"></i>
+                    <i class="fas fa-user-plus text-cesodo-red me-2"></i>
                     Nueva Persona
                 </h2>
                 <a href="{{ route('personas.index') }}" class="btn btn-secondary">
@@ -35,7 +66,7 @@
                     <!-- Información Personal -->
                     <div class="col-lg-6 mb-4">
                         <div class="card shadow-sm h-100">
-                            <div class="card-header bg-primary text-white">
+                            <div class="card-header bg-cesodo-red text-white">
                                 <h5 class="mb-0">
                                     <i class="fas fa-user me-2"></i>
                                     Información Personal
@@ -72,12 +103,41 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
-                                        <input type="date"
-                                               class="form-control @error('fecha_nacimiento') is-invalid @enderror"
-                                               id="fecha_nacimiento"
-                                               name="fecha_nacimiento"
-                                               value="{{ old('fecha_nacimiento') }}">
+                                        <label for="fecha_nacimiento" class="form-label">
+                                            <i class="fas fa-calendar-alt text-cesodo-red me-1"></i>
+                                            Fecha de Nacimiento
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-cesodo-red text-white">
+                                                <i class="fas fa-birthday-cake"></i>
+                                            </span>
+                                            <input type="date"
+                                                   class="form-control fecha-nacimiento-enhanced @error('fecha_nacimiento') is-invalid @enderror"
+                                                   id="fecha_nacimiento"
+                                                   name="fecha_nacimiento"
+                                                   value="{{ old('fecha_nacimiento') }}"
+                                                   max="{{ date('Y-m-d') }}"
+                                                   min="{{ date('Y-m-d', strtotime('-120 years')) }}"
+                                                   onchange="calcularEdad()"
+                                                   title="Selecciona la fecha de nacimiento o usa los accesos rápidos">
+                                        </div>
+                                        <div id="edad_display" class="form-text text-cesodo-black mt-1" style="display: none;">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            <span id="edad_texto"></span>
+                                        </div>
+                                        <div class="mt-2 accesos-rapidos">
+                                            <small class="text-muted">
+                                                <i class="fas fa-bolt me-1"></i>
+                                                Accesos rápidos por década:
+                                            </small>
+                                            <div class="btn-group-sm mt-1" role="group">
+                                                <button type="button" class="btn btn-outline-cesodo-red btn-sm me-1" onclick="setDecada(2000)" title="Nacidos en los 2000s">2000s</button>
+                                                <button type="button" class="btn btn-outline-cesodo-red btn-sm me-1" onclick="setDecada(1990)" title="Nacidos en los 90s">90s</button>
+                                                <button type="button" class="btn btn-outline-cesodo-red btn-sm me-1" onclick="setDecada(1980)" title="Nacidos en los 80s">80s</button>
+                                                <button type="button" class="btn btn-outline-cesodo-red btn-sm me-1" onclick="setDecada(1970)" title="Nacidos en los 70s">70s</button>
+                                                <button type="button" class="btn btn-outline-cesodo-red btn-sm" onclick="setDecada(1960)" title="Nacidos en los 60s">60s</button>
+                                            </div>
+                                        </div>
                                         @error('fecha_nacimiento')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -147,7 +207,7 @@
                     <!-- Información de Documentos -->
                     <div class="col-lg-6 mb-4">
                         <div class="card shadow-sm h-100">
-                            <div class="card-header bg-info text-white">
+                            <div class="card-header bg-cesodo-black text-white">
                                 <h5 class="mb-0">
                                     <i class="fas fa-id-card me-2"></i>
                                     Documentos e Identificación
@@ -206,7 +266,7 @@
                     <!-- Información de Contacto -->
                     <div class="col-lg-12 mb-4">
                         <div class="card shadow-sm">
-                            <div class="card-header bg-success text-white">
+                            <div class="card-header bg-cesodo-red text-white">
                                 <h5 class="mb-0">
                                     <i class="fas fa-phone me-2"></i>
                                     Información de Contacto
@@ -330,6 +390,94 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Funciones para mejorar la fecha de nacimiento
+function calcularEdad() {
+    const fechaNacimiento = document.getElementById('fecha_nacimiento').value;
+    const edadDisplay = document.getElementById('edad_display');
+    const edadTexto = document.getElementById('edad_texto');
+    
+    if (fechaNacimiento) {
+        const hoy = new Date();
+        const nacimiento = new Date(fechaNacimiento);
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const mes = hoy.getMonth() - nacimiento.getMonth();
+        
+        if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+            edad--;
+        }
+        
+        if (edad >= 0 && edad <= 120) {
+            let textoEdad = `Edad: ${edad} años`;
+            let categoria = '';
+            
+            if (edad < 18) {
+                categoria = ' (Menor de edad)';
+            } else if (edad >= 65) {
+                categoria = ' (Adulto mayor)';
+            }
+            
+            edadTexto.textContent = textoEdad + categoria;
+            edadDisplay.style.display = 'block';
+            edadDisplay.className = 'form-text text-cesodo-black mt-1 edad-feedback';
+        } else if (edad < 0) {
+            edadTexto.textContent = 'Fecha futura no válida';
+            edadDisplay.style.display = 'block';
+            edadDisplay.className = 'form-text text-danger mt-1';
+        } else {
+            edadTexto.textContent = 'Edad no realista (más de 120 años)';
+            edadDisplay.style.display = 'block';
+            edadDisplay.className = 'form-text text-danger mt-1';
+        }
+    } else {
+        edadDisplay.style.display = 'none';
+    }
+}
+
+function setDecada(decada) {
+    const añoMedio = decada + 5; // Punto medio de la década
+    const mesAleatorio = Math.floor(Math.random() * 12) + 1; // Mes aleatorio
+    const diaAleatorio = Math.floor(Math.random() * 28) + 1; // Día aleatorio (hasta 28 para evitar problemas)
+    
+    const fecha = `${añoMedio}-${mesAleatorio.toString().padStart(2, '0')}-${diaAleatorio.toString().padStart(2, '0')}`;
+    document.getElementById('fecha_nacimiento').value = fecha;
+    calcularEdad();
+    
+    // Feedback visual mejorado
+    const input = document.getElementById('fecha_nacimiento');
+    const originalBg = input.style.backgroundColor;
+    input.style.backgroundColor = '#fee2e2';
+    input.style.transform = 'scale(1.02)';
+    
+    setTimeout(() => {
+        input.style.backgroundColor = originalBg;
+        input.style.transform = 'scale(1)';
+    }, 800);
+    
+    // Mostrar notificación temporal
+    mostrarNotificacion(`Fecha establecida en los años ${decada}s`);
+}
+
+function mostrarNotificacion(mensaje) {
+    // Crear notificación temporal
+    const notif = document.createElement('div');
+    notif.className = 'alert alert-success alert-dismissible fade show position-fixed';
+    notif.style.cssText = 'top: 20px; right: 20px; z-index: 9999; max-width: 300px;';
+    notif.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        ${mensaje}
+        <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+    `;
+    
+    document.body.appendChild(notif);
+    
+    // Auto-remover después de 3 segundos
+    setTimeout(() => {
+        if (notif.parentElement) {
+            notif.remove();
+        }
+    }, 3000);
+}
 </script>
 @endpush
 @endsection
