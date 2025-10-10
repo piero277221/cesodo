@@ -21,7 +21,7 @@ class Persona extends Model
         'direccion',
         'celular',
         'correo',
-        'nacionalidad',
+        'pais',
         'estado_civil',
     ];
 

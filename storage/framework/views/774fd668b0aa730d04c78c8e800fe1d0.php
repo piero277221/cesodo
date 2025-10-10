@@ -1,529 +1,560 @@
+<?php $__env->startSection('title', 'Panel de Módulos'); ?>
+
 <?php $__env->startSection('content'); ?>
-<div class="min-h-screen" style="background: var(--gray-50);">
-    <div class="container mx-auto px-4 py-4"> <!-- Reducido el padding vertical -->
-        <!-- Header Ultra Compacto -->
-        <div class="text-center mb-6"> <!-- Reducido el margen -->
-            <h1 class="text-2xl font-bold mb-2" style="color: var(--gray-800);"> <!-- Título más pequeño -->
-                <i class="bi bi-grid-3x3-gap me-2" style="color: var(--primary-color);"></i>
-                Panel de Módulos del Sistema
-            </h1>
-            <p class="text-sm max-w-2xl mx-auto" style="color: var(--gray-600);"> <!-- Texto más pequeño -->
-                Accede a todos los módulos de gestión de la concesionaria de comida desde aquí
-            </p>
+<div class="container-fluid py-4" style="background: var(--cesodo-gray-50); min-height: 100vh;">
+    <!-- Header Mejorado -->
+    <div class="text-center mb-5">
+        <div class="d-inline-flex align-items-center justify-content-center mb-3"
+             style="width: 80px; height: 80px; background: #dc2626; border-radius: 50%; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);">
+            <i class="bi bi-grid-3x3-gap text-white" style="font-size: 2rem;"></i>
         </div>
 
-        <!-- Módulos Grid - Forzar 3 columnas -->
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 1200px; margin: 0 auto 2rem auto;">
+        <h1 class="display-5 fw-bold mb-3" style="color: #1a1a1a;">
+            Panel de Módulos del Sistema
+        </h1>
 
-            <!-- Dashboard -->
-            <div class="module-card group">
-                <a href="<?php echo e(route('dashboard')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--primary-color);">
-                        <i class="bi bi-speedometer2"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Dashboard</h3>
-                        <p class="module-description">Panel principal con estadísticas y resumen del sistema</p>
-                    </div>
-                </a>
-            </div>
+        <p class="lead mb-4 max-w-2xl mx-auto" style="color: #6b7280;">
+            Accede a todos los módulos de gestión de la concesionaria de comida desde aquí
+        </p>
 
-            <!-- Gestión de Personal -->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-trabajadores')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('trabajadores.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--success-color);">
-                        <i class="bi bi-people"></i>
+        <!-- Estadísticas rápidas -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-auto">
+                <div class="d-flex align-items-center" style="gap: 2rem; background: white; padding: 1.5rem 3rem; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <div class="text-center">
+                        <div class="h4 mb-0 fw-bold" style="color: #dc2626;"><?php echo e(auth()->user()->name); ?></div>
+                        <small style="color: #6b7280; font-weight: 500;">Usuario Actual</small>
                     </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Trabajadores</h3>
-                        <p class="module-description">Gestión completa del personal y empleados</p>
+                    <div class="vr" style="height: 40px; opacity: 0.3;"></div>
+                    <div class="text-center">
+                        <div class="h4 mb-0 fw-bold" style="color: #dc2626;"><?php echo e(now()->setTimezone('America/Lima')->format('H:i')); ?></div>
+                        <small style="color: #6b7280; font-weight: 500;">Hora Perú</small>
                     </div>
-                </a>
+                    <div class="vr" style="height: 40px; opacity: 0.3;"></div>
+                    <div class="text-center">
+                        <div class="h4 mb-0 fw-bold" style="color: #dc2626;"><?php echo e(now()->setTimezone('America/Lima')->format('d/m/Y')); ?></div>
+                        <small style="color: #6b7280; font-weight: 500;">Fecha</small>
+                    </div>
+                </div>
             </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-trabajadores')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('usuarios.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--info-color);">
-                        <i class="bi bi-person-gear"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Usuarios</h3>
-                        <p class="module-description">Administración de usuarios del sistema</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-trabajadores')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('contratos.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--warning-color);">
-                        <i class="bi bi-file-earmark-text"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Contratos</h3>
-                        <p class="module-description">Gestión de contratos laborales</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-trabajadores')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('personas.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: #0891b2;">
-                        <i class="bi bi-person-vcard"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Personas</h3>
-                        <p class="module-description">Registro de datos personales</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <!-- Operaciones -->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-consumos')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('consumos.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--warning-color);">
-                        <i class="bi bi-journal-text"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Consumos</h3>
-                        <p class="module-description">Control de consumos y gastos</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <!-- Inventario y Productos -->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('inventarios.index')); ?>" class="block h-full">
-                    <div class="module-icon bg-gradient-to-br from-indigo-500 to-indigo-600">
-                        <i class="bi bi-boxes"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Inventario</h3>
-                        <p class="module-description">Control de stock y almacén</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('menus.index')); ?>" class="block h-full">
-                    <div class="module-icon bg-gradient-to-br from-pink-500 to-pink-600">
-                        <i class="bi bi-calendar-week"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Menús</h3>
-                        <p class="module-description">Planificación de menús semanales</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('recetas.index')); ?>" class="block h-full">
-                    <div class="module-icon bg-gradient-to-br from-orange-500 to-orange-600">
-                        <i class="bi bi-journal-bookmark"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Recetas</h3>
-                        <p class="module-description">Gestión de recetas y platos</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('kardex.index')); ?>" class="block h-full">
-                    <div class="module-icon bg-gradient-to-br from-cyan-500 to-cyan-600">
-                        <i class="bi bi-clipboard-data"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Kardex</h3>
-                        <p class="module-description">Historial de movimientos de inventario</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-productos')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('categorias.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--warning-color);">
-                        <i class="bi bi-tags"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Categorías</h3>
-                        <p class="module-description">Gestión de categorías de productos</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-productos')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('productos.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--success-color);">
-                        <i class="bi bi-box-seam"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Productos</h3>
-                        <p class="module-description">Catálogo y gestión de productos</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-proveedores')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('proveedores.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--danger-color);">
-                        <i class="bi bi-truck"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Proveedores</h3>
-                        <p class="module-description">Gestión de proveedores y suministros</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <!-- Comerciales - Nuevos Módulos -->
-            <div class="module-card group new-module">
-                <a href="<?php echo e(route('clientes.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: #8b5cf6;">
-                        <i class="bi bi-people"></i>
-                        <span class="new-badge">NUEVO</span>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Clientes</h3>
-                        <p class="module-description">Gestión completa de clientes</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="module-card group new-module">
-                <a href="<?php echo e(route('ventas.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--success-color);">
-                        <i class="bi bi-receipt"></i>
-                        <span class="new-badge">NUEVO</span>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Ventas</h3>
-                        <p class="module-description">Sistema de facturación y ventas</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="module-card group new-module">
-                <a href="<?php echo e(route('compras.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--primary-color);">
-                        <i class="bi bi-bag"></i>
-                        <span class="new-badge">NUEVO</span>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Compras</h3>
-                        <p class="module-description">Gestión de compras y órdenes</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="module-card group">
-                <a href="<?php echo e(route('pedidos.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--warning-color);">
-                        <i class="bi bi-cart3"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Pedidos</h3>
-                        <p class="module-description">Gestión de pedidos internos</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Reportes -->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-reportes')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('reportes.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: var(--gray-600);">
-                        <i class="bi bi-graph-up"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Reportes</h3>
-                        <p class="module-description">Informes y análisis del sistema</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <!-- Configuraciones del Sistema -->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-configuraciones')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('configurations.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: linear-gradient(45deg, #6366f1, #8b5cf6);">
-                        <i class="bi bi-gear-fill"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Configuraciones</h3>
-                        <p class="module-description">Administración y configuración del sistema</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <!-- Gestión Avanzada de Roles -->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-configuraciones')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('role-management.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: linear-gradient(45deg, #dc2626, #f59e0b);">
-                        <i class="bi bi-shield-lock-fill"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Gestión de Roles</h3>
-                        <p class="module-description">Administración avanzada de roles y permisos</p>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
-
-            <!-- Campos Dinámicos -->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-configuraciones')): ?>
-            <div class="module-card group">
-                <a href="<?php echo e(route('dynamic-fields.index')); ?>" class="block h-full">
-                    <div class="module-icon" style="background: linear-gradient(45deg, #059669, #10b981);">
-                        <i class="bi bi-puzzle-fill"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">Campos Dinámicos</h3>
-                        <p class="module-description">Sistema de extensibilidad para módulos</p>
-                        <div class="mt-2">
-                            <small class="text-primary">
-                                <i class="fas fa-magic me-1"></i>
-                                <a href="<?php echo e(route('dynamic-fields.form-builder')); ?>"
-                                   class="text-decoration-none"
-                                   onclick="event.stopPropagation(); window.location.href='<?php echo e(route('dynamic-fields.form-builder')); ?>'">
-                                    Constructor Visual
-                                </a>
-                            </small>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <?php endif; ?>
         </div>
+    </div>
 
-        <!-- Estadísticas rápidas - En 6 columnas más compactas -->
-        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; max-width: 1200px; margin: 0 auto;">>
-            <div class="stats-card">
-                <div class="stats-icon" style="background: rgba(37, 99, 235, 0.1); color: var(--primary-color);">
-                    <i class="bi bi-people"></i>
-                </div>
-                <div class="stats-content">
-                    <h4 class="stats-number"><?php echo e(\App\Models\Trabajador::count()); ?></h4>
-                    <p class="stats-label">Trabajadores</p>
-                </div>
-            </div>
+    <!-- Módulos Grid -->
+    <div class="row justify-content-center">
 
-            <div class="stats-card">
-                <div class="stats-icon" style="background: rgba(22, 163, 74, 0.1); color: var(--success-color);">
-                    <i class="bi bi-box-seam"></i>
-                </div>
-                <div class="stats-content">
-                    <h4 class="stats-number"><?php echo e(\App\Models\Producto::count()); ?></h4>
-                    <p class="stats-label">Productos</p>
-                </div>
-            </div>
+        <!-- Dashboard -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Dashboard','description' => 'Panel principal con estadísticas y resumen del sistema','route' => ''.e(route('dashboard')).'','icon' => 'bi-speedometer2','color' => 'primary']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Dashboard','description' => 'Panel principal con estadísticas y resumen del sistema','route' => ''.e(route('dashboard')).'','icon' => 'bi-speedometer2','color' => 'primary']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
 
-            <div class="stats-card">
-                <div class="stats-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
-                    <i class="bi bi-people"></i>
-                </div>
-                <div class="stats-content">
-                    <h4 class="stats-number"><?php echo e(\App\Models\Cliente::count() ?? 0); ?></h4>
-                    <p class="stats-label">Clientes</p>
-                </div>
-            </div>
+        <!-- === GESTIÓN DE PERSONAL === -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Trabajadores','description' => 'Gestión completa del personal y empleados','route' => ''.e(route('trabajadores.index')).'','icon' => 'bi-people','color' => 'success','permission' => 'ver-trabajadores']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Trabajadores','description' => 'Gestión completa del personal y empleados','route' => ''.e(route('trabajadores.index')).'','icon' => 'bi-people','color' => 'success','permission' => 'ver-trabajadores']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
 
-            <div class="stats-card">
-                <div class="stats-icon" style="background: rgba(234, 88, 12, 0.1); color: var(--warning-color);">
-                    <i class="bi bi-receipt"></i>
-                </div>
-                <div class="stats-content">
-                    <h4 class="stats-number"><?php echo e(\App\Models\Venta::count() ?? 0); ?></h4>
-                    <p class="stats-label">Ventas</p>
-                </div>
-            </div>
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Usuarios','description' => 'Administración de usuarios del sistema','route' => ''.e(route('usuarios.index')).'','icon' => 'bi-person-gear','color' => 'info','permission' => 'ver-trabajadores']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Usuarios','description' => 'Administración de usuarios del sistema','route' => ''.e(route('usuarios.index')).'','icon' => 'bi-person-gear','color' => 'info','permission' => 'ver-trabajadores']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Contratos','description' => 'Gestión de contratos laborales','route' => ''.e(route('contratos.index')).'','icon' => 'bi-file-earmark-text','color' => 'warning','permission' => 'ver-trabajadores']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Contratos','description' => 'Gestión de contratos laborales','route' => ''.e(route('contratos.index')).'','icon' => 'bi-file-earmark-text','color' => 'warning','permission' => 'ver-trabajadores']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Personas','description' => 'Registro de datos personales','route' => ''.e(route('personas.index')).'','icon' => 'bi-person-vcard','color' => 'teal','permission' => 'ver-trabajadores']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Personas','description' => 'Registro de datos personales','route' => ''.e(route('personas.index')).'','icon' => 'bi-person-vcard','color' => 'teal','permission' => 'ver-trabajadores']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <!-- === OPERACIONES === -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Consumos','description' => 'Control de consumos y gastos','route' => ''.e(route('consumos.index')).'','icon' => 'bi-journal-text','color' => 'orange','permission' => 'ver-consumos']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Consumos','description' => 'Control de consumos y gastos','route' => ''.e(route('consumos.index')).'','icon' => 'bi-journal-text','color' => 'orange','permission' => 'ver-consumos']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Menús','description' => 'Planificación de menús semanales','route' => ''.e(route('menus.index')).'','icon' => 'bi-calendar-week','color' => 'info','permission' => 'ver-inventario']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Menús','description' => 'Planificación de menús semanales','route' => ''.e(route('menus.index')).'','icon' => 'bi-calendar-week','color' => 'info','permission' => 'ver-inventario']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Recetas','description' => 'Gestión de recetas y platos','route' => ''.e(route('recetas.index')).'','icon' => 'bi-journal-bookmark','color' => 'orange','permission' => 'ver-inventario']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Recetas','description' => 'Gestión de recetas y platos','route' => ''.e(route('recetas.index')).'','icon' => 'bi-journal-bookmark','color' => 'orange','permission' => 'ver-inventario']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <!-- === INVENTARIO Y PRODUCTOS === -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Inventario','description' => 'Control de stock y almacén','route' => ''.e(route('inventarios.index')).'','icon' => 'bi-boxes','color' => 'purple','permission' => 'ver-inventario']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Inventario','description' => 'Control de stock y almacén','route' => ''.e(route('inventarios.index')).'','icon' => 'bi-boxes','color' => 'purple','permission' => 'ver-inventario']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Kardex','description' => 'Historial de movimientos de inventario','route' => ''.e(route('kardex.index')).'','icon' => 'bi-clipboard-data','color' => 'teal','permission' => 'ver-inventario']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Kardex','description' => 'Historial de movimientos de inventario','route' => ''.e(route('kardex.index')).'','icon' => 'bi-clipboard-data','color' => 'teal','permission' => 'ver-inventario']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Categorías','description' => 'Gestión de categorías de productos','route' => ''.e(route('categorias.index')).'','icon' => 'bi-tags','color' => 'warning','permission' => 'ver-productos']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Categorías','description' => 'Gestión de categorías de productos','route' => ''.e(route('categorias.index')).'','icon' => 'bi-tags','color' => 'warning','permission' => 'ver-productos']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Productos','description' => 'Catálogo y gestión de productos','route' => ''.e(route('productos.index')).'','icon' => 'bi-box-seam','color' => 'success','permission' => 'ver-productos']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Productos','description' => 'Catálogo y gestión de productos','route' => ''.e(route('productos.index')).'','icon' => 'bi-box-seam','color' => 'success','permission' => 'ver-productos']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <!-- === COMERCIAL === -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Clientes','description' => 'Gestión de clientes y contactos','route' => ''.e(route('clientes.index')).'','icon' => 'bi-people','color' => 'info']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Clientes','description' => 'Gestión de clientes y contactos','route' => ''.e(route('clientes.index')).'','icon' => 'bi-people','color' => 'info']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Ventas','description' => 'Registro y control de ventas','route' => ''.e(route('ventas.index')).'','icon' => 'bi-receipt','color' => 'success']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Ventas','description' => 'Registro y control de ventas','route' => ''.e(route('ventas.index')).'','icon' => 'bi-receipt','color' => 'success']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Pedidos','description' => 'Gestión de pedidos y órdenes','route' => ''.e(route('pedidos.index')).'','icon' => 'bi-cart3','color' => 'warning']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Pedidos','description' => 'Gestión de pedidos y órdenes','route' => ''.e(route('pedidos.index')).'','icon' => 'bi-cart3','color' => 'warning']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <!-- === COMPRAS === -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Proveedores','description' => 'Gestión de proveedores y suministros','route' => ''.e(route('proveedores.index')).'','icon' => 'bi-truck','color' => 'danger','permission' => 'ver-proveedores']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Proveedores','description' => 'Gestión de proveedores y suministros','route' => ''.e(route('proveedores.index')).'','icon' => 'bi-truck','color' => 'danger','permission' => 'ver-proveedores']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Compras','description' => 'Gestión de órdenes de compra','route' => ''.e(route('compras.index')).'','icon' => 'bi-bag','color' => 'purple','permission' => 'ver-proveedores']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Compras','description' => 'Gestión de órdenes de compra','route' => ''.e(route('compras.index')).'','icon' => 'bi-bag','color' => 'purple','permission' => 'ver-proveedores']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <!-- === REPORTES === -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Reportes','description' => 'Reportes y análisis del sistema','route' => ''.e(route('reportes.index')).'','icon' => 'bi-graph-up','color' => 'primary']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Reportes','description' => 'Reportes y análisis del sistema','route' => ''.e(route('reportes.index')).'','icon' => 'bi-graph-up','color' => 'primary']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <!-- === ADMINISTRACIÓN === -->
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Configuraciones','description' => 'Configuración general del sistema','route' => ''.e(route('configurations.index')).'','icon' => 'bi-sliders','color' => 'danger','permission' => 'ver-configuraciones']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Configuraciones','description' => 'Configuración general del sistema','route' => ''.e(route('configurations.index')).'','icon' => 'bi-sliders','color' => 'danger','permission' => 'ver-configuraciones']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Gestión de Roles','description' => 'Administración de roles y permisos','route' => ''.e(route('role-management.index')).'','icon' => 'bi-shield-lock','color' => 'warning','permission' => 'ver-configuraciones']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Gestión de Roles','description' => 'Administración de roles y permisos','route' => ''.e(route('role-management.index')).'','icon' => 'bi-shield-lock','color' => 'warning','permission' => 'ver-configuraciones']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Campos Dinámicos','description' => 'Configuración de campos personalizables','route' => ''.e(route('dynamic-fields.index')).'','icon' => 'bi-puzzle','color' => 'info','permission' => 'ver-configuraciones']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Campos Dinámicos','description' => 'Configuración de campos personalizables','route' => ''.e(route('dynamic-fields.index')).'','icon' => 'bi-puzzle','color' => 'info','permission' => 'ver-configuraciones']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+        <?php if (isset($component)) { $__componentOriginal51af8fcedb96b90eb762c804b9e96d95 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.module-card','data' => ['title' => 'Plantillas de Contratos','description' => 'Gestión de plantillas de contratos','route' => ''.e(route('contratos.templates.index')).'','icon' => 'bi-file-earmark-plus','color' => 'teal','permission' => 'ver-configuraciones']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('module-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Plantillas de Contratos','description' => 'Gestión de plantillas de contratos','route' => ''.e(route('contratos.templates.index')).'','icon' => 'bi-file-earmark-plus','color' => 'teal','permission' => 'ver-configuraciones']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $attributes = $__attributesOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__attributesOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95)): ?>
+<?php $component = $__componentOriginal51af8fcedb96b90eb762c804b9e96d95; ?>
+<?php unset($__componentOriginal51af8fcedb96b90eb762c804b9e96d95); ?>
+<?php endif; ?>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-5 py-4">
+        <div class="text-muted">
+            <small>
+                © <?php echo e(date('Y')); ?> CESODO - Sistema de Gestión Integral
+                <br>
+                Desarrollado con ❤️ para optimizar tu gestión
+            </small>
         </div>
     </div>
 </div>
 
 <style>
-/* Variables CSS para asegurar compatibilidad */
-:root {
-    --primary-color: #2563eb;
-    --success-color: #16a34a;
-    --info-color: #0891b2;
-    --warning-color: #ea580c;
-    --danger-color: #dc2626;
-    --gray-50: #f8fafc;
-    --gray-600: #475569;
-    --gray-800: #1e293b;
-}
-
-/* Estilos para las tarjetas de módulos - 3 columnas optimizado */
+/* Forzar visibilidad de tarjetas de módulos */
 .module-card {
-    background: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    transform: translateY(0);
-    cursor: pointer;
-    overflow: hidden;
-    border: 1px solid #f3f4f6;
-    height: 180px; /* Altura más cómoda para 3 columnas */
-    width: 100%; /* Asegurar que use todo el ancho disponible */
-    display: flex;
-    flex-direction: column;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-.module-card:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transform: translateY(-2px);
+/* Gradientes con paleta Negro, Rojo, Blanco unificada */
+.bg-gradient-primary { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; }
+.bg-gradient-success { background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%) !important; }
+.bg-gradient-info { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; }
+.bg-gradient-warning { background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important; }
+.bg-gradient-danger { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; }
+.bg-gradient-purple { background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important; }
+.bg-gradient-orange { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; }
+.bg-gradient-teal { background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%) !important; }
+
+/* Texto visible siempre */
+.module-card .card-title,
+.module-card .card-text {
+    color: white !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
 }
 
-.module-icon {
-    height: 4.5rem; /* Más espacio para el ícono */
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.75rem; /* Íconos más grandes */
-    position: relative;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-}
-
-.module-card:hover .module-icon {
-    transform: scale(1.05);
-}
-
-.new-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-    color: white;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 8px;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-.module-content {
-    padding: 1rem 0.75rem; /* Más padding para 3 columnas */
-    transition: transform 0.3s ease;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.module-card:hover .module-content {
-    transform: translateY(-1px);
-}
-
-.module-title {
-    font-size: 1rem; /* Texto más legible */
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 0.25rem;
-    line-height: 1.2;
-    text-align: center;
-}
-
-.module-description {
-    font-size: 0.8rem; /* Más legible */
-    color: #6b7280;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-align: center;
-}
-
-.new-module {
-    position: relative;
-    animation: glow 3s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from { box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3); }
-    to { box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5); }
-}
-
-/* Estilos para las estadísticas - Versión ultra compacta */
-.stats-card {
-    background: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    padding: 0.75rem; /* Reducido aún más */
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* Reducido */
-    transition: box-shadow 0.3s ease;
-    height: 70px; /* Altura más pequeña */
-}
-
-.stats-card:hover {
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-}
-
-.stats-icon {
-    width: 2rem; /* Reducido */
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem; /* Reducido */
-    flex-shrink: 0;
-}
-
-.stats-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.stats-number {
-    font-size: 1.1rem; /* Reducido */
-    font-weight: bold;
-    color: #1f2937;
-    line-height: 1.1;
-}
-
-.stats-label {
-    font-size: 0.65rem; /* Muy pequeño */
-    color: #6b7280;
-    line-height: 1.1;
+/* Iconos visibles */
+.module-icon i {
+    color: white !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
 }
 </style>
 <?php $__env->stopSection(); ?>

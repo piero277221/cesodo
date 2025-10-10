@@ -172,8 +172,8 @@
                                                     </div>
                                                     <div>
                                                         <div class="fw-bold">{{ $persona->nombres ?? 'N/A' }} {{ $persona->apellidos ?? '' }}</div>
-                                                        @if($persona->nacionalidad)
-                                                            <small class="text-muted">{{ $persona->nacionalidad }}</small>
+                                                        @if($persona->pais)
+                                                            <small class="text-muted">{{ $persona->pais }}</small>
                                                         @endif
                                                     </div>
                                                 </div>

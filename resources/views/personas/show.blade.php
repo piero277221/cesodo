@@ -85,9 +85,9 @@
                                                 <i class="fas fa-id-card me-2"></i>{{ strtoupper($persona->tipo_documento ?? 'DOC') }}: {{ $persona->numero_documento ?? 'N/A' }}
                                             </p>
                                             <div class="d-flex gap-2">
-                                                @if($persona->nacionalidad)
+                                                @if($persona->pais)
                                                     <span class="badge badge-xl bg-white text-dark">
-                                                        <i class="fas fa-flag me-1"></i>{{ $persona->nacionalidad }}
+                                                        <i class="fas fa-flag me-1"></i>{{ $persona->pais }}
                                                     </span>
                                                 @endif
                                                 @if($persona->fecha_nacimiento)
@@ -188,10 +188,10 @@
                             <hr>
                             <div class="row mb-3">
                                 <div class="col-5">
-                                    <strong><i class="fas fa-flag text-muted me-2"></i>Nacionalidad:</strong>
+                                    <strong><i class="fas fa-globe text-muted me-2"></i>País:</strong>
                                 </div>
                                 <div class="col-7">
-                                    {{ $persona->nacionalidad ?? 'No especificado' }}
+                                    {{ $persona->pais ?? 'No especificado' }}
                                 </div>
                             </div>
                             <hr>
