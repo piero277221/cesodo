@@ -68,60 +68,60 @@
             <!-- Estadísticas rápidas -->
             <div class="row mb-4">
                 <div class="col-lg-3 col-md-6 mb-3">
-                    <div class="card bg-primary text-white">
+                    <div class="card border-cesodo-red">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="card-title">Total Personas</h6>
-                                    <h3 class="mb-0"><?php echo e(isset($personas) ? (is_object($personas) && method_exists($personas, 'total') ? $personas->total() : count($personas)) : 0); ?></h3>
+                                    <h6 class="card-title text-muted mb-2">Total Personas</h6>
+                                    <h3 class="mb-0 fw-bold text-cesodo-black"><?php echo e(isset($personas) ? (is_object($personas) && method_exists($personas, 'total') ? $personas->total() : count($personas)) : 0); ?></h3>
                                 </div>
                                 <div>
-                                    <i class="fas fa-user-friends fa-2x opacity-75"></i>
+                                    <i class="fas fa-user-friends fa-2x text-cesodo-red opacity-75"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-3">
-                    <div class="card bg-success text-white">
+                    <div class="card border-cesodo-red">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="card-title">Con Trabajador</h6>
-                                    <h3 class="mb-0"><?php echo e(isset($stats['con_trabajador']) ? $stats['con_trabajador'] : 0); ?></h3>
+                                    <h6 class="card-title text-muted mb-2">Con Trabajador</h6>
+                                    <h3 class="mb-0 fw-bold text-cesodo-black"><?php echo e(isset($stats['con_trabajador']) ? $stats['con_trabajador'] : 0); ?></h3>
                                 </div>
                                 <div>
-                                    <i class="fas fa-user-check fa-2x opacity-75"></i>
+                                    <i class="fas fa-user-check fa-2x text-cesodo-red opacity-75"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-3">
-                    <div class="card bg-warning text-white">
+                    <div class="card border-cesodo-red">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="card-title">Sin Trabajador</h6>
-                                    <h3 class="mb-0"><?php echo e(isset($stats['sin_trabajador']) ? $stats['sin_trabajador'] : 0); ?></h3>
+                                    <h6 class="card-title text-muted mb-2">Sin Trabajador</h6>
+                                    <h3 class="mb-0 fw-bold text-cesodo-black"><?php echo e(isset($stats['sin_trabajador']) ? $stats['sin_trabajador'] : 0); ?></h3>
                                 </div>
                                 <div>
-                                    <i class="fas fa-user-minus fa-2x opacity-75"></i>
+                                    <i class="fas fa-user-minus fa-2x text-cesodo-red opacity-75"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-3">
-                    <div class="card bg-info text-white">
+                    <div class="card border-cesodo-red">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="card-title">Nuevas Este Mes</h6>
-                                    <h3 class="mb-0"><?php echo e(isset($stats['nuevas_mes']) ? $stats['nuevas_mes'] : 0); ?></h3>
+                                    <h6 class="card-title text-muted mb-2">Nuevas Este Mes</h6>
+                                    <h3 class="mb-0 fw-bold text-cesodo-black"><?php echo e(isset($stats['nuevas_mes']) ? $stats['nuevas_mes'] : 0); ?></h3>
                                 </div>
                                 <div>
-                                    <i class="fas fa-user-plus fa-2x opacity-75"></i>
+                                    <i class="fas fa-user-plus fa-2x text-cesodo-red opacity-75"></i>
                                 </div>
                             </div>
                         </div>

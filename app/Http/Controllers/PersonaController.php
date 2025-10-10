@@ -10,20 +10,38 @@ class PersonaController extends Controller
 {
     public function index(Request $request)
     {
-        $personas = Persona::with('trabajador')
-            ->when($request->search, function($q) use ($request) {
-                $s = "%{$request->search}%";
-                $q->where(function($q2) use ($s) {
-                    $q2->where('nombres','like',$s)
-                       ->orWhere('apellidos','like',$s)
-                       ->orWhere('numero_documento','like',$s);
-                });
-            })
-            ->orderBy('apellidos', 'asc')
+        $query = Persona::with('trabajador');
+
+        // Filtro de búsqueda
+        if ($request->search) {
+            $s = "%{$request->search}%";
+            $query->where(function($q) use ($s) {
+                $q->where('nombres', 'like', $s)
+                  ->orWhere('apellidos', 'like', $s)
+                  ->orWhere('numero_documento', 'like', $s);
+            });
+        }
+
+        // Filtro de tipo de documento
+        if ($request->tipo_documento) {
+            $query->where('tipo_documento', $request->tipo_documento);
+        }
+
+        $personas = $query->orderBy('apellidos', 'asc')
             ->orderBy('nombres', 'asc')
             ->paginate(15)
             ->withQueryString();
-        return view('personas.index', compact('personas'));
+
+        // Estadísticas
+        $stats = [
+            'con_trabajador' => Persona::whereHas('trabajador')->count(),
+            'sin_trabajador' => Persona::whereDoesntHave('trabajador')->count(),
+            'nuevas_mes' => Persona::whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count()
+        ];
+
+        return view('personas.index', compact('personas', 'stats'));
     }
 
     public function create()
