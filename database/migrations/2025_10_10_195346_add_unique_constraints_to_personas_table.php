@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('personas', function (Blueprint $table) {
             // Agregar índice único para celular (permitiendo NULL)
             $table->unique('celular', 'personas_celular_unique');
-            
+
             // Agregar índice único para correo (permitiendo NULL)
             $table->unique('correo', 'personas_correo_unique');
         });

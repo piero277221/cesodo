@@ -609,7 +609,7 @@ function calcularEdad() {
 // Auto-ocultar mensajes de error después de 3 segundos
 document.addEventListener('DOMContentLoaded', function() {
     const errorMessages = document.querySelectorAll('.invalid-feedback');
-    
+
     errorMessages.forEach(function(message) {
         if (message.style.display !== 'none' && message.textContent.trim() !== '') {
             setTimeout(function() {
