@@ -172,8 +172,8 @@
                                                     </div>
                                                     <div>
                                                         <div class="fw-bold"><?php echo e($persona->nombres ?? 'N/A'); ?> <?php echo e($persona->apellidos ?? ''); ?></div>
-                                                        <?php if($persona->nacionalidad): ?>
-                                                            <small class="text-muted"><?php echo e($persona->nacionalidad); ?></small>
+                                                        <?php if($persona->pais): ?>
+                                                            <small class="text-muted"><?php echo e($persona->pais); ?></small>
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>
