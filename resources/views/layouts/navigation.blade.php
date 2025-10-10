@@ -3,7 +3,9 @@
 @endphp
 
 <!-- Navbar principal -->
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed-top" style="height: var(--header-height); z-index: 1050;">
+<nav x-data="{ open: false }" class="bg-cesodo-black border-b-4 border-cesodo-red fixed-top shadow-lg" style="height: var(--header-height); z-index: 1050; background: linear-gradient(135deg, var(--cesodo-black) 0%, var(--cesodo-black-light) 100%);">
+    <!-- Incluir el tema CSS -->
+    <link rel="stylesheet" href="{{ asset('css/cesodo-theme.css') }}">
     <div class="w-full mx-auto px-1 h-full">
         <div class="flex items-center h-full" style="justify-content: flex-start;">
             <!-- Logo y Toggle Sidebar -->
@@ -11,9 +13,9 @@
                 <button id="sidebar-toggle" class="p-2 rounded-md lg:hidden">
                     <i class="bi bi-list"></i>
                 </button>
-                <a href="{{ route('modules.index') }}" class="flex items-center">
-                    <x-application-logo style="width: 32px; height: 32px;" class="block fill-current text-gray-800" />
-                    <span class="ml-2 text-lg font-semibold">CESODO</span>
+                <a href="{{ route('modules.index') }}" class="flex items-center group transition-all duration-300">
+                    <x-application-logo style="width: 36px; height: 36px;" class="block fill-current text-cesodo-red group-hover:scale-110 transition-transform duration-300" />
+                    <span class="ml-3 text-xl font-bold text-cesodo-white group-hover:text-cesodo-red transition-colors duration-300" style="font-family: var(--cesodo-font-family);">CESODO</span>
                 </a>
             </div>
 
@@ -549,32 +551,32 @@
         opacity: 1;
     }
 
-    /* Botones de scroll mejorados */
+    /* Estilos para botones de scroll mejorados */
     .nav-scroll-btn {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        width: 32px;
-        height: 32px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
-        background: white;
-        border: 2px solid #e5e7eb;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background: var(--cesodo-white);
+        border: 2px solid var(--cesodo-red);
+        box-shadow: var(--cesodo-shadow-lg);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all var(--cesodo-transition-fast);
         z-index: 3;
-        color: #6b7280;
+        color: var(--cesodo-red);
     }
 
     .nav-scroll-btn:hover {
-        background: #f8fafc;
-        border-color: #d1d5db;
-        color: #374151;
-        transform: translateY(-50%) scale(1.05);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        background: var(--cesodo-red);
+        border-color: var(--cesodo-red);
+        color: var(--cesodo-white);
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: var(--cesodo-shadow-xl);
     }
 
     .nav-scroll-btn:active {
@@ -638,18 +640,36 @@
 
     /* Animación suave al hacer hover en los enlaces */
     .nav-inner a {
-        transition: all 0.2s ease;
-        border-radius: 8px;
-        padding: 10px 16px !important; /* Más espacio interno */
+        transition: all var(--cesodo-transition-fast);
+        border-radius: var(--cesodo-radius-lg);
+        padding: 10px 16px !important;
         font-size: 14px;
         line-height: 1.5;
-        margin: 0; /* Sin márgenes adicionales */
-        flex-shrink: 0; /* No se compriman */
+        margin: 0;
+        flex-shrink: 0;
+        color: var(--cesodo-white) !important;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        font-weight: 500;
+        font-family: var(--cesodo-font-family);
     }
 
     .nav-inner a:hover {
-        background-color: #f1f5f9;
-        transform: translateY(-1px);
+        background: var(--cesodo-red) !important;
+        color: var(--cesodo-white) !important;
+        border-color: var(--cesodo-red);
+        transform: translateY(-2px);
+        box-shadow: var(--cesodo-shadow-lg);
+    }
+
+    .nav-inner a.router-link-active,
+    .nav-inner a:focus {
+        background: var(--cesodo-red) !important;
+        color: var(--cesodo-white) !important;
+        border-color: var(--cesodo-red);
+        box-shadow: var(--cesodo-shadow-md);
     }
 
     /* Estilos para dropdowns */
@@ -659,12 +679,12 @@
     }
 
     .nav-dropdown-trigger {
-        background: none;
-        border: none;
-        color: #6b7280;
-        padding: 10px 16px; /* Consistente con enlaces */
-        border-radius: 8px;
-        transition: all 0.2s ease;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--cesodo-white);
+        padding: 10px 16px;
+        border-radius: var(--cesodo-radius-lg);
+        transition: all var(--cesodo-transition-fast);
         cursor: pointer;
         font-size: 14px;
         font-weight: 500;
@@ -672,67 +692,147 @@
         align-items: center;
         text-decoration: none;
         white-space: nowrap;
-        font-family: inherit;
+        font-family: var(--cesodo-font-family);
         line-height: 1.5;
         margin: 0;
         flex-shrink: 0;
+        backdrop-filter: blur(10px);
     }
 
     .nav-dropdown-trigger:hover {
-        color: #374151;
-        background-color: #f1f5f9;
-        transform: translateY(-1px);
+        color: var(--cesodo-white);
+        background: var(--cesodo-red);
+        border-color: var(--cesodo-red);
+        transform: translateY(-2px);
+        box-shadow: var(--cesodo-shadow-lg);
     }
 
     .nav-dropdown-trigger.active {
-        color: #2563eb;
-        background-color: rgba(37, 99, 235, 0.1);
+        color: var(--cesodo-white);
+        background: var(--cesodo-red);
+        border-color: var(--cesodo-red);
+        box-shadow: var(--cesodo-shadow-md);
     }
 
     .nav-dropdown-menu {
-        position: absolute; /* Será cambiado a fixed por JS */
-        top: calc(100% + 8px);
+        position: absolute;
+        top: calc(100% + 12px);
         left: 0;
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
+        background: #ffffff !important;
+        border: 2px solid #dc2626 !important;
+        border-radius: 12px;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        z-index: 999999; /* Z-index muy alto */
-        min-width: 200px;
-        padding: 8px 0;
-        display: none; /* Por defecto oculto */
-        max-height: 300px; /* Altura máxima */
-        overflow-y: auto; /* Scroll si es necesario */
+        z-index: 999999;
+        min-width: 240px;
+        padding: 12px 0;
+        display: none;
+        max-height: 400px;
+        overflow-y: auto;
         white-space: nowrap;
+        backdrop-filter: blur(20px);
+        animation: fadeIn 0.2s ease-out;
     }
 
     .nav-dropdown-item {
-        display: flex;
-        align-items: center;
-        padding: 8px 16px;
-        color: #6b7280;
-        text-decoration: none;
-        font-size: 14px;
-        transition: all 0.2s ease;
-        margin: 2px 8px;
-        border-radius: 4px;
+        display: flex !important;
+        align-items: center !important;
+        padding: 12px 16px !important;
+        color: #1a1a1a !important;
+        text-decoration: none !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        transition: all 0.2s ease !important;
+        margin: 4px 12px !important;
+        border-radius: 8px !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
 
     .nav-dropdown-item:hover {
-        color: #374151;
-        background-color: #f3f4f6;
+        color: var(--cesodo-white);
+        background: var(--cesodo-red);
         text-decoration: none;
+        transform: translateX(4px);
+        box-shadow: var(--cesodo-shadow-md);
     }
 
     .nav-dropdown-item.active {
-        color: #2563eb;
-        background-color: rgba(37, 99, 235, 0.1);
+        color: var(--cesodo-white);
+        background: var(--cesodo-red);
+        box-shadow: var(--cesodo-shadow-sm);
     }
 
     .nav-dropdown-item i {
         width: 16px;
         margin-right: 8px;
         flex-shrink: 0;
+    }
+
+    /* Estilos específicos para elementos dentro de dropdowns */
+    .nav-dropdown-menu .text-muted {
+        color: #6b7280 !important;
+    }
+
+    .nav-dropdown-menu .font-weight-bold {
+        color: #1a1a1a !important;
+    }
+
+    .nav-dropdown-menu small {
+        color: #6b7280 !important;
+    }
+
+    .nav-dropdown-menu .border-bottom {
+        border-color: #d1d5db !important;
+    }
+
+    /* Asegurar que todos los elementos de texto sean visibles */
+    .nav-dropdown-menu span,
+    .nav-dropdown-menu div,
+    .nav-dropdown-menu .d-block,
+    .nav-dropdown-menu .text-sm,
+    .nav-dropdown-menu .font-weight-bold {
+        color: #1a1a1a !important;
+    }
+
+    /* Sobreescribir Bootstrap text-muted específicamente */
+    .nav-dropdown-menu .text-muted,
+    .nav-dropdown-menu small.text-muted {
+        color: #6b7280 !important;
+    }
+
+    /* Iconos del menú */
+    .nav-dropdown-menu i {
+        color: #1a1a1a !important;
+    }
+
+    /* Sobreescribir cualquier estilo de Bootstrap */
+    .nav-dropdown-menu a,
+    .nav-dropdown-menu a:link,
+    .nav-dropdown-menu a:visited {
+        color: #1a1a1a !important;
+        text-decoration: none !important;
+    }
+
+    /* FORZAR VISIBILIDAD - Máxima prioridad */
+    .nav-dropdown-menu .nav-dropdown-item,
+    .nav-dropdown-menu .nav-dropdown-item *,
+    .nav-dropdown-menu a.nav-dropdown-item,
+    .nav-dropdown-menu a.nav-dropdown-item * {
+        color: #1a1a1a !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* DEPURACIÓN: Forzar color rojo para verificar que el CSS se aplica */
+    .nav-dropdown-menu .nav-dropdown-item {
+        background: #f8f9fa !important;
+        color: #dc2626 !important; /* Texto en rojo temporalmente */
+        border-left: 3px solid #dc2626 !important;
+    }
+
+    /* Excepciones para text-muted */
+    .nav-dropdown-menu .text-muted,
+    .nav-dropdown-menu small {
+        color: #6b7280 !important;
     }
 
     /* Responsive para dropdowns */

@@ -3,6 +3,7 @@
 @section('title', 'Dashboard')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/cesodo-theme.css') }}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/gridstack/8.4.0/gridstack.min.css" rel="stylesheet">
@@ -52,7 +53,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
     .welcome-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, var(--cesodo-black) 0%, var(--cesodo-red) 100%);
         color: white;
         border-radius: 15px;
         padding: 2rem;
@@ -60,16 +61,16 @@
         margin-top: 0 !important;
     }
     .bg-gradient-primary {
-        background: linear-gradient(45deg, #667eea, #764ba2);
+        background: linear-gradient(45deg, var(--cesodo-red), var(--cesodo-black));
     }
     .bg-gradient-success {
-        background: linear-gradient(45deg, #00b894, #00cec9);
+        background: linear-gradient(45deg, var(--cesodo-black), var(--cesodo-red));
     }
     .bg-gradient-warning {
-        background: linear-gradient(45deg, #fdcb6e, #e17055);
+        background: linear-gradient(45deg, var(--cesodo-red), var(--cesodo-black));
     }
     .bg-gradient-danger {
-        background: linear-gradient(45deg, #fd79a8, #e84393);
+        background: linear-gradient(45deg, var(--cesodo-black), var(--cesodo-red));
     }
 
     /* Dashboard Widgets Styles */
@@ -78,7 +79,7 @@
         top: 80px;
         right: 20px;
         z-index: 1000;
-        background: #007bff;
+        background: var(--cesodo-red);
         color: white;
         border: none;
         border-radius: 50px;
@@ -184,18 +185,18 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background: #28a745;
+        background: var(--cesodo-red);
         color: white;
         border: none;
         font-size: 1.5rem;
-        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         transition: all 0.3s ease;
     }
 
     .add-widget-btn:hover {
-        background: #218838;
+        background: var(--cesodo-black);
         transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        box-shadow: 0 6px 20px rgba(26, 26, 26, 0.4);
     }
 </style>
 @endpush
@@ -243,14 +244,14 @@
             <div class="card dashboard-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <div class="stat-icon bg-gradient-primary text-white me-3">
+                        <div class="stat-icon bg-cesodo-red text-white me-3">
                             <i class="fas fa-utensils"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-cesodo-red text-uppercase mb-1">
                                 Consumos Hoy
                             </div>
-                            <div class="h5 mb-0 font-weight-bold">
+                            <div class="h5 mb-0 font-weight-bold text-cesodo-black">
                                 {{ $stats['consumos_hoy'] ?? 0 }}
                             </div>
                         </div>
@@ -263,14 +264,14 @@
             <div class="card dashboard-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <div class="stat-icon bg-gradient-success text-white me-3">
+                        <div class="stat-icon bg-cesodo-black text-white me-3">
                             <i class="fas fa-users"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-cesodo-black text-uppercase mb-1">
                                 Trabajadores Activos
                             </div>
-                            <div class="h5 mb-0 font-weight-bold">
+                            <div class="h5 mb-0 font-weight-bold text-cesodo-black">
                                 {{ $stats['trabajadores_activos'] ?? 0 }}
                             </div>
                         </div>
@@ -283,14 +284,14 @@
             <div class="card dashboard-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <div class="stat-icon bg-gradient-warning text-white me-3">
+                        <div class="stat-icon bg-cesodo-red text-white me-3">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-cesodo-red text-uppercase mb-1">
                                 Stock Bajo
                             </div>
-                            <div class="h5 mb-0 font-weight-bold">
+                            <div class="h5 mb-0 font-weight-bold text-cesodo-black">
                                 {{ $stats['productos_stock_bajo'] ?? 0 }}
                             </div>
                         </div>
@@ -303,14 +304,14 @@
             <div class="card dashboard-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <div class="stat-icon bg-gradient-danger text-white me-3">
+                        <div class="stat-icon bg-cesodo-black text-white me-3">
                             <i class="fas fa-clock"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-cesodo-black text-uppercase mb-1">
                                 Pedidos Pendientes
                             </div>
-                            <div class="h5 mb-0 font-weight-bold">
+                            <div class="h5 mb-0 font-weight-bold text-cesodo-black">
                                 {{ $stats['pedidos_pendientes'] ?? 0 }}
                             </div>
                         </div>
@@ -326,7 +327,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card dashboard-card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">
+                    <h6 class="m-0 font-weight-bold text-cesodo-red">
                         <i class="fas fa-chart-pie me-2"></i>Consumos de Hoy por Tipo
                     </h6>
                 </div>
@@ -342,7 +343,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card dashboard-card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">
+                    <h6 class="m-0 font-weight-bold text-cesodo-red">
                         <i class="fas fa-chart-line me-2"></i>Consumos de la Semana
                     </h6>
                 </div>
@@ -360,7 +361,7 @@
         <div class="col-12">
             <div class="card dashboard-card">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
+                    <h6 class="m-0 font-weight-bold text-cesodo-red">
                         <i class="fas fa-rocket me-2"></i>Accesos Rápidos
                     </h6>
                 </div>
@@ -370,8 +371,8 @@
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
                             <a href="{{ route('trabajadores.index') }}" class="text-decoration-none">
                                 <div class="text-center p-3 bg-light rounded hover-shadow">
-                                    <i class="fas fa-users fa-2x text-primary mb-2"></i>
-                                    <div class="small text-dark">Trabajadores</div>
+                                    <i class="fas fa-users fa-2x text-cesodo-red mb-2"></i>
+                                    <div class="small text-cesodo-black">Trabajadores</div>
                                 </div>
                             </a>
                         </div>
@@ -381,8 +382,8 @@
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
                             <a href="{{ route('productos.index') }}" class="text-decoration-none">
                                 <div class="text-center p-3 bg-light rounded hover-shadow">
-                                    <i class="fas fa-box fa-2x text-success mb-2"></i>
-                                    <div class="small text-dark">Productos</div>
+                                    <i class="fas fa-box fa-2x text-cesodo-red mb-2"></i>
+                                    <div class="small text-cesodo-black">Productos</div>
                                 </div>
                             </a>
                         </div>
@@ -392,8 +393,8 @@
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
                             <a href="{{ route('inventarios.index') }}" class="text-decoration-none">
                                 <div class="text-center p-3 bg-light rounded hover-shadow">
-                                    <i class="fas fa-warehouse fa-2x text-info mb-2"></i>
-                                    <div class="small text-dark">Inventario</div>
+                                    <i class="fas fa-warehouse fa-2x text-cesodo-black mb-2"></i>
+                                    <div class="small text-cesodo-black">Inventario</div>
                                 </div>
                             </a>
                         </div>
@@ -402,8 +403,8 @@
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
                             <a href="{{ route('consumos.index') }}" class="text-decoration-none">
                                 <div class="text-center p-3 bg-light rounded hover-shadow">
-                                    <i class="fas fa-utensils fa-2x text-warning mb-2"></i>
-                                    <div class="small text-dark">Consumos</div>
+                                    <i class="fas fa-utensils fa-2x text-cesodo-red mb-2"></i>
+                                    <div class="small text-cesodo-black">Consumos</div>
                                 </div>
                             </a>
                         </div>
@@ -447,10 +448,10 @@
         <div class="col-12">
             <div class="card table-card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">
+                    <h6 class="m-0 font-weight-bold text-cesodo-red">
                         <i class="fas fa-history me-2"></i>Últimos Consumos Registrados
                     </h6>
-                    <a href="{{ route('consumos.index') }}" class="btn btn-sm btn-primary">
+                    <a href="{{ route('consumos.index') }}" class="btn btn-sm btn-cesodo-red">
                         Ver Todos <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -478,17 +479,17 @@
                                         </td>
                                         <td>
                                             <span class="badge
-                                                @if($consumo->tipo_comida == 'desayuno') bg-warning
-                                                @elseif($consumo->tipo_comida == 'almuerzo') bg-success
-                                                @elseif($consumo->tipo_comida == 'cena') bg-info
-                                                @else bg-secondary
-                                                @endif">
+                                                @if($consumo->tipo_comida == 'desayuno') bg-cesodo-red
+                                                @elseif($consumo->tipo_comida == 'almuerzo') bg-cesodo-black
+                                                @elseif($consumo->tipo_comida == 'cena') bg-cesodo-red
+                                                @else bg-cesodo-black
+                                                @endif text-white">
                                                 {{ ucfirst($consumo->tipo_comida) }}
                                             </span>
                                         </td>
                                         <td>{{ $consumo->fecha_consumo }}</td>
                                         <td>
-                                            <span class="badge bg-primary">{{ ucfirst($consumo->estado ?? 'completado') }}</span>
+                                            <span class="badge bg-cesodo-black text-white">{{ ucfirst($consumo->estado ?? 'completado') }}</span>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -707,7 +708,7 @@ function initializeLegacyCharts() {
                     labels: consumosData.map(item => item.tipo_comida.charAt(0).toUpperCase() + item.tipo_comida.slice(1)),
                     datasets: [{
                         data: consumosData.map(item => item.total),
-                        backgroundColor: ['#fd7900', '#00b894', '#0984e3', '#6c5ce7'],
+                        backgroundColor: ['#dc2626', '#1a1a1a', '#b91c1c', '#2d2d2d'],
                         borderWidth: 0
                     }]
                 },
@@ -734,8 +735,8 @@ function initializeLegacyCharts() {
                     datasets: [{
                         label: 'Consumos',
                         data: semanaData.map(item => item.total),
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4
@@ -879,7 +880,7 @@ function renderWidgetTypes(widgetTypes) {
         col.innerHTML = `
             <div class="card widget-type-card h-100" onclick="addWidget(${type.id})" style="cursor: pointer;">
                 <div class="card-body text-center">
-                    <i class="${type.icon} fa-2x mb-2 text-primary"></i>
+                    <i class="${type.icon} fa-2x mb-2 text-cesodo-red"></i>
                     <h6 class="card-title">${type.name}</h6>
                     <p class="card-text small text-muted">${type.description}</p>
                 </div>

@@ -1,0 +1,530 @@
+/* ==============================================
+   CESODO - Sistema de Diseño y Paleta de Colores
+   Versión 2.0 - Interface Mejorada
+   ============================================== */
+
+:root {
+    /* === PALETA BASE: NEGRO, ROJO, BLANCO === */
+    --cesodo-black: #1a1a1a;
+    --cesodo-black-light: #2d2d2d;
+    --cesodo-black-dark: #0a0a0a;
+
+    --cesodo-red: #dc2626;
+    --cesodo-red-light: #ef4444;
+    --cesodo-red-dark: #b91c1c;
+    --cesodo-red-lighter: #fee2e2;
+
+    --cesodo-white: #ffffff;
+    --cesodo-white-dark: #f8fafc;
+    --cesodo-white-darker: #f1f5f9;
+
+    /* === COLORES SECUNDARIOS BASADOS EN LA PALETA PRINCIPAL === */
+    --cesodo-primary: var(--cesodo-red);
+    --cesodo-primary-light: var(--cesodo-red-light);
+    --cesodo-primary-dark: var(--cesodo-red-dark);
+
+    /* Colores funcionales adaptados a la paleta */
+    --cesodo-success: var(--cesodo-black);
+    --cesodo-success-light: var(--cesodo-black-light);
+    --cesodo-success-lighter: var(--cesodo-white-darker);
+
+    --cesodo-warning: var(--cesodo-red);
+    --cesodo-warning-light: var(--cesodo-red-light);
+    --cesodo-warning-lighter: var(--cesodo-red-lighter);
+
+    --cesodo-info: var(--cesodo-black-light);
+    --cesodo-info-light: var(--cesodo-black);
+    --cesodo-info-lighter: var(--cesodo-white-dark);
+
+    --cesodo-danger: var(--cesodo-red);
+    --cesodo-danger-light: var(--cesodo-red-light);
+    --cesodo-danger-lighter: var(--cesodo-red-lighter);
+
+    /* Grises modernos */
+    --cesodo-gray-50: #f9fafb;
+    --cesodo-gray-100: #f3f4f6;
+    --cesodo-gray-200: #e5e7eb;
+    --cesodo-gray-300: #d1d5db;
+    --cesodo-gray-400: #9ca3af;
+    --cesodo-gray-500: #6b7280;
+    --cesodo-gray-600: #4b5563;
+    --cesodo-gray-700: #374151;
+    --cesodo-gray-800: #1f2937;
+    --cesodo-gray-900: #111827;
+
+    /* === TIPOGRAFÍA === */
+    --cesodo-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --cesodo-font-size-xs: 0.75rem;
+    --cesodo-font-size-sm: 0.875rem;
+    --cesodo-font-size-base: 1rem;
+    --cesodo-font-size-lg: 1.125rem;
+    --cesodo-font-size-xl: 1.25rem;
+    --cesodo-font-size-2xl: 1.5rem;
+    --cesodo-font-size-3xl: 1.875rem;
+
+    /* === ESPACIADO === */
+    --cesodo-spacing-xs: 0.25rem;
+    --cesodo-spacing-sm: 0.5rem;
+    --cesodo-spacing-md: 1rem;
+    --cesodo-spacing-lg: 1.5rem;
+    --cesodo-spacing-xl: 2rem;
+    --cesodo-spacing-2xl: 3rem;
+
+    /* === BORDES Y SOMBRAS === */
+    --cesodo-radius-sm: 0.375rem;
+    --cesodo-radius-md: 0.5rem;
+    --cesodo-radius-lg: 0.75rem;
+    --cesodo-radius-xl: 1rem;
+
+    --cesodo-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --cesodo-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --cesodo-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --cesodo-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* === TRANSICIONES === */
+    --cesodo-transition-fast: 150ms ease;
+    --cesodo-transition-normal: 300ms ease;
+    --cesodo-transition-slow: 500ms ease;
+}
+
+/* === RESET Y BASE === */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--cesodo-font-family);
+    color: var(--cesodo-black);
+    background-color: var(--cesodo-gray-50);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* === COMPONENTES BASE === */
+
+/* Botones */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cesodo-spacing-sm);
+    padding: var(--cesodo-spacing-sm) var(--cesodo-spacing-lg);
+    font-size: var(--cesodo-font-size-sm);
+    font-weight: 500;
+    line-height: 1.5;
+    border-radius: var(--cesodo-radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all var(--cesodo-transition-fast);
+    text-decoration: none;
+    user-select: none;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Variantes de botones - Paleta Negro, Rojo, Blanco */
+.btn-primary {
+    background-color: var(--cesodo-red);
+    color: var(--cesodo-white);
+    border-color: var(--cesodo-red);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--cesodo-red-dark);
+    border-color: var(--cesodo-red-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--cesodo-shadow-md);
+}
+
+.btn-secondary {
+    background-color: var(--cesodo-white);
+    color: var(--cesodo-black);
+    border-color: var(--cesodo-black);
+    border-color: var(--cesodo-gray-300);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--cesodo-black);
+    color: var(--cesodo-white);
+    border-color: var(--cesodo-black);
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background-color: var(--cesodo-black);
+    color: var(--cesodo-white);
+    border-color: var(--cesodo-black);
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: var(--cesodo-black-light);
+    transform: translateY(-1px);
+    box-shadow: var(--cesodo-shadow-md);
+}
+
+.btn-warning {
+    background-color: var(--cesodo-red-light);
+    color: var(--cesodo-white);
+    border-color: var(--cesodo-red-light);
+}
+
+.btn-warning:hover:not(:disabled) {
+    background-color: var(--cesodo-red);
+    transform: translateY(-1px);
+    box-shadow: var(--cesodo-shadow-md);
+}
+
+.btn-info {
+    background-color: var(--cesodo-white);
+    color: var(--cesodo-black);
+    border-color: var(--cesodo-black);
+}
+
+.btn-info:hover:not(:disabled) {
+    background-color: var(--cesodo-black);
+    color: var(--cesodo-white);
+    transform: translateY(-1px);
+    box-shadow: var(--cesodo-shadow-md);
+}
+
+.btn-danger {
+    background-color: var(--cesodo-red);
+    color: var(--cesodo-white);
+    border-color: var(--cesodo-red);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: var(--cesodo-danger-light);
+    transform: translateY(-1px);
+    box-shadow: var(--cesodo-shadow-md);
+}
+
+/* Tamaños de botones */
+.btn-sm {
+    padding: var(--cesodo-spacing-xs) var(--cesodo-spacing-md);
+    font-size: var(--cesodo-font-size-xs);
+    border-radius: var(--cesodo-radius-sm);
+}
+
+.btn-lg {
+    padding: var(--cesodo-spacing-md) var(--cesodo-spacing-xl);
+    font-size: var(--cesodo-font-size-lg);
+    border-radius: var(--cesodo-radius-lg);
+}
+
+/* === FORMULARIOS === */
+.form-group {
+    margin-bottom: var(--cesodo-spacing-lg);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--cesodo-font-size-sm);
+    font-weight: 500;
+    color: var(--cesodo-gray-700);
+    margin-bottom: var(--cesodo-spacing-sm);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--cesodo-red);
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: var(--cesodo-spacing-sm) var(--cesodo-spacing-md);
+    font-size: var(--cesodo-font-size-sm);
+    color: var(--cesodo-black);
+    background-color: var(--cesodo-white);
+    border: 1px solid var(--cesodo-gray-300);
+    border-radius: var(--cesodo-radius-md);
+    transition: all var(--cesodo-transition-fast);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--cesodo-red);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.form-input:invalid, .form-select:invalid, .form-textarea:invalid {
+    border-color: var(--cesodo-red);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-error {
+    color: var(--cesodo-red);
+    font-size: var(--cesodo-font-size-xs);
+    margin-top: var(--cesodo-spacing-xs);
+}
+
+.form-help {
+    color: var(--cesodo-black);
+    font-size: var(--cesodo-font-size-xs);
+    margin-top: var(--cesodo-spacing-xs);
+}
+
+/* === TARJETAS === */
+.card {
+    background-color: var(--cesodo-white);
+    border-radius: var(--cesodo-radius-lg);
+    box-shadow: var(--cesodo-shadow-sm);
+    border: 1px solid var(--cesodo-gray-200);
+    overflow: hidden;
+    transition: all var(--cesodo-transition-fast);
+}
+
+.card:hover {
+    box-shadow: var(--cesodo-shadow-md);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    padding: var(--cesodo-spacing-lg);
+    border-bottom: 1px solid var(--cesodo-gray-200);
+    background-color: var(--cesodo-white-dark);
+}
+
+.card-title {
+    font-size: var(--cesodo-font-size-lg);
+    font-weight: 600;
+    color: var(--cesodo-black);
+    margin: 0;
+}
+
+.card-body {
+    padding: var(--cesodo-spacing-lg);
+}
+
+.card-footer {
+    padding: var(--cesodo-spacing-lg);
+    border-top: 1px solid var(--cesodo-gray-200);
+    background-color: var(--cesodo-gray-50);
+}
+
+/* === TABLAS === */
+.table-container {
+    background-color: var(--cesodo-white);
+    border-radius: var(--cesodo-radius-lg);
+    box-shadow: var(--cesodo-shadow-sm);
+    border: 1px solid var(--cesodo-gray-200);
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background-color: var(--cesodo-black);
+    color: var(--cesodo-white);
+    padding: var(--cesodo-spacing-md) var(--cesodo-spacing-lg);
+    text-align: left;
+    font-weight: 600;
+    font-size: var(--cesodo-font-size-sm);
+    border-bottom: 2px solid var(--cesodo-red);
+}
+
+.table td {
+    padding: var(--cesodo-spacing-md) var(--cesodo-spacing-lg);
+    border-bottom: 1px solid var(--cesodo-gray-200);
+    color: var(--cesodo-gray-700);
+    font-size: var(--cesodo-font-size-sm);
+}
+
+.table tbody tr:hover {
+    background-color: var(--cesodo-gray-50);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* === ALERTAS === */
+.alert {
+    padding: var(--cesodo-spacing-lg);
+    border-radius: var(--cesodo-radius-md);
+    border: 1px solid transparent;
+    margin-bottom: var(--cesodo-spacing-lg);
+}
+
+.alert-success {
+    background-color: var(--cesodo-success-lighter);
+    border-color: var(--cesodo-success);
+    color: var(--cesodo-success);
+}
+
+.alert-warning {
+    background-color: var(--cesodo-warning-lighter);
+    border-color: var(--cesodo-warning);
+    color: var(--cesodo-warning);
+}
+
+.alert-info {
+    background-color: var(--cesodo-info-lighter);
+    border-color: var(--cesodo-info);
+    color: var(--cesodo-info);
+}
+
+.alert-danger {
+    background-color: var(--cesodo-danger-lighter);
+    border-color: var(--cesodo-danger);
+    color: var(--cesodo-danger);
+}
+
+/* === BADGES === */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--cesodo-spacing-xs) var(--cesodo-spacing-sm);
+    font-size: var(--cesodo-font-size-xs);
+    font-weight: 500;
+    border-radius: var(--cesodo-radius-md);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.badge-primary {
+    background-color: var(--cesodo-red-lighter);
+    color: var(--cesodo-red-dark);
+}
+
+.badge-success {
+    background-color: var(--cesodo-white-darker);
+    color: var(--cesodo-black);
+}
+
+.badge-warning {
+    background-color: var(--cesodo-red-lighter);
+    color: var(--cesodo-red-dark);
+}
+
+.badge-info {
+    background-color: var(--cesodo-white-dark);
+    color: var(--cesodo-black);
+}
+
+/* === UTILIDADES === */
+.text-primary { color: var(--cesodo-red); }
+.text-success { color: var(--cesodo-black); }
+.text-warning { color: var(--cesodo-red-light); }
+.text-info { color: var(--cesodo-black-light); }
+.text-danger { color: var(--cesodo-red); }
+.text-muted { color: var(--cesodo-gray-500); }
+
+.bg-primary { background-color: var(--cesodo-red); }
+.bg-success { background-color: var(--cesodo-black); }
+.bg-warning { background-color: var(--cesodo-red-light); }
+.bg-info { background-color: var(--cesodo-black-light); }
+.bg-danger { background-color: var(--cesodo-red); }
+
+/* === UTILIDADES ADICIONALES PARA PALETA === */
+.text-cesodo-red { color: var(--cesodo-red) !important; }
+.text-cesodo-black { color: var(--cesodo-black) !important; }
+.text-cesodo-white { color: var(--cesodo-white) !important; }
+
+.bg-cesodo-red { background-color: var(--cesodo-red) !important; }
+.bg-cesodo-black { background-color: var(--cesodo-black) !important; }
+.bg-cesodo-white { background-color: var(--cesodo-white) !important; }
+
+.border-cesodo-red { border-color: var(--cesodo-red) !important; }
+.border-cesodo-black { border-color: var(--cesodo-black) !important; }
+.border-cesodo-white { border-color: var(--cesodo-white) !important; }
+
+.rounded { border-radius: var(--cesodo-radius-md); }
+.rounded-lg { border-radius: var(--cesodo-radius-lg); }
+.shadow { box-shadow: var(--cesodo-shadow-md); }
+.shadow-lg { box-shadow: var(--cesodo-shadow-lg); }
+
+/* === ANIMACIONES === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn var(--cesodo-transition-normal) ease-out;
+}
+
+.animate-slide-in {
+    animation: slideIn var(--cesodo-transition-normal) ease-out;
+}
+
+/* === BOTONES OUTLINE === */
+.btn-outline-cesodo-black {
+    color: var(--cesodo-black);
+    border-color: var(--cesodo-black);
+    background-color: transparent;
+}
+
+.btn-outline-cesodo-black:hover,
+.btn-outline-cesodo-black:focus,
+.btn-outline-cesodo-black:active {
+    color: var(--cesodo-white);
+    background-color: var(--cesodo-black);
+    border-color: var(--cesodo-black);
+}
+
+.btn-outline-cesodo-red {
+    color: var(--cesodo-red);
+    border-color: var(--cesodo-red);
+    background-color: transparent;
+}
+
+.btn-outline-cesodo-red:hover,
+.btn-outline-cesodo-red:focus,
+.btn-outline-cesodo-red:active {
+    color: var(--cesodo-white);
+    background-color: var(--cesodo-red);
+    border-color: var(--cesodo-red);
+}
+
+.btn-outline-cesodo-white {
+    color: var(--cesodo-white);
+    border-color: var(--cesodo-white);
+    background-color: transparent;
+}
+
+.btn-outline-cesodo-white:hover,
+.btn-outline-cesodo-white:focus,
+.btn-outline-cesodo-white:active {
+    color: var(--cesodo-black);
+    background-color: var(--cesodo-white);
+    border-color: var(--cesodo-white);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .btn {
+        padding: var(--cesodo-spacing-sm) var(--cesodo-spacing-md);
+        font-size: var(--cesodo-font-size-xs);
+    }
+
+    .card-body, .card-header, .card-footer {
+        padding: var(--cesodo-spacing-md);
+    }
+
+    .table th, .table td {
+        padding: var(--cesodo-spacing-sm) var(--cesodo-spacing-md);
+        font-size: var(--cesodo-font-size-xs);
+    }
+}

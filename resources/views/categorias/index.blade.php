@@ -3,9 +3,10 @@
 @section('title', 'Categorías')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/cesodo-theme.css') }}">
 <style>
     .categorias-header {
-        background: linear-gradient(135deg, #6f42c1 0%, #007bff 100%);
+        background: linear-gradient(135deg, var(--cesodo-black) 0%, var(--cesodo-red) 100%);
         color: white;
         padding: 2rem 0;
         margin-bottom: 2rem;
@@ -17,7 +18,7 @@
         box-shadow: 0 0 20px rgba(0,0,0,0.1);
     }
     .btn-categorias {
-        background: #6f42c1;
+        background: var(--cesodo-red);
         border: none;
         border-radius: 8px;
         padding: 0.6rem 1.5rem;
@@ -25,7 +26,7 @@
         transition: all 0.3s ease;
     }
     .btn-categorias:hover {
-        background: #5a32a3;
+        background: var(--cesodo-black);
         transform: translateY(-2px);
         color: white;
     }
@@ -35,12 +36,12 @@
         font-weight: 500;
     }
     .badge-activo {
-        background-color: #d4edda;
-        color: #155724;
+        background-color: var(--cesodo-black);
+        color: var(--cesodo-white);
     }
     .badge-inactivo {
-        background-color: #f8d7da;
-        color: #721c24;
+        background-color: var(--cesodo-red);
+        color: var(--cesodo-white);
     }
 </style>
 @endpush
@@ -93,7 +94,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0">
-                            <i class="fas fa-list me-2 text-primary"></i>
+                            <i class="fas fa-list me-2 text-cesodo-red"></i>
                             Lista de Categorías
                         </h5>
                     </div>
@@ -120,7 +121,7 @@
                                 @foreach($categorias as $categoria)
                                     <tr>
                                         <td class="px-4 py-3">
-                                            <span class="badge bg-secondary">{{ $categoria->codigo }}</span>
+                                            <span class="badge bg-cesodo-black text-white">{{ $categoria->codigo }}</span>
                                         </td>
                                         <td class="py-3">
                                             <strong>{{ $categoria->nombre }}</strong>
@@ -131,7 +132,7 @@
                                             </span>
                                         </td>
                                         <td class="py-3">
-                                            <span class="badge bg-info">
+                                            <span class="badge bg-cesodo-red text-white">
                                                 {{ $categoria->productos()->count() }} productos
                                             </span>
                                         </td>
@@ -143,12 +144,12 @@
                                         <td class="py-3 text-center">
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <a href="{{ route('categorias.show', $categoria) }}"
-                                                   class="btn btn-outline-primary"
+                                                   class="btn btn-outline-cesodo-black"
                                                    title="Ver detalles">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 <a href="{{ route('categorias.edit', $categoria) }}"
-                                                   class="btn btn-outline-warning"
+                                                   class="btn btn-outline-cesodo-red"
                                                    title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
@@ -160,13 +161,13 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"
-                                                                class="btn btn-outline-danger"
+                                                                class="btn btn-outline-cesodo-red"
                                                                 title="Eliminar">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 @else
-                                                    <button class="btn btn-outline-secondary"
+                                                    <button class="btn btn-outline-cesodo-black"
                                                             disabled
                                                             title="No se puede eliminar - tiene productos asociados">
                                                         <i class="fas fa-lock"></i>
