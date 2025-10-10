@@ -36,17 +36,6 @@
                 </a>
             </div>
 
-            <?php if($errors->any()): ?>
-                <div class="alert alert-danger">
-                    <h6><i class="fas fa-exclamation-triangle me-1"></i> Errores de validación:</h6>
-                    <ul class="mb-0">
-                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <li><?php echo e($error); ?></li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-
             <form action="<?php echo e(route('personas.store')); ?>" method="POST" id="createPersonaForm">
                 <?php echo csrf_field(); ?>
 
@@ -768,6 +757,23 @@ function calcularEdad() {
         document.getElementById('fecha_nacimiento').setCustomValidity('');
     }
 }
+
+// Auto-ocultar mensajes de error después de 3 segundos
+document.addEventListener('DOMContentLoaded', function() {
+    const errorMessages = document.querySelectorAll('.invalid-feedback');
+    
+    errorMessages.forEach(function(message) {
+        if (message.style.display !== 'none' && message.textContent.trim() !== '') {
+            setTimeout(function() {
+                message.style.transition = 'opacity 0.5s ease-out';
+                message.style.opacity = '0';
+                setTimeout(function() {
+                    message.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+    });
+});
 </script>
 <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>

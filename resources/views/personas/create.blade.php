@@ -38,27 +38,6 @@
                 </a>
             </div>
 
-            @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <div class="d-flex align-items-start">
-                        <i class="fas fa-exclamation-circle me-2 mt-1"></i>
-                        <div class="flex-grow-1">
-                            <strong>Error de validación:</strong>
-                            @if($errors->has('numero_documento'))
-                                <p class="mb-0 mt-1">{{ $errors->first('numero_documento') }}</p>
-                            @elseif($errors->has('celular'))
-                                <p class="mb-0 mt-1">{{ $errors->first('celular') }}</p>
-                            @elseif($errors->has('correo'))
-                                <p class="mb-0 mt-1">{{ $errors->first('correo') }}</p>
-                            @else
-                                <p class="mb-0 mt-1">Por favor, revisa los campos marcados en rojo.</p>
-                            @endif
-                        </div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                </div>
-            @endif
-
             <form action="{{ route('personas.store') }}" method="POST" id="createPersonaForm">
                 @csrf
 
@@ -626,6 +605,23 @@ function calcularEdad() {
         document.getElementById('fecha_nacimiento').setCustomValidity('');
     }
 }
+
+// Auto-ocultar mensajes de error después de 3 segundos
+document.addEventListener('DOMContentLoaded', function() {
+    const errorMessages = document.querySelectorAll('.invalid-feedback');
+    
+    errorMessages.forEach(function(message) {
+        if (message.style.display !== 'none' && message.textContent.trim() !== '') {
+            setTimeout(function() {
+                message.style.transition = 'opacity 0.5s ease-out';
+                message.style.opacity = '0';
+                setTimeout(function() {
+                    message.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+    });
+});
 </script>
 @endpush
 @endsection
