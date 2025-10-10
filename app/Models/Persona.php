@@ -29,6 +29,22 @@ class Persona extends Model
         'fecha_nacimiento' => 'date',
     ];
 
+    /**
+     * Establecer el celular como NULL si está vacío
+     */
+    public function setCelularAttribute($value)
+    {
+        $this->attributes['celular'] = empty($value) ? null : $value;
+    }
+
+    /**
+     * Establecer el correo como NULL si está vacío
+     */
+    public function setCorreoAttribute($value)
+    {
+        $this->attributes['correo'] = empty($value) ? null : $value;
+    }
+
     public function trabajador()
     {
         return $this->hasOne(Trabajador::class);

@@ -59,8 +59,8 @@ class PersonaController extends Controller
             'fecha_nacimiento' => 'nullable|date|before:today|before_or_equal:' . date('Y-m-d', strtotime('-18 years')),
             'sexo' => 'nullable|in:M,F,O',
             'direccion' => 'nullable|string|max:255',
-            'celular' => 'nullable|string|max:15',
-            'correo' => 'nullable|email|max:100',
+            'celular' => 'nullable|string|max:15|unique:personas,celular',
+            'correo' => 'nullable|email|max:100|unique:personas,correo',
             'pais' => 'nullable|string|max:50',
             'estado_civil' => 'nullable|string|max:20',
         ]);
@@ -99,8 +99,8 @@ class PersonaController extends Controller
             'fecha_nacimiento' => 'nullable|date|before:today|before_or_equal:' . date('Y-m-d', strtotime('-18 years')),
             'sexo' => 'nullable|in:M,F,O',
             'direccion' => 'nullable|string|max:255',
-            'celular' => 'nullable|string|max:15',
-            'correo' => 'nullable|email|max:100',
+            'celular' => 'nullable|string|max:15|unique:personas,celular,' . $persona->id,
+            'correo' => 'nullable|email|max:100|unique:personas,correo,' . $persona->id,
             'pais' => 'nullable|string|max:50',
             'estado_civil' => 'nullable|string|max:20',
         ]);

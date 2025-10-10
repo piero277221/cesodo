@@ -160,6 +160,15 @@ return [
         'fecha_nacimiento' => [
             'before_or_equal' => 'La persona debe ser mayor de 18 años.',
         ],
+        'celular' => [
+            'unique' => 'Este número de celular ya está registrado por otra persona.',
+        ],
+        'correo' => [
+            'unique' => 'Este correo electrónico ya está registrado por otra persona.',
+        ],
+        'numero_documento' => [
+            'unique' => 'Este número de documento ya está registrado por otra persona.',
+        ],
     ],
 
     /*
