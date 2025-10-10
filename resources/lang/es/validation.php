@@ -157,8 +157,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'fecha_nacimiento' => [
+            'before_or_equal' => 'La persona debe ser mayor de 18 años.',
         ],
     ],
 

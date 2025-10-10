@@ -107,10 +107,10 @@
                                                    id="fecha_nacimiento"
                                                    name="fecha_nacimiento"
                                                    value="{{ old('fecha_nacimiento', $persona->fecha_nacimiento) }}"
-                                                   max="{{ date('Y-m-d') }}"
+                                                   max="{{ date('Y-m-d', strtotime('-18 years')) }}"
                                                    min="{{ date('Y-m-d', strtotime('-120 years')) }}"
                                                    onchange="calcularEdad()"
-                                                   title="Selecciona la fecha de nacimiento">
+                                                   title="Selecciona la fecha de nacimiento (debe ser mayor de 18 años)">
                                         </div>
                                         <div id="edad_display" class="form-text text-cesodo-black mt-1" style="display: none;">
                                             <i class="fas fa-info-circle me-1"></i>
@@ -593,25 +593,34 @@ function calcularEdad() {
             let categoria = '';
 
             if (edad < 18) {
-                categoria = ' (Menor de edad)';
+                categoria = ' (Menor de edad - No permitido)';
+                edadDisplay.className = 'form-text text-danger mt-1';
+                document.getElementById('fecha_nacimiento').setCustomValidity('Debe ser mayor de 18 años');
             } else if (edad >= 65) {
                 categoria = ' (Adulto mayor)';
+                edadDisplay.className = 'form-text text-cesodo-black mt-1 edad-feedback';
+                document.getElementById('fecha_nacimiento').setCustomValidity('');
+            } else {
+                edadDisplay.className = 'form-text text-cesodo-black mt-1 edad-feedback';
+                document.getElementById('fecha_nacimiento').setCustomValidity('');
             }
 
             edadTexto.textContent = textoEdad + categoria;
             edadDisplay.style.display = 'block';
-            edadDisplay.className = 'form-text text-cesodo-black mt-1 edad-feedback';
         } else if (edad < 0) {
             edadTexto.textContent = 'Fecha futura no válida';
             edadDisplay.style.display = 'block';
             edadDisplay.className = 'form-text text-danger mt-1';
+            document.getElementById('fecha_nacimiento').setCustomValidity('La fecha no puede ser futura');
         } else {
             edadTexto.textContent = 'Edad no realista (más de 120 años)';
             edadDisplay.style.display = 'block';
             edadDisplay.className = 'form-text text-danger mt-1';
+            document.getElementById('fecha_nacimiento').setCustomValidity('Edad no válida');
         }
     } else {
         edadDisplay.style.display = 'none';
+        document.getElementById('fecha_nacimiento').setCustomValidity('');
     }
 }
 </script>

@@ -38,12 +38,12 @@ class PersonaController extends Controller
             'apellidos' => 'required|string|max:100',
             'tipo_documento' => 'required|in:dni,ce,pasaporte,otros,ruc',
             'numero_documento' => 'required|string|max:15|unique:personas,numero_documento',
-            'fecha_nacimiento' => 'nullable|date|before:today',
+            'fecha_nacimiento' => 'nullable|date|before:today|before_or_equal:' . date('Y-m-d', strtotime('-18 years')),
             'sexo' => 'nullable|in:M,F,O',
             'direccion' => 'nullable|string|max:255',
             'celular' => 'nullable|string|max:15',
             'correo' => 'nullable|email|max:100',
-            'nacionalidad' => 'nullable|string|max:50',
+            'pais' => 'nullable|string|max:50',
             'estado_civil' => 'nullable|string|max:20',
         ]);
 
@@ -78,12 +78,12 @@ class PersonaController extends Controller
             'apellidos' => 'required|string|max:100',
             'tipo_documento' => 'required|in:dni,ce,pasaporte,otros,ruc',
             'numero_documento' => 'required|string|max:15|unique:personas,numero_documento,' . $persona->id,
-            'fecha_nacimiento' => 'nullable|date|before:today',
+            'fecha_nacimiento' => 'nullable|date|before:today|before_or_equal:' . date('Y-m-d', strtotime('-18 years')),
             'sexo' => 'nullable|in:M,F,O',
             'direccion' => 'nullable|string|max:255',
             'celular' => 'nullable|string|max:15',
             'correo' => 'nullable|email|max:100',
-            'nacionalidad' => 'nullable|string|max:50',
+            'pais' => 'nullable|string|max:50',
             'estado_civil' => 'nullable|string|max:20',
         ]);
 
