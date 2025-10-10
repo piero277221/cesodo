@@ -179,6 +179,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Rutas adicionales para campos dinámicos
         Route::prefix('dynamic-fields')->group(function () {
+            Route::get('form-builder', [\App\Http\Controllers\DynamicFieldController::class, 'formBuilder'])->name('dynamic-fields.form-builder');
+            Route::post('bulk-create', [\App\Http\Controllers\DynamicFieldController::class, 'bulkCreate'])->name('dynamic-fields.bulk-create');
             Route::post('reorder', [\App\Http\Controllers\DynamicFieldController::class, 'reorder'])->name('dynamic-fields.reorder');
             Route::post('{dynamicField}/duplicate', [\App\Http\Controllers\DynamicFieldController::class, 'duplicate'])->name('dynamic-fields.duplicate');
         });

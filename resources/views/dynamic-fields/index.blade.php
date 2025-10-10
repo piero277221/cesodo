@@ -16,6 +16,9 @@
                     <a href="{{ route('dynamic-fields.create', ['module' => $module]) }}" class="btn btn-primary">
                         <i class="fas fa-plus me-1"></i>Nuevo Campo
                     </a>
+                    <a href="{{ route('dynamic-fields.form-builder') }}" class="btn btn-success">
+                        <i class="fas fa-magic me-1"></i>Constructor Visual
+                    </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-filter me-1"></i>Filtrar por Módulo

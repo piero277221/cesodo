@@ -7,6 +7,7 @@ use App\Models\DynamicField;
 use App\Models\DynamicFieldGroup;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
 
 class DynamicFieldController extends Controller
 {
@@ -388,5 +389,132 @@ class DynamicFieldController extends Controller
         ];
 
         return $modelMapping[$module] ?? 'App\\Models\\' . ucfirst($module);
+    }
+
+    /**
+     * Show the form builder interface
+     */
+    public function formBuilder()
+    {
+        return view('dynamic-fields.form-builder');
+    }
+
+    /**
+     * Create multiple fields from form builder
+     */
+    public function bulkCreate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'fields' => 'required|array|min:1',
+            'fields.*.name' => 'required|string|max:255',
+            'fields.*.label' => 'required|string|max:255',
+            'fields.*.type' => 'required|string|in:text,textarea,number,email,password,date,datetime,time,select,checkbox,radio,file,image,url,tel',
+            'fields.*.module' => 'required|string|max:255',
+            'fields.*.placeholder' => 'nullable|string|max:255',
+            'fields.*.default_value' => 'nullable|string',
+            'fields.*.options' => 'nullable|array',
+            'fields.*.options.*' => 'string|max:255',
+            'fields.*.validation_rules' => 'nullable|array',
+            'fields.*.group_id' => 'nullable|exists:dynamic_field_groups,id',
+            'fields.*.sort_order' => 'nullable|integer|min:0',
+            'fields.*.is_active' => 'boolean'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Datos de validación incorrectos',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $createdFields = [];
+            $fieldsData = $request->input('fields');
+
+            foreach ($fieldsData as $fieldData) {
+                // Verificar unicidad del nombre en el módulo
+                $exists = DynamicField::where('module', $fieldData['module'])
+                                      ->where('name', $fieldData['name'])
+                                      ->exists();
+
+                if ($exists) {
+                    // Si ya existe, generar un nombre único
+                    $counter = 1;
+                    $originalName = $fieldData['name'];
+                    
+                    do {
+                        $fieldData['name'] = $originalName . '_' . $counter;
+                        $counter++;
+                        
+                        $exists = DynamicField::where('module', $fieldData['module'])
+                                              ->where('name', $fieldData['name'])
+                                              ->exists();
+                    } while ($exists);
+                }
+
+                // Procesar opciones para select/radio
+                if (in_array($fieldData['type'], ['select', 'radio']) && isset($fieldData['options'])) {
+                    $fieldData['options'] = array_filter($fieldData['options'], function($option) {
+                        return !empty(trim($option));
+                    });
+                    
+                    if (empty($fieldData['options'])) {
+                        $fieldData['options'] = ['Opción 1', 'Opción 2'];
+                    }
+                } else {
+                    $fieldData['options'] = null;
+                }
+
+                // Procesar reglas de validación
+                $validationRules = $fieldData['validation_rules'] ?? [];
+                
+                // Asegurar que la estructura sea correcta
+                if (!is_array($validationRules)) {
+                    $validationRules = [];
+                }
+
+                $fieldData['validation_rules'] = $validationRules;
+
+                // Obtener el próximo sort_order si no se especifica
+                if (!isset($fieldData['sort_order']) || $fieldData['sort_order'] === null) {
+                    $maxOrder = DynamicField::where('module', $fieldData['module'])->max('sort_order') ?? 0;
+                    $fieldData['sort_order'] = $maxOrder + 1;
+                }
+
+                // Crear el campo
+                $field = DynamicField::create($fieldData);
+                $createdFields[] = $field;
+
+                // Invalidar caché para el módulo
+                Cache::forget("dynamic_fields_{$fieldData['module']}");
+                Cache::forget("dynamic_fields_all");
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Campos creados exitosamente',
+                'created' => count($createdFields),
+                'fields' => collect($createdFields)->map(function($field) {
+                    return [
+                        'id' => $field->id,
+                        'name' => $field->name,
+                        'label' => $field->label,
+                        'type' => $field->type,
+                        'module' => $field->module
+                    ];
+                })->toArray()
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                'message' => 'Error al crear los campos: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

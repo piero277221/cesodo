@@ -307,7 +307,17 @@
                     </div>
                     <div class="module-content">
                         <h3 class="module-title">Campos Dinámicos</h3>
-                        <p class="module-description">Sistema de extensibilidad para módulos existentes</p>
+                        <p class="module-description">Sistema de extensibilidad para módulos</p>
+                        <div class="mt-2">
+                            <small class="text-primary">
+                                <i class="fas fa-magic me-1"></i>
+                                <a href="{{ route('dynamic-fields.form-builder') }}" 
+                                   class="text-decoration-none" 
+                                   onclick="event.stopPropagation(); window.location.href='{{ route('dynamic-fields.form-builder') }}'">
+                                    Constructor Visual
+                                </a>
+                            </small>
+                        </div>
                     </div>
                 </a>
             </div>
