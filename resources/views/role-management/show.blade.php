@@ -34,7 +34,7 @@
                                 <strong><i class="fas fa-hashtag me-1"></i>ID:</strong> {{ $role->id }}
                             </div>
                             <div class="mb-3">
-                                <strong><i class="fas fa-shield-alt me-1"></i>Guard:</strong> 
+                                <strong><i class="fas fa-shield-alt me-1"></i>Guard:</strong>
                                 <span class="badge bg-info">{{ $role->guard_name }}</span>
                             </div>
                             @if($role->description)
@@ -67,9 +67,9 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <hr class="my-4">
-                    
+
                     <div class="row">
                         <div class="col-md-6">
                             <small class="text-muted">
@@ -173,7 +173,7 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                
+
                                 @if($role->users->count() > 10)
                                 <div class="text-center mt-2">
                                     <small class="text-muted">
@@ -194,22 +194,22 @@
                         </div>
                         <div class="card-body">
                             <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-outline-info btn-sm" 
+                                <button type="button" class="btn btn-outline-info btn-sm"
                                         onclick="cloneRole({{ $role->id }})">
                                     <i class="fas fa-copy me-1"></i>Clonar Rol
                                 </button>
-                                
+
                                 <a href="{{ route('role-management.matrix') }}" class="btn btn-outline-primary btn-sm">
                                     <i class="fas fa-table me-1"></i>Ver en Matriz
                                 </a>
-                                
-                                <button type="button" class="btn btn-outline-warning btn-sm" 
+
+                                <button type="button" class="btn btn-outline-warning btn-sm"
                                         onclick="exportRoleData()">
                                     <i class="fas fa-download me-1"></i>Exportar Datos
                                 </button>
-                                
+
                                 @if($role->users->count() === 0)
-                                <button type="button" class="btn btn-outline-danger btn-sm" 
+                                <button type="button" class="btn btn-outline-danger btn-sm"
                                         onclick="deleteRole({{ $role->id }}, '{{ $role->name }}')">
                                     <i class="fas fa-trash me-1"></i>Eliminar Rol
                                 </button>
@@ -263,7 +263,7 @@
 function deleteRole(roleId, roleName) {
     document.getElementById('roleNameToDelete').textContent = roleName;
     document.getElementById('deleteForm').action = `/role-management/${roleId}`;
-    
+
     var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     deleteModal.show();
 }
@@ -275,14 +275,14 @@ function cloneRole(roleId) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/role-management/${roleId}/clone`;
-        
+
         // Token CSRF
         const csrfToken = document.createElement('input');
         csrfToken.type = 'hidden';
         csrfToken.name = '_token';
         csrfToken.value = '{{ csrf_token() }}';
         form.appendChild(csrfToken);
-        
+
         document.body.appendChild(form);
         form.submit();
     }
@@ -297,12 +297,12 @@ function exportRoleData() {
         users_count: {{ $role->users->count() }},
         created_at: '{{ $role->created_at->toISOString() }}'
     };
-    
+
     const dataStr = JSON.stringify(roleData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
+
     const exportFileDefaultName = `rol_${roleData.name.toLowerCase().replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.json`;
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);

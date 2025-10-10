@@ -87,7 +87,7 @@
                                         <td>
                                             <span class="badge bg-info">{{ $role->permissions->count() }} permisos</span>
                                             @if($role->permissions->isNotEmpty())
-                                                <button class="btn btn-sm btn-link p-0 ms-2" data-bs-toggle="popover" 
+                                                <button class="btn btn-sm btn-link p-0 ms-2" data-bs-toggle="popover"
                                                         data-bs-trigger="hover" data-bs-html="true"
                                                         data-bs-content="<ul class='list-unstyled mb-0'>@foreach($role->permissions->take(5) as $permission)<li>{{ $permission->name }}</li>@endforeach @if($role->permissions->count() > 5)<li><em>y {{ $role->permissions->count() - 5 }} más...</em></li>@endif</ul>">
                                                     <i class="fas fa-info-circle text-muted"></i>
@@ -201,7 +201,7 @@ var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
 function deleteRole(roleId, roleName) {
     document.getElementById('roleNameToDelete').textContent = roleName;
     document.getElementById('deleteForm').action = `/role-management/${roleId}`;
-    
+
     var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     deleteModal.show();
 }
@@ -213,14 +213,14 @@ function cloneRole(roleId) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/role-management/${roleId}/clone`;
-        
+
         // Token CSRF
         const csrfToken = document.createElement('input');
         csrfToken.type = 'hidden';
         csrfToken.name = '_token';
         csrfToken.value = '{{ csrf_token() }}';
         form.appendChild(csrfToken);
-        
+
         document.body.appendChild(form);
         form.submit();
     }

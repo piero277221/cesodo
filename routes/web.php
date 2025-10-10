@@ -173,6 +173,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
 
+    // Campos Dinámicos - Sistema de Extensibilidad de Módulos
+    Route::middleware(['permission:ver-configuraciones'])->group(function () {
+        Route::resource('dynamic-fields', \App\Http\Controllers\DynamicFieldController::class);
+
+        // Rutas adicionales para campos dinámicos
+        Route::prefix('dynamic-fields')->group(function () {
+            Route::post('reorder', [\App\Http\Controllers\DynamicFieldController::class, 'reorder'])->name('dynamic-fields.reorder');
+            Route::post('{dynamicField}/duplicate', [\App\Http\Controllers\DynamicFieldController::class, 'duplicate'])->name('dynamic-fields.duplicate');
+        });
+    });
+
     // Contratos - Sistema de Gestión de Contratos
     Route::resource('contratos', ContratoController::class);
 

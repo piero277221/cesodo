@@ -41,7 +41,7 @@
             <!-- Descripción -->
             <div class="alert alert-info" role="alert">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Matriz Visual de Permisos:</strong> 
+                <strong>Matriz Visual de Permisos:</strong>
                 Gestiona todos los permisos de roles de forma visual. Los cambios se aplicarán inmediatamente.
             </div>
 
@@ -74,7 +74,7 @@
                 <!-- Formulario de matriz de permisos -->
                 <form action="{{ route('role-management.update-matrix') }}" method="POST" id="matrixForm">
                     @csrf
-                    
+
                     <!-- Controles superiores -->
                     <div class="card mb-4">
                         <div class="card-body">
@@ -113,7 +113,7 @@
                                     <span class="badge bg-light text-primary ms-2">{{ $modulePermissions->count() }} permisos</span>
                                 </h6>
                                 <div class="btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-light btn-sm" 
+                                    <button type="button" class="btn btn-light btn-sm"
                                             onclick="toggleModuleAll('{{ $module }}')">
                                         <i class="fas fa-toggle-on me-1"></i>Alternar Módulo
                                     </button>
@@ -150,8 +150,8 @@
                                             @foreach($roles as $role)
                                             <td class="text-center">
                                                 <div class="form-check d-flex justify-content-center">
-                                                    <input class="form-check-input permission-matrix" 
-                                                           type="checkbox" 
+                                                    <input class="form-check-input permission-matrix"
+                                                           type="checkbox"
                                                            name="permissions[{{ $role->id }}][{{ $permission->id }}]"
                                                            value="1"
                                                            data-role="{{ $role->id }}"
@@ -210,7 +210,7 @@ function clearAll() {
 function toggleModuleAll(module) {
     const moduleCheckboxes = document.querySelectorAll(`[data-module="${module}"]`);
     const allChecked = Array.from(moduleCheckboxes).every(cb => cb.checked);
-    
+
     moduleCheckboxes.forEach(checkbox => {
         checkbox.checked = !allChecked;
     });
@@ -221,7 +221,7 @@ function toggleModuleAll(module) {
 function toggleView() {
     compactView = !compactView;
     const tables = document.querySelectorAll('.matrix-table');
-    
+
     tables.forEach(table => {
         if (compactView) {
             table.classList.add('table-sm');
@@ -244,14 +244,14 @@ function updateCounters() {
 document.getElementById('matrixForm').addEventListener('submit', function(e) {
     const changedCheckboxes = document.querySelectorAll('.permission-matrix');
     const totalChecked = Array.from(changedCheckboxes).filter(cb => cb.checked).length;
-    
+
     if (totalChecked === 0) {
         if (!confirm('No hay permisos seleccionados. ¿Deseas continuar? Esto removerá todos los permisos de todos los roles.')) {
             e.preventDefault();
             return false;
         }
     }
-    
+
     // Mostrar indicador de carga
     const submitBtn = this.querySelector('button[type="submit"]');
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Guardando...';
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.permission-matrix').forEach(checkbox => {
         checkbox.addEventListener('change', updateCounters);
     });
-    
+
     // Actualizar contadores iniciales
     updateCounters();
 });
@@ -275,7 +275,7 @@ document.addEventListener('keydown', function(e) {
         e.preventDefault();
         document.getElementById('matrixForm').submit();
     }
-    
+
     // Ctrl + A para seleccionar todo
     if (e.ctrlKey && e.key === 'a' && e.target.tagName !== 'INPUT') {
         e.preventDefault();
@@ -314,7 +314,7 @@ document.addEventListener('keydown', function(e) {
     .matrix-table {
         font-size: 0.8rem;
     }
-    
+
     .matrix-table th,
     .matrix-table td {
         padding: 0.5rem 0.25rem;

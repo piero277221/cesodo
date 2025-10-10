@@ -297,6 +297,21 @@
                 </a>
             </div>
             @endcan
+
+            <!-- Campos Dinámicos -->
+            @can('ver-configuraciones')
+            <div class="module-card group">
+                <a href="{{ route('dynamic-fields.index') }}" class="block h-full">
+                    <div class="module-icon" style="background: linear-gradient(45deg, #059669, #10b981);">
+                        <i class="bi bi-puzzle-fill"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">Campos Dinámicos</h3>
+                        <p class="module-description">Sistema de extensibilidad para módulos existentes</p>
+                    </div>
+                </a>
+            </div>
+            @endcan
         </div>
 
         <!-- Estadísticas rápidas - En 6 columnas más compactas -->

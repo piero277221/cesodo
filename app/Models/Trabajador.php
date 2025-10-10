@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasDynamicFields;
 
 class Trabajador extends Model
 {
-    use HasFactory;
+    use HasFactory, HasDynamicFields;
 
     protected $table = 'trabajadores';
 
@@ -58,5 +59,13 @@ class Trabajador extends Model
     public function getNombreCompletoAttribute()
     {
         return $this->nombres . ' ' . $this->apellidos;
+    }
+
+    /**
+     * Implementación del trait HasDynamicFields
+     */
+    protected function getDynamicFieldsModule(): string
+    {
+        return 'trabajadores';
     }
 }

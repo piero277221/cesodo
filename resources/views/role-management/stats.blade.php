@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xl-3 col-lg-6 mb-3">
                     <div class="card border-info h-100">
                         <div class="card-body text-center">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xl-3 col-lg-6 mb-3">
                     <div class="card border-success h-100">
                         <div class="card-body text-center">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xl-3 col-lg-6 mb-3">
                     <div class="card border-warning h-100">
                         <div class="card-body text-center">
@@ -106,7 +106,7 @@
                                                 <div class="d-flex align-items-center">
                                                     <span class="badge bg-primary me-2">{{ $count }}</span>
                                                     <div class="progress flex-grow-1" style="height: 8px;">
-                                                        <div class="progress-bar" role="progressbar" 
+                                                        <div class="progress-bar" role="progressbar"
                                                              style="width: {{ ($count / $stats['total_permissions']) * 100 }}%">
                                                         </div>
                                                     </div>
@@ -116,7 +116,7 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                
+
                                 <!-- Gráfico de barras simple -->
                                 <div class="mt-4">
                                     <canvas id="permissionsChart" width="400" height="200"></canvas>
@@ -173,34 +173,34 @@
                         <div class="card-body">
                             @php
                                 $recommendations = [];
-                                
+
                                 if ($stats['total_roles'] == 0) {
                                     $recommendations[] = ['type' => 'warning', 'text' => 'Crea tu primer rol para comenzar a gestionar permisos'];
                                 }
-                                
+
                                 if ($stats['total_roles'] > 0 && $stats['roles_with_users'] == 0) {
                                     $recommendations[] = ['type' => 'info', 'text' => 'Asigna usuarios a los roles creados'];
                                 }
-                                
+
                                 if ($stats['total_roles'] > 10) {
                                     $recommendations[] = ['type' => 'primary', 'text' => 'Considera consolidar roles similares'];
                                 }
-                                
+
                                 if ($stats['permissions_by_module']->count() > 5) {
                                     $recommendations[] = ['type' => 'success', 'text' => 'Usa la matriz de permisos para una gestión visual'];
                                 }
-                                
+
                                 if (empty($recommendations)) {
                                     $recommendations[] = ['type' => 'success', 'text' => '¡Todo se ve bien! Sistema de roles funcionando correctamente'];
                                 }
                             @endphp
-                            
+
                             @foreach($recommendations as $recommendation)
                             <div class="alert alert-{{ $recommendation['type'] }} py-2 px-3 mb-2">
                                 <small>{{ $recommendation['text'] }}</small>
                             </div>
                             @endforeach
-                            
+
                             <div class="mt-3">
                                 <h6 class="fw-bold mb-2">Acciones Rápidas:</h6>
                                 <div class="d-grid gap-2">
@@ -314,7 +314,7 @@ function toggleDetailedStats() {
     const detailedStats = document.getElementById('detailedStats');
     const toggleIcon = document.getElementById('toggleIcon');
     const toggleText = document.getElementById('toggleText');
-    
+
     if (detailedStats.style.display === 'none') {
         detailedStats.style.display = 'block';
         toggleIcon.className = 'fas fa-chevron-up me-1';
@@ -330,13 +330,13 @@ function toggleDetailedStats() {
 document.addEventListener('DOMContentLoaded', function() {
     // Animar números en las tarjetas
     const numberElements = document.querySelectorAll('.card-body h3');
-    
+
     numberElements.forEach(element => {
         const finalNumber = parseInt(element.textContent);
         if (finalNumber > 0) {
             let currentNumber = 0;
             const increment = Math.ceil(finalNumber / 30);
-            
+
             const timer = setInterval(() => {
                 currentNumber += increment;
                 if (currentNumber >= finalNumber) {

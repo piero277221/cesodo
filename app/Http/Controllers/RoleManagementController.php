@@ -20,7 +20,7 @@ class RoleManagementController extends Controller
             $parts = explode('-', $permission->name);
             return count($parts) > 1 ? $parts[1] : 'general';
         });
-        
+
         return view('role-management.index', compact('roles', 'permissions'));
     }
 
@@ -33,7 +33,7 @@ class RoleManagementController extends Controller
             $parts = explode('-', $permission->name);
             return count($parts) > 1 ? $parts[1] : 'general';
         });
-        
+
         return view('role-management.create', compact('permissions'));
     }
 
@@ -83,7 +83,7 @@ class RoleManagementController extends Controller
             $parts = explode('-', $permission->name);
             return count($parts) > 1 ? $parts[1] : 'general';
         });
-        
+
         return view('role-management.show', compact('role', 'allPermissions'));
     }
 
@@ -97,7 +97,7 @@ class RoleManagementController extends Controller
             $parts = explode('-', $permission->name);
             return count($parts) > 1 ? $parts[1] : 'general';
         });
-        
+
         return view('role-management.edit', compact('role', 'permissions'));
     }
 
@@ -170,7 +170,7 @@ class RoleManagementController extends Controller
             $parts = explode('-', $permission->name);
             return count($parts) > 1 ? $parts[1] : 'general';
         });
-        
+
         return view('role-management.matrix', compact('roles', 'permissions'));
     }
 

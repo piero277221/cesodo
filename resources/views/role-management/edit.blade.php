@@ -64,18 +64,18 @@
                     <form action="{{ route('role-management.update', $role) }}" method="POST" id="roleForm">
                         @csrf
                         @method('PUT')
-                        
+
                         <!-- Información básica del rol -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="name" class="form-label fw-bold">
                                     <i class="fas fa-tag me-1"></i>Nombre del Rol *
                                 </label>
-                                <input type="text" 
-                                       class="form-control @error('name') is-invalid @enderror" 
-                                       id="name" 
-                                       name="name" 
-                                       value="{{ old('name', $role->name) }}" 
+                                <input type="text"
+                                       class="form-control @error('name') is-invalid @enderror"
+                                       id="name"
+                                       name="name"
+                                       value="{{ old('name', $role->name) }}"
                                        placeholder="Ej: Administrador, Editor, Supervisor"
                                        required>
                                 @error('name')
@@ -86,14 +86,14 @@
                                     El nombre debe ser único y descriptivo del rol
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6 mb-3">
                                 <label for="description" class="form-label fw-bold">
                                     <i class="fas fa-align-left me-1"></i>Descripción
                                 </label>
-                                <textarea class="form-control @error('description') is-invalid @enderror" 
-                                          id="description" 
-                                          name="description" 
+                                <textarea class="form-control @error('description') is-invalid @enderror"
+                                          id="description"
+                                          name="description"
                                           rows="3"
                                           placeholder="Descripción opcional del rol y sus responsabilidades">{{ old('description', $role->description ?? '') }}</textarea>
                                 @error('description')
@@ -140,10 +140,10 @@
                                         @foreach($permissions as $module => $modulePermissions)
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="heading{{ Str::slug($module) }}">
-                                                <button class="accordion-button collapsed" type="button" 
-                                                        data-bs-toggle="collapse" 
-                                                        data-bs-target="#collapse{{ Str::slug($module) }}" 
-                                                        aria-expanded="false" 
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapse{{ Str::slug($module) }}"
+                                                        aria-expanded="false"
                                                         aria-controls="collapse{{ Str::slug($module) }}">
                                                     <div class="d-flex align-items-center w-100">
                                                         <i class="fas fa-cube me-2"></i>
@@ -156,18 +156,18 @@
                                                     </div>
                                                 </button>
                                             </h2>
-                                            <div id="collapse{{ Str::slug($module) }}" 
-                                                 class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}" 
-                                                 aria-labelledby="heading{{ Str::slug($module) }}" 
+                                            <div id="collapse{{ Str::slug($module) }}"
+                                                 class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
+                                                 aria-labelledby="heading{{ Str::slug($module) }}"
                                                  data-bs-parent="#permissionsAccordion">
                                                 <div class="accordion-body">
                                                     <div class="row">
                                                         @foreach($modulePermissions as $permission)
                                                         <div class="col-md-6 col-lg-4 mb-2">
                                                             <div class="form-check">
-                                                                <input class="form-check-input permission-checkbox" 
-                                                                       type="checkbox" 
-                                                                       value="{{ $permission->id }}" 
+                                                                <input class="form-check-input permission-checkbox"
+                                                                       type="checkbox"
+                                                                       value="{{ $permission->id }}"
                                                                        id="permission_{{ $permission->id }}"
                                                                        name="permissions[]"
                                                                        data-module="{{ Str::slug($module) }}"
@@ -180,10 +180,10 @@
                                                         </div>
                                                         @endforeach
                                                     </div>
-                                                    
+
                                                     <!-- Botón para seleccionar/deseleccionar todo el módulo -->
                                                     <div class="mt-3">
-                                                        <button type="button" class="btn btn-sm btn-outline-info" 
+                                                        <button type="button" class="btn btn-sm btn-outline-info"
                                                                 onclick="toggleModulePermissions('{{ Str::slug($module) }}')">
                                                             <i class="fas fa-toggle-on me-1"></i>Alternar Módulo
                                                         </button>
@@ -250,10 +250,10 @@ function resetToOriginal() {
 function toggleModulePermissions(module) {
     const accordionBody = document.querySelector('#collapse' + module + ' .accordion-body');
     const checkboxes = accordionBody.querySelectorAll('.permission-checkbox');
-    
+
     // Verificar si todos están marcados
     const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-    
+
     // Si todos están marcados, desmarcar todos; si no, marcar todos
     checkboxes.forEach(checkbox => checkbox.checked = !allChecked);
     updateCounters();
@@ -264,7 +264,7 @@ function updateCounters() {
     // Contador total
     const totalSelected = document.querySelectorAll('.permission-checkbox:checked').length;
     document.getElementById('selectedCount').textContent = totalSelected;
-    
+
     // Contadores por módulo
     const modules = {};
     document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
@@ -277,7 +277,7 @@ function updateCounters() {
             modules[module].selected++;
         }
     });
-    
+
     // Actualizar badges de módulos
     Object.keys(modules).forEach(module => {
         const counter = document.getElementById(`module-${module}-count`);
@@ -290,14 +290,14 @@ function updateCounters() {
 // Validación del formulario
 document.getElementById('roleForm').addEventListener('submit', function(e) {
     const roleName = document.getElementById('name').value.trim();
-    
+
     if (!roleName) {
         e.preventDefault();
         alert('El nombre del rol es obligatorio');
         document.getElementById('name').focus();
         return false;
     }
-    
+
     return true;
 });
 
@@ -306,20 +306,20 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', updateCounters);
     });
-    
+
     // Inicializar contadores
     updateCounters();
-    
+
     // Marcar cambios no guardados
     let hasChanges = false;
-    
+
     document.querySelectorAll('.permission-checkbox, #name, #description').forEach(input => {
         input.addEventListener('change', function() {
             hasChanges = true;
             document.title = '● ' + document.title.replace('● ', '');
         });
     });
-    
+
     // Advertir sobre cambios no guardados
     window.addEventListener('beforeunload', function(e) {
         if (hasChanges) {
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.returnValue = '';
         }
     });
-    
+
     // Resetear flag al enviar formulario
     document.getElementById('roleForm').addEventListener('submit', function() {
         hasChanges = false;
