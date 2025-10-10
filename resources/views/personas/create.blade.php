@@ -39,13 +39,23 @@
             </div>
 
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <h6><i class="fas fa-exclamation-triangle me-1"></i> Errores de validación:</h6>
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-exclamation-circle me-2 mt-1"></i>
+                        <div class="flex-grow-1">
+                            <strong>Error de validación:</strong>
+                            @if($errors->has('numero_documento'))
+                                <p class="mb-0 mt-1">{{ $errors->first('numero_documento') }}</p>
+                            @elseif($errors->has('celular'))
+                                <p class="mb-0 mt-1">{{ $errors->first('celular') }}</p>
+                            @elseif($errors->has('correo'))
+                                <p class="mb-0 mt-1">{{ $errors->first('correo') }}</p>
+                            @else
+                                <p class="mb-0 mt-1">Por favor, revisa los campos marcados en rojo.</p>
+                            @endif
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>
             @endif
 

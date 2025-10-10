@@ -161,13 +161,13 @@ return [
             'before_or_equal' => 'La persona debe ser mayor de 18 años.',
         ],
         'celular' => [
-            'unique' => 'Este número de celular ya está registrado por otra persona.',
+            'unique' => 'El número de celular ya se encuentra registrado en el sistema.',
         ],
         'correo' => [
-            'unique' => 'Este correo electrónico ya está registrado por otra persona.',
+            'unique' => 'El correo electrónico ya se encuentra registrado en el sistema.',
         ],
         'numero_documento' => [
-            'unique' => 'Este número de documento ya está registrado por otra persona.',
+            'unique' => 'El número de documento de identidad ya se encuentra registrado en el sistema.',
         ],
     ],
 
