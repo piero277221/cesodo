@@ -8,6 +8,10 @@ use App\Models\Consumo;
 use App\Models\Producto;
 use App\Models\Pedido;
 use App\Models\Inventario;
+use App\Models\WidgetType;
+use App\Models\UserDashboardWidget;
+use App\Models\DashboardLayout;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -66,13 +70,20 @@ class DashboardController extends Controller
                 ]);
             }
 
+            // Widget System Integration
+            $user = Auth::user();
+            $availableWidgets = WidgetType::active()->ordered()->get();
+            $userWidgets = $user ? $user->dashboardWidgets()->with('widgetType')->visible()->ordered()->get() : collect();
+
             return view('dashboard', compact(
                 'stats',
                 'consumosHoy',
                 'productosStockBajo',
                 'ultimosConsumos',
                 'pedidosPendientes',
-                'consumosSemana'
+                'consumosSemana',
+                'availableWidgets',
+                'userWidgets'
             ));
         } catch (\Exception $e) {
             // En caso de error, mostrar vista con datos de ejemplo

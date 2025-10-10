@@ -8,6 +8,7 @@ use App\Models\MenuPlato;
 use App\Models\Producto;
 use App\Models\Kardex;
 use App\Traits\KardexTrait;
+use App\Helpers\DatabaseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -114,14 +115,16 @@ class MenuController extends Controller
             $menus = $query->paginate(10)->withQueryString();
 
             // Estadísticas para el dashboard
+            $costoQuery = Menu::query();
+            \App\Helpers\DatabaseHelper::whereMonth($costoQuery, 'fecha_inicio', date('m'));
+            \App\Helpers\DatabaseHelper::whereYear($costoQuery, 'fecha_inicio', date('Y'));
+            
             $estadisticas = [
                 'total_menus' => Menu::count(),
                 'menus_activos' => Menu::where('estado', 'activo')->count(),
                 'menus_planificados' => Menu::whereIn('estado', ['planificado', 'borrador'])->count(),
                 'menus_completados' => Menu::where('estado', 'completado')->count(),
-                'costo_total_mes' => Menu::whereMonth('fecha_inicio', date('m'))
-                                         ->whereYear('fecha_inicio', date('Y'))
-                                         ->sum('costo_estimado') ?? 0
+                'costo_total_mes' => $costoQuery->sum('costo_estimado') ?? 0
             ];
 
             if ($request->ajax()) {

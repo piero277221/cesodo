@@ -113,6 +113,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Dashboard Widgets - Sistema de widgets personalizables
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('editor', [\App\Http\Controllers\DashboardWidgetController::class, 'editor'])->name('editor');
+        Route::get('config', [\App\Http\Controllers\DashboardWidgetController::class, 'getConfig'])->name('config');
+        Route::post('widgets', [\App\Http\Controllers\DashboardWidgetController::class, 'addWidget'])->name('widgets.add');
+        Route::put('widgets/{widgetId}', [\App\Http\Controllers\DashboardWidgetController::class, 'updateWidget'])->name('widgets.update');
+        Route::patch('widgets/positions', [\App\Http\Controllers\DashboardWidgetController::class, 'updatePositions'])->name('widgets.positions');
+        Route::delete('widgets/{widgetId}', [\App\Http\Controllers\DashboardWidgetController::class, 'removeWidget'])->name('widgets.remove');
+        Route::post('widgets/{widgetId}/toggle-visibility', [\App\Http\Controllers\DashboardWidgetController::class, 'toggleVisibility'])->name('widgets.toggle-visibility');
+        Route::post('widgets/{widgetId}/toggle-collapsed', [\App\Http\Controllers\DashboardWidgetController::class, 'toggleCollapsed'])->name('widgets.toggle-collapsed');
+        Route::get('widgets/{widgetId}/data', [\App\Http\Controllers\DashboardWidgetController::class, 'getWidgetData'])->name('widgets.data');
+        Route::post('reset', [\App\Http\Controllers\DashboardWidgetController::class, 'resetToDefault'])->name('reset');
+        Route::post('layouts', [\App\Http\Controllers\DashboardWidgetController::class, 'saveAsLayout'])->name('layouts.save');
+        Route::post('layouts/{layoutId}/apply', [\App\Http\Controllers\DashboardWidgetController::class, 'applyLayout'])->name('layouts.apply');
+    });
+
     // API Routes - Rutas independientes para evitar conflictos con route model binding
     Route::get('/api/personas/buscar-por-dni/{dni}', [TrabajadorController::class, 'buscarPersonaPorDni'])->name('trabajadores.buscar-persona');
 

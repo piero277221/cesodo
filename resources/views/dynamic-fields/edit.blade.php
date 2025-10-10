@@ -53,10 +53,10 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="name" class="form-label">Nombre del Campo <span class="text-danger">*</span></label>
-                                            <input type="text" 
-                                                   class="form-control @error('name') is-invalid @enderror" 
-                                                   id="name" 
-                                                   name="name" 
+                                            <input type="text"
+                                                   class="form-control @error('name') is-invalid @enderror"
+                                                   id="name"
+                                                   name="name"
                                                    value="{{ old('name', $dynamicField->name) }}"
                                                    placeholder="ej: telefono_personal">
                                             <small class="text-muted">Nombre único para el campo (snake_case)</small>
@@ -67,10 +67,10 @@
 
                                         <div class="col-md-6">
                                             <label for="label" class="form-label">Etiqueta <span class="text-danger">*</span></label>
-                                            <input type="text" 
-                                                   class="form-control @error('label') is-invalid @enderror" 
-                                                   id="label" 
-                                                   name="label" 
+                                            <input type="text"
+                                                   class="form-control @error('label') is-invalid @enderror"
+                                                   id="label"
+                                                   name="label"
                                                    value="{{ old('label', $dynamicField->label) }}"
                                                    placeholder="ej: Teléfono Personal">
                                             <small class="text-muted">Texto que se mostrará al usuario</small>
@@ -83,8 +83,8 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="type" class="form-label">Tipo de Campo <span class="text-danger">*</span></label>
-                                            <select class="form-select @error('type') is-invalid @enderror" 
-                                                    id="type" 
+                                            <select class="form-select @error('type') is-invalid @enderror"
+                                                    id="type"
                                                     name="type">
                                                 <option value="">Seleccionar tipo...</option>
                                                 @foreach(['text' => 'Texto', 'textarea' => 'Área de Texto', 'number' => 'Número', 'email' => 'Email', 'password' => 'Contraseña', 'date' => 'Fecha', 'datetime' => 'Fecha y Hora', 'time' => 'Hora', 'select' => 'Lista Desplegable', 'checkbox' => 'Casilla de Verificación', 'radio' => 'Botones de Radio', 'file' => 'Archivo', 'image' => 'Imagen', 'url' => 'URL', 'tel' => 'Teléfono'] as $value => $label)
@@ -100,8 +100,8 @@
 
                                         <div class="col-md-6">
                                             <label for="module" class="form-label">Módulo <span class="text-danger">*</span></label>
-                                            <select class="form-select @error('module') is-invalid @enderror" 
-                                                    id="module" 
+                                            <select class="form-select @error('module') is-invalid @enderror"
+                                                    id="module"
                                                     name="module">
                                                 <option value="">Seleccionar módulo...</option>
                                                 @foreach(['trabajadores' => 'Trabajadores', 'clientes' => 'Clientes', 'contratos' => 'Contratos', 'inventario' => 'Inventario', 'compras' => 'Compras', 'pedidos' => 'Pedidos'] as $value => $label)
@@ -118,9 +118,9 @@
 
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Descripción</label>
-                                        <textarea class="form-control @error('description') is-invalid @enderror" 
-                                                  id="description" 
-                                                  name="description" 
+                                        <textarea class="form-control @error('description') is-invalid @enderror"
+                                                  id="description"
+                                                  name="description"
                                                   rows="2"
                                                   placeholder="Descripción opcional del campo">{{ old('description', $dynamicField->description) }}</textarea>
                                         @error('description')
@@ -153,10 +153,10 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-check">
-                                                <input class="form-check-input" 
-                                                       type="checkbox" 
-                                                       id="required" 
-                                                       name="validation_rules[required]" 
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       id="required"
+                                                       name="validation_rules[required]"
                                                        {{ isset(old('validation_rules', $dynamicField->validation_rules ?? [])['required']) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="required">
                                                     Campo Obligatorio
@@ -165,10 +165,10 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-check">
-                                                <input class="form-check-input" 
-                                                       type="checkbox" 
-                                                       id="unique" 
-                                                       name="validation_rules[unique]" 
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       id="unique"
+                                                       name="validation_rules[unique]"
                                                        {{ isset(old('validation_rules', $dynamicField->validation_rules ?? [])['unique']) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="unique">
                                                     Valor Único
@@ -180,19 +180,19 @@
                                     <div class="row mb-3" id="lengthRules" style="display: none;">
                                         <div class="col-md-6">
                                             <label for="min_length" class="form-label">Longitud Mínima</label>
-                                            <input type="number" 
-                                                   class="form-control" 
-                                                   id="min_length" 
-                                                   name="validation_rules[min_length]" 
+                                            <input type="number"
+                                                   class="form-control"
+                                                   id="min_length"
+                                                   name="validation_rules[min_length]"
                                                    value="{{ old('validation_rules.min_length', $dynamicField->validation_rules['min_length'] ?? '') }}"
                                                    min="0">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="max_length" class="form-label">Longitud Máxima</label>
-                                            <input type="number" 
-                                                   class="form-control" 
-                                                   id="max_length" 
-                                                   name="validation_rules[max_length]" 
+                                            <input type="number"
+                                                   class="form-control"
+                                                   id="max_length"
+                                                   name="validation_rules[max_length]"
                                                    value="{{ old('validation_rules.max_length', $dynamicField->validation_rules['max_length'] ?? '') }}"
                                                    min="1">
                                         </div>
@@ -201,19 +201,19 @@
                                     <div class="row mb-3" id="numericRules" style="display: none;">
                                         <div class="col-md-6">
                                             <label for="min_value" class="form-label">Valor Mínimo</label>
-                                            <input type="number" 
-                                                   class="form-control" 
-                                                   id="min_value" 
-                                                   name="validation_rules[min_value]" 
+                                            <input type="number"
+                                                   class="form-control"
+                                                   id="min_value"
+                                                   name="validation_rules[min_value]"
                                                    value="{{ old('validation_rules.min_value', $dynamicField->validation_rules['min_value'] ?? '') }}"
                                                    step="any">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="max_value" class="form-label">Valor Máximo</label>
-                                            <input type="number" 
-                                                   class="form-control" 
-                                                   id="max_value" 
-                                                   name="validation_rules[max_value]" 
+                                            <input type="number"
+                                                   class="form-control"
+                                                   id="max_value"
+                                                   name="validation_rules[max_value]"
                                                    value="{{ old('validation_rules.max_value', $dynamicField->validation_rules['max_value'] ?? '') }}"
                                                    step="any">
                                         </div>
@@ -221,10 +221,10 @@
 
                                     <div class="mb-3" id="patternRule" style="display: none;">
                                         <label for="pattern" class="form-label">Patrón (Regex)</label>
-                                        <input type="text" 
-                                               class="form-control" 
-                                               id="pattern" 
-                                               name="validation_rules[pattern]" 
+                                        <input type="text"
+                                               class="form-control"
+                                               id="pattern"
+                                               name="validation_rules[pattern]"
                                                value="{{ old('validation_rules.pattern', $dynamicField->validation_rules['pattern'] ?? '') }}"
                                                placeholder="ej: ^[0-9]{10}$ para teléfono de 10 dígitos">
                                         <small class="text-muted">Expresión regular para validación personalizada</small>
@@ -258,29 +258,29 @@
                                     <div class="card-body">
                                         <div class="mb-3">
                                             <label for="placeholder" class="form-label">Placeholder</label>
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="placeholder" 
-                                                   name="placeholder" 
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="placeholder"
+                                                   name="placeholder"
                                                    value="{{ old('placeholder', $dynamicField->placeholder) }}"
                                                    placeholder="Texto de ayuda...">
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="default_value" class="form-label">Valor por Defecto</label>
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="default_value" 
-                                                   name="default_value" 
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="default_value"
+                                                   name="default_value"
                                                    value="{{ old('default_value', $dynamicField->default_value) }}">
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="css_classes" class="form-label">Clases CSS</label>
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="css_classes" 
-                                                   name="css_classes" 
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="css_classes"
+                                                   name="css_classes"
                                                    value="{{ old('css_classes', $dynamicField->css_classes) }}"
                                                    placeholder="ej: form-control-lg">
                                         </div>
@@ -298,10 +298,10 @@
                                         </div>
 
                                         <div class="form-check">
-                                            <input class="form-check-input" 
-                                                   type="checkbox" 
-                                                   id="is_active" 
-                                                   name="is_active" 
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   id="is_active"
+                                                   name="is_active"
                                                    {{ old('is_active', $dynamicField->is_active) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="is_active">
                                                 Campo Activo
@@ -362,10 +362,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize existing options if editing a select/radio field
     const existingOptions = @json($dynamicField->options ?? []);
-    
+
     function toggleSections() {
         const selectedType = typeSelect.value;
-        
+
         // Show/hide options section
         if (['select', 'radio'].includes(selectedType)) {
             optionsSection.style.display = 'block';
@@ -424,9 +424,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const label = document.getElementById('label').value || 'Campo de Ejemplo';
         const placeholder = document.getElementById('placeholder').value;
         const required = document.getElementById('required').checked;
-        
+
         let previewHTML = `<label class="form-label">${label}${required ? ' <span class="text-danger">*</span>' : ''}</label>`;
-        
+
         switch (type) {
             case 'text':
             case 'email':
@@ -480,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
             default:
                 previewHTML += '<p class="text-muted">Selecciona un tipo de campo</p>';
         }
-        
+
         fieldPreview.innerHTML = previewHTML;
     }
 
@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners
     typeSelect.addEventListener('change', toggleSections);
     addOptionBtn.addEventListener('click', () => addOption());
-    
+
     // Update preview on input changes
     ['label', 'placeholder', 'required'].forEach(id => {
         const element = document.getElementById(id);

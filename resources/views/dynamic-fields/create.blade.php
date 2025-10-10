@@ -36,18 +36,18 @@
                 <div class="card-body">
                     <form action="{{ route('dynamic-fields.store') }}" method="POST" id="fieldForm">
                         @csrf
-                        
+
                         <!-- Información básica -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="name" class="form-label fw-bold">
                                     <i class="fas fa-tag me-1"></i>Nombre del Campo *
                                 </label>
-                                <input type="text" 
-                                       class="form-control @error('name') is-invalid @enderror" 
-                                       id="name" 
-                                       name="name" 
-                                       value="{{ old('name') }}" 
+                                <input type="text"
+                                       class="form-control @error('name') is-invalid @enderror"
+                                       id="name"
+                                       name="name"
+                                       value="{{ old('name') }}"
                                        placeholder="Ej: telefono_contacto, fecha_vencimiento"
                                        required>
                                 @error('name')
@@ -58,16 +58,16 @@
                                     Solo letras, números y guiones bajos. Sin espacios.
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6 mb-3">
                                 <label for="label" class="form-label fw-bold">
                                     <i class="fas fa-font me-1"></i>Etiqueta Visible *
                                 </label>
-                                <input type="text" 
-                                       class="form-control @error('label') is-invalid @enderror" 
-                                       id="label" 
-                                       name="label" 
-                                       value="{{ old('label') }}" 
+                                <input type="text"
+                                       class="form-control @error('label') is-invalid @enderror"
+                                       id="label"
+                                       name="label"
+                                       value="{{ old('label') }}"
                                        placeholder="Ej: Teléfono de Contacto, Fecha de Vencimiento"
                                        required>
                                 @error('label')
@@ -81,9 +81,9 @@
                                 <label for="module" class="form-label fw-bold">
                                     <i class="fas fa-cube me-1"></i>Módulo *
                                 </label>
-                                <select class="form-select @error('module') is-invalid @enderror" 
-                                        id="module" 
-                                        name="module" 
+                                <select class="form-select @error('module') is-invalid @enderror"
+                                        id="module"
+                                        name="module"
                                         required>
                                     <option value="">-- Seleccionar Módulo --</option>
                                     @foreach($availableModules as $moduleKey => $moduleName)
@@ -96,14 +96,14 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-md-6 mb-3">
                                 <label for="type" class="form-label fw-bold">
                                     <i class="fas fa-cog me-1"></i>Tipo de Campo *
                                 </label>
-                                <select class="form-select @error('type') is-invalid @enderror" 
-                                        id="type" 
-                                        name="type" 
+                                <select class="form-select @error('type') is-invalid @enderror"
+                                        id="type"
+                                        name="type"
                                         required>
                                     <option value="">-- Seleccionar Tipo --</option>
                                     @foreach($fieldTypes as $typeKey => $typeName)
@@ -124,26 +124,26 @@
                                 <label for="placeholder" class="form-label fw-bold">
                                     <i class="fas fa-i-cursor me-1"></i>Placeholder
                                 </label>
-                                <input type="text" 
-                                       class="form-control @error('placeholder') is-invalid @enderror" 
-                                       id="placeholder" 
-                                       name="placeholder" 
-                                       value="{{ old('placeholder') }}" 
+                                <input type="text"
+                                       class="form-control @error('placeholder') is-invalid @enderror"
+                                       id="placeholder"
+                                       name="placeholder"
+                                       value="{{ old('placeholder') }}"
                                        placeholder="Texto de ayuda en el campo">
                                 @error('placeholder')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-md-6 mb-3">
                                 <label for="default_value" class="form-label fw-bold">
                                     <i class="fas fa-star me-1"></i>Valor por Defecto
                                 </label>
-                                <input type="text" 
-                                       class="form-control @error('default_value') is-invalid @enderror" 
-                                       id="default_value" 
-                                       name="default_value" 
-                                       value="{{ old('default_value') }}" 
+                                <input type="text"
+                                       class="form-control @error('default_value') is-invalid @enderror"
+                                       id="default_value"
+                                       name="default_value"
+                                       value="{{ old('default_value') }}"
                                        placeholder="Valor inicial del campo">
                                 @error('default_value')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -193,8 +193,8 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="1" 
-                                                   id="is_required" name="is_required" 
+                                            <input class="form-check-input" type="checkbox" value="1"
+                                                   id="is_required" name="is_required"
                                                    {{ old('is_required') ? 'checked' : '' }}>
                                             <label class="form-check-label fw-bold" for="is_required">
                                                 <i class="fas fa-exclamation-circle text-danger me-1"></i>
@@ -202,11 +202,11 @@
                                             </label>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-4 mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="1" 
-                                                   id="is_active" name="is_active" 
+                                            <input class="form-check-input" type="checkbox" value="1"
+                                                   id="is_active" name="is_active"
                                                    {{ old('is_active', '1') ? 'checked' : '' }}>
                                             <label class="form-check-label fw-bold" for="is_active">
                                                 <i class="fas fa-eye text-success me-1"></i>
@@ -214,30 +214,30 @@
                                             </label>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-4 mb-3">
                                         <label for="sort_order" class="form-label fw-bold">
                                             <i class="fas fa-sort-numeric-up me-1"></i>Orden
                                         </label>
-                                        <input type="number" 
-                                               class="form-control @error('sort_order') is-invalid @enderror" 
-                                               id="sort_order" 
-                                               name="sort_order" 
-                                               value="{{ old('sort_order', 0) }}" 
+                                        <input type="number"
+                                               class="form-control @error('sort_order') is-invalid @enderror"
+                                               id="sort_order"
+                                               name="sort_order"
+                                               value="{{ old('sort_order', 0) }}"
                                                min="0">
                                         @error('sort_order')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     <label for="help_text" class="form-label fw-bold">
                                         <i class="fas fa-question-circle me-1"></i>Texto de Ayuda
                                     </label>
-                                    <textarea class="form-control @error('help_text') is-invalid @enderror" 
-                                              id="help_text" 
-                                              name="help_text" 
+                                    <textarea class="form-control @error('help_text') is-invalid @enderror"
+                                              id="help_text"
+                                              name="help_text"
                                               rows="2"
                                               placeholder="Texto de ayuda que aparecerá debajo del campo">{{ old('help_text') }}</textarea>
                                     @error('help_text')
@@ -272,7 +272,7 @@ let optionCounter = 1;
 document.getElementById('type').addEventListener('change', function() {
     const optionsSection = document.getElementById('optionsSection');
     const needsOptions = ['select', 'radio', 'checkbox'].includes(this.value);
-    
+
     optionsSection.style.display = needsOptions ? 'block' : 'none';
 });
 
@@ -331,13 +331,13 @@ document.getElementById('fieldForm').addEventListener('submit', function(e) {
     const label = document.getElementById('label').value.trim();
     const module = document.getElementById('module').value;
     const type = document.getElementById('type').value;
-    
+
     if (!name || !label || !module || !type) {
         e.preventDefault();
         alert('Por favor completa todos los campos obligatorios');
         return false;
     }
-    
+
     // Validar formato del nombre
     if (!/^[a-zA-Z0-9_]+$/.test(name)) {
         e.preventDefault();
@@ -345,7 +345,7 @@ document.getElementById('fieldForm').addEventListener('submit', function(e) {
         document.getElementById('name').focus();
         return false;
     }
-    
+
     return true;
 });
 

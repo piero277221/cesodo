@@ -114,4 +114,30 @@ class User extends Authenticatable
     {
         return $this->cambiar_password;
     }
+
+    /**
+     * Relación con widgets del dashboard
+     */
+    public function dashboardWidgets()
+    {
+        return $this->hasMany(UserDashboardWidget::class);
+    }
+
+    /**
+     * Relación con layouts creados por el usuario
+     */
+    public function createdLayouts()
+    {
+        return $this->hasMany(DashboardLayout::class, 'created_by');
+    }
+
+    /**
+     * Relación con layouts compartidos con el usuario
+     */
+    public function sharedLayouts()
+    {
+        return $this->belongsToMany(DashboardLayout::class, 'dashboard_layout_shares')
+            ->withPivot('can_edit')
+            ->withTimestamps();
+    }
 }

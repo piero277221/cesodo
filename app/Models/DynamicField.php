@@ -86,7 +86,7 @@ class DynamicField extends Model
     public static function getFieldsForModule(string $module): \Illuminate\Support\Collection
     {
         $cacheKey = "dynamic_fields.{$module}";
-        
+
         return Cache::remember($cacheKey, 3600, function () use ($module) {
             return self::active()
                 ->forModule($module)
@@ -109,12 +109,12 @@ class DynamicField extends Model
     public function getValidationRulesFormatted(): array
     {
         $rules = $this->validation_rules ?? [];
-        
+
         // Agregar regla required si el campo es obligatorio
         if ($this->is_required) {
             array_unshift($rules, 'required');
         }
-        
+
         return $rules;
     }
 
@@ -124,16 +124,16 @@ class DynamicField extends Model
     public function getHtmlAttributes(): array
     {
         $attributes = $this->attributes ?? [];
-        
+
         // Agregar atributos por defecto según el tipo
         if ($this->placeholder) {
             $attributes['placeholder'] = $this->placeholder;
         }
-        
+
         if ($this->is_required) {
             $attributes['required'] = true;
         }
-        
+
         return $attributes;
     }
 
@@ -153,7 +153,7 @@ class DynamicField extends Model
         if (!$this->hasOptions()) {
             return [];
         }
-        
+
         return $this->options ?? [];
     }
 
@@ -164,7 +164,7 @@ class DynamicField extends Model
     {
         $attributes = $this->getHtmlAttributes();
         $attributesString = '';
-        
+
         foreach ($attributes as $key => $val) {
             if (is_bool($val)) {
                 if ($val) $attributesString .= " {$key}";
@@ -172,16 +172,16 @@ class DynamicField extends Model
                 $attributesString .= " {$key}=\"" . htmlspecialchars($val) . "\"";
             }
         }
-        
+
         $fieldName = "dynamic_fields[{$this->name}]";
         $fieldId = "dynamic_field_{$this->name}";
         $currentValue = $value ?? $this->default_value;
-        
+
         switch ($this->type) {
             case 'textarea':
-                return "<textarea name=\"{$fieldName}\" id=\"{$fieldId}\" class=\"form-control\"{$attributesString}>" . 
+                return "<textarea name=\"{$fieldName}\" id=\"{$fieldId}\" class=\"form-control\"{$attributesString}>" .
                        htmlspecialchars($currentValue ?? '') . "</textarea>";
-                       
+
             case 'select':
                 $html = "<select name=\"{$fieldName}\" id=\"{$fieldId}\" class=\"form-control\"{$attributesString}>";
                 if (!$this->is_required) {
@@ -189,32 +189,32 @@ class DynamicField extends Model
                 }
                 foreach ($this->getFormattedOptions() as $optionValue => $optionLabel) {
                     $selected = ($currentValue == $optionValue) ? ' selected' : '';
-                    $html .= "<option value=\"" . htmlspecialchars($optionValue) . "\"{$selected}>" . 
+                    $html .= "<option value=\"" . htmlspecialchars($optionValue) . "\"{$selected}>" .
                             htmlspecialchars($optionLabel) . "</option>";
                 }
                 $html .= "</select>";
                 return $html;
-                
+
             case 'checkbox':
                 $checked = $currentValue ? ' checked' : '';
                 return "<input type=\"hidden\" name=\"{$fieldName}\" value=\"0\">" .
                        "<input type=\"checkbox\" name=\"{$fieldName}\" id=\"{$fieldId}\" class=\"form-check-input\" value=\"1\"{$checked}{$attributesString}>";
-                       
+
             case 'radio':
                 $html = '';
                 foreach ($this->getFormattedOptions() as $optionValue => $optionLabel) {
                     $checked = ($currentValue == $optionValue) ? ' checked' : '';
                     $html .= "<div class=\"form-check\">";
-                    $html .= "<input type=\"radio\" name=\"{$fieldName}\" id=\"{$fieldId}_{$optionValue}\" class=\"form-check-input\" value=\"" . 
+                    $html .= "<input type=\"radio\" name=\"{$fieldName}\" id=\"{$fieldId}_{$optionValue}\" class=\"form-check-input\" value=\"" .
                             htmlspecialchars($optionValue) . "\"{$checked}{$attributesString}>";
-                    $html .= "<label class=\"form-check-label\" for=\"{$fieldId}_{$optionValue}\">" . 
+                    $html .= "<label class=\"form-check-label\" for=\"{$fieldId}_{$optionValue}\">" .
                             htmlspecialchars($optionLabel) . "</label>";
                     $html .= "</div>";
                 }
                 return $html;
-                
+
             default:
-                return "<input type=\"{$this->type}\" name=\"{$fieldName}\" id=\"{$fieldId}\" class=\"form-control\" value=\"" . 
+                return "<input type=\"{$this->type}\" name=\"{$fieldName}\" id=\"{$fieldId}\" class=\"form-control\" value=\"" .
                        htmlspecialchars($currentValue ?? '') . "\"{$attributesString}>";
         }
     }
@@ -225,12 +225,12 @@ class DynamicField extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         // Limpiar cache al guardar o eliminar
         static::saved(function ($field) {
             self::clearModuleCache($field->module);
         });
-        
+
         static::deleted(function ($field) {
             self::clearModuleCache($field->module);
         });

@@ -29,7 +29,7 @@
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             @foreach($availableModules as $moduleKey => $moduleName)
-                            <li><a class="dropdown-item {{ $module == $moduleKey ? 'active' : '' }}" 
+                            <li><a class="dropdown-item {{ $module == $moduleKey ? 'active' : '' }}"
                                    href="{{ route('dynamic-fields.index', ['module' => $moduleKey]) }}">
                                 <i class="fas fa-cube me-2"></i>{{ $moduleName }}
                             </a></li>
@@ -205,19 +205,19 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
-                                                <a href="{{ route('dynamic-fields.show', $field) }}" 
+                                                <a href="{{ route('dynamic-fields.show', $field) }}"
                                                    class="btn btn-outline-info" title="Ver">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('dynamic-fields.edit', $field) }}" 
+                                                <a href="{{ route('dynamic-fields.edit', $field) }}"
                                                    class="btn btn-outline-primary" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button type="button" class="btn btn-outline-secondary" 
+                                                <button type="button" class="btn btn-outline-secondary"
                                                         title="Duplicar" onclick="duplicateField({{ $field->id }})">
                                                     <i class="fas fa-copy"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-outline-danger" 
+                                                <button type="button" class="btn btn-outline-danger"
                                                         title="Eliminar" onclick="deleteField({{ $field->id }}, '{{ $field->label }}')">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -277,7 +277,7 @@
 function deleteField(fieldId, fieldName) {
     document.getElementById('fieldNameToDelete').textContent = fieldName;
     document.getElementById('deleteForm').action = `/dynamic-fields/${fieldId}`;
-    
+
     var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     deleteModal.show();
 }
@@ -289,14 +289,14 @@ function duplicateField(fieldId) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/dynamic-fields/${fieldId}/duplicate`;
-        
+
         // Token CSRF
         const csrfToken = document.createElement('input');
         csrfToken.type = 'hidden';
         csrfToken.name = '_token';
         csrfToken.value = '{{ csrf_token() }}';
         form.appendChild(csrfToken);
-        
+
         document.body.appendChild(form);
         form.submit();
     }
@@ -305,7 +305,7 @@ function duplicateField(fieldId) {
 // Inicializar ordenamiento por arrastre
 document.addEventListener('DOMContentLoaded', function() {
     const sortableElement = document.getElementById('sortableFields');
-    
+
     if (sortableElement) {
         Sortable.create(sortableElement, {
             handle: '.drag-handle',
@@ -321,14 +321,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateFieldOrder() {
     const rows = document.querySelectorAll('#sortableFields tr');
     const fieldsData = [];
-    
+
     rows.forEach((row, index) => {
         fieldsData.push({
             id: parseInt(row.dataset.fieldId),
             sort_order: index
         });
     });
-    
+
     // Enviar actualización al servidor
     fetch('/dynamic-fields/reorder', {
         method: 'POST',
@@ -364,9 +364,9 @@ function showToast(message, type) {
         ${message}
         <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
     `;
-    
+
     document.body.appendChild(toast);
-    
+
     // Remover automáticamente después de 3 segundos
     setTimeout(() => {
         if (toast.parentElement) {

@@ -38,7 +38,7 @@ trait HasDynamicFields
     public function getDynamicFieldValue(string $fieldName)
     {
         $field = $this->getDynamicFields()->firstWhere('name', $fieldName);
-        
+
         if (!$field) {
             return null;
         }
@@ -58,7 +58,7 @@ trait HasDynamicFields
     public function setDynamicFieldValue(string $fieldName, $value): void
     {
         $field = $this->getDynamicFields()->firstWhere('name', $fieldName);
-        
+
         if (!$field) {
             throw new \InvalidArgumentException("Campo dinámico '{$fieldName}' no encontrado");
         }
@@ -87,7 +87,7 @@ trait HasDynamicFields
     public function getDynamicFieldsValues(): array
     {
         $values = [];
-        
+
         foreach ($this->getDynamicFields() as $field) {
             $values[$field->name] = $this->getDynamicFieldValue($field->name);
         }
@@ -121,7 +121,7 @@ trait HasDynamicFields
 
         foreach ($this->getDynamicFields() as $field) {
             $fieldKey = "dynamic_fields.{$field->name}";
-            
+
             if (!empty($field->validation_rules)) {
                 $rules[$fieldKey] = $field->getValidationRulesFormatted();
             }
@@ -134,7 +134,7 @@ trait HasDynamicFields
         }
 
         $validator = \Validator::make($data, $rules, $messages, $attributes);
-        
+
         return $validator->errors()->toArray();
     }
 
@@ -145,14 +145,14 @@ trait HasDynamicFields
     {
         $html = '';
         $fields = $this->getDynamicFields();
-        
+
         if ($fields->isEmpty()) {
             return $html;
         }
 
         // Agrupar campos por grupo
         $groupedFields = $fields->groupBy('group');
-        
+
         foreach ($groupedFields as $groupName => $groupFields) {
             if ($groupName) {
                 $html .= "<div class=\"card mb-3\">";
@@ -162,7 +162,7 @@ trait HasDynamicFields
 
             foreach ($groupFields as $field) {
                 $currentValue = $values[$field->name] ?? $this->getDynamicFieldValue($field->name);
-                
+
                 $html .= "<div class=\"mb-3\">";
                 $html .= "<label for=\"dynamic_field_{$field->name}\" class=\"form-label\">";
                 $html .= htmlspecialchars($field->label);
@@ -170,13 +170,13 @@ trait HasDynamicFields
                     $html .= " <span class=\"text-danger\">*</span>";
                 }
                 $html .= "</label>";
-                
+
                 $html .= $field->renderField($currentValue);
-                
+
                 if ($field->help_text) {
                     $html .= "<div class=\"form-text\">" . htmlspecialchars($field->help_text) . "</div>";
                 }
-                
+
                 $html .= "</div>";
             }
 

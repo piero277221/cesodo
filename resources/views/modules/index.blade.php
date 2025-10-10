@@ -311,8 +311,8 @@
                         <div class="mt-2">
                             <small class="text-primary">
                                 <i class="fas fa-magic me-1"></i>
-                                <a href="{{ route('dynamic-fields.form-builder') }}" 
-                                   class="text-decoration-none" 
+                                <a href="{{ route('dynamic-fields.form-builder') }}"
+                                   class="text-decoration-none"
                                    onclick="event.stopPropagation(); window.location.href='{{ route('dynamic-fields.form-builder') }}'">
                                     Constructor Visual
                                 </a>

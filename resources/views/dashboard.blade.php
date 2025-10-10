@@ -5,6 +5,9 @@
 @push('styles')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/gridstack/8.4.0/gridstack.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gridstack/8.4.0/gridstack-all.min.js"></script>
+<link href="{{ asset('css/dashboard-widgets.css') }}" rel="stylesheet">
 <style>
     /* ⚡ ELIMINACIÓN RADICAL DE ESPACIOS EN BLANCO */
     .container-fluid {
@@ -68,11 +71,143 @@
     .bg-gradient-danger {
         background: linear-gradient(45deg, #fd79a8, #e84393);
     }
+
+    /* Dashboard Widgets Styles */
+    .dashboard-toggle {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 1000;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    .dashboard-toggle:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .legacy-dashboard {
+        display: block;
+    }
+
+    .modern-dashboard {
+        display: none;
+    }
+
+    .dashboard-mode-legacy .legacy-dashboard {
+        display: block;
+    }
+
+    .dashboard-mode-legacy .modern-dashboard {
+        display: none;
+    }
+
+    .dashboard-mode-modern .legacy-dashboard {
+        display: none;
+    }
+
+    .dashboard-mode-modern .modern-dashboard {
+        display: block;
+    }
+
+    /* Widget Grid Styles */
+    .grid-stack {
+        background: transparent;
+    }
+
+    .grid-stack-item-content {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .widget-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .widget-header {
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .widget-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .widget-controls {
+        display: flex;
+        gap: 0.25rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .widget-container:hover .widget-controls {
+        opacity: 1;
+    }
+
+    .widget-content {
+        flex: 1;
+        padding: 1rem;
+        overflow: auto;
+    }
+
+    .dashboard-toolbar {
+        background: white;
+        border-bottom: 1px solid #e9ecef;
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+    }
+
+    .add-widget-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #28a745;
+        color: white;
+        border: none;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .add-widget-btn:hover {
+        background: #218838;
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
 </style>
 @endpush
 
 @section('content')
-<div class="container-fluid" style="margin: 0; padding: 0 15px;">
+<!-- Dashboard Mode Toggle -->
+<button class="dashboard-toggle" id="dashboardToggle" title="Cambiar vista del dashboard">
+    <i class="fas fa-th-large me-2"></i>
+    <span id="toggleText">Vista Moderna</span>
+</button>
+
+<div class="container-fluid dashboard-mode-legacy" id="dashboardContainer" style="margin: 0; padding: 0 15px;">
     @if(isset($error))
         <div class="alert alert-danger">
             <h5><i class="fas fa-exclamation-triangle me-2"></i>Error en el Dashboard</h5>
@@ -373,66 +508,550 @@
             </div>
         </div>
     </div>
+
+    <!-- MODERN DASHBOARD WITH WIDGETS -->
+    <div class="modern-dashboard">
+        <!-- Dashboard Toolbar -->
+        <div class="dashboard-toolbar">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Dashboard Personalizable
+                    </h4>
+                    <p class="text-muted mb-0">Arrastra y organiza los widgets según tus necesidades</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary btn-sm" id="addWidgetBtn">
+                        <i class="fas fa-plus me-1"></i>
+                        Agregar Widget
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" id="saveLayoutBtn">
+                        <i class="fas fa-save me-1"></i>
+                        Guardar Layout
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm" id="resetLayoutBtn">
+                        <i class="fas fa-refresh me-1"></i>
+                        Restablecer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Widget Grid -->
+        <div class="grid-stack" id="widgetGrid">
+            <!-- Los widgets se cargarán dinámicamente -->
+        </div>
+    </div>
+</div>
+
+<!-- Add Widget Modal -->
+<div class="modal fade" id="addWidgetModal" tabindex="-1" aria-labelledby="addWidgetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addWidgetModalLabel">
+                    <i class="fas fa-plus me-2"></i>
+                    Agregar Nuevo Widget
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="widgetTypesList">
+                    <!-- Widget types will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Widget Configuration Modal -->
+<div class="modal fade" id="configWidgetModal" tabindex="-1" aria-labelledby="configWidgetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="configWidgetModalLabel">
+                    <i class="fas fa-cog me-2"></i>
+                    Configurar Widget
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="widgetConfigForm">
+                    <div id="configFormFields">
+                        <!-- Configuration fields will be generated dynamically -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveWidgetConfigBtn">
+                    <i class="fas fa-save me-1"></i>
+                    Guardar Configuración
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Layout Modal -->
+<div class="modal fade" id="saveLayoutModal" tabindex="-1" aria-labelledby="saveLayoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saveLayoutModalLabel">
+                    <i class="fas fa-save me-2"></i>
+                    Guardar Layout
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="saveLayoutForm">
+                    <div class="mb-3">
+                        <label for="layoutName" class="form-label">Nombre del Layout</label>
+                        <input type="text" class="form-control" id="layoutName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="layoutDescription" class="form-label">Descripción (Opcional)</label>
+                        <textarea class="form-control" id="layoutDescription" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="layoutIsPublic" name="is_public">
+                            <label class="form-check-label" for="layoutIsPublic">
+                                Compartir con otros usuarios
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveLayoutSubmitBtn">
+                    <i class="fas fa-save me-1"></i>
+                    Guardar Layout
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')
+<script src="{{ asset('js/dashboard-widgets.js') }}"></script>
 <script>
-// Gráfico de consumos por tipo
-const consumosData = @json($consumosHoy);
-const ctx1 = document.getElementById('consumosChart').getContext('2d');
-new Chart(ctx1, {
-    type: 'doughnut',
-    data: {
-        labels: consumosData.map(item => item.tipo_comida.charAt(0).toUpperCase() + item.tipo_comida.slice(1)),
-        datasets: [{
-            data: consumosData.map(item => item.total),
-            backgroundColor: ['#fd7900', '#00b894', '#0984e3', '#6c5ce7'],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }
+// Dashboard Mode Management
+let dashboardMode = localStorage.getItem('dashboard-mode') || 'legacy';
+let widgetGrid = null;
+let currentConfigWidget = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeDashboard();
+
+    // Dashboard toggle functionality
+    document.getElementById('dashboardToggle').addEventListener('click', toggleDashboardMode);
+
+    // Modern dashboard functionality
+    document.getElementById('addWidgetBtn')?.addEventListener('click', showAddWidgetModal);
+    document.getElementById('saveLayoutBtn')?.addEventListener('click', showSaveLayoutModal);
+    document.getElementById('resetLayoutBtn')?.addEventListener('click', resetLayout);
+    document.getElementById('saveWidgetConfigBtn')?.addEventListener('click', saveWidgetConfig);
+    document.getElementById('saveLayoutSubmitBtn')?.addEventListener('click', saveLayout);
+
+    // Widget management
+    document.addEventListener('click', handleWidgetActions);
 });
 
-// Gráfico de consumos de la semana
-const semanaData = @json($consumosSemana);
-const ctx2 = document.getElementById('semanaChart').getContext('2d');
-new Chart(ctx2, {
-    type: 'line',
-    data: {
-        labels: semanaData.map(item => item.dia),
-        datasets: [{
-            label: 'Consumos',
-            data: semanaData.map(item => item.total),
-            borderColor: '#667eea',
-            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
+function initializeDashboard() {
+    const container = document.getElementById('dashboardContainer');
+    const toggleBtn = document.getElementById('dashboardToggle');
+    const toggleText = document.getElementById('toggleText');
+
+    if (dashboardMode === 'modern') {
+        container.className = 'container-fluid dashboard-mode-modern';
+        toggleText.textContent = 'Vista Clásica';
+        initializeWidgetGrid();
+    } else {
+        container.className = 'container-fluid dashboard-mode-legacy';
+        toggleText.textContent = 'Vista Moderna';
+        initializeLegacyCharts();
+    }
+}
+
+function toggleDashboardMode() {
+    dashboardMode = dashboardMode === 'legacy' ? 'modern' : 'legacy';
+    localStorage.setItem('dashboard-mode', dashboardMode);
+
+    const container = document.getElementById('dashboardContainer');
+    const toggleText = document.getElementById('toggleText');
+
+    if (dashboardMode === 'modern') {
+        container.className = 'container-fluid dashboard-mode-modern';
+        toggleText.textContent = 'Vista Clásica';
+        setTimeout(() => initializeWidgetGrid(), 100);
+    } else {
+        container.className = 'container-fluid dashboard-mode-legacy';
+        toggleText.textContent = 'Vista Moderna';
+        setTimeout(() => initializeLegacyCharts(), 100);
+    }
+}
+
+function initializeLegacyCharts() {
+    try {
+        // Gráfico de consumos por tipo
+        const consumosData = {!! json_encode($consumosHoy ?? []) !!};
+        const ctx1 = document.getElementById('consumosChart');
+        if (ctx1 && consumosData.length > 0) {
+            new Chart(ctx1.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: consumosData.map(item => item.tipo_comida.charAt(0).toUpperCase() + item.tipo_comida.slice(1)),
+                    datasets: [{
+                        data: consumosData.map(item => item.total),
+                        backgroundColor: ['#fd7900', '#00b894', '#0984e3', '#6c5ce7'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Gráfico de consumos de la semana
+        const semanaData = {!! json_encode($consumosSemana ?? []) !!};
+        const ctx2 = document.getElementById('semanaChart');
+        if (ctx2 && semanaData.length > 0) {
+            new Chart(ctx2.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: semanaData.map(item => item.dia),
+                    datasets: [{
+                        label: 'Consumos',
+                        data: semanaData.map(item => item.total),
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error initializing legacy charts:', error);
+    }
+}
+
+function initializeWidgetGrid() {
+    const gridElement = document.getElementById('widgetGrid');
+    if (!gridElement) return;
+
+    // Initialize GridStack
+    widgetGrid = GridStack.init({
+        cellHeight: 60,
+        margin: 10,
+        animate: true,
+        draggable: {
+            handle: '.widget-header'
         },
-        scales: {
-            y: {
-                beginAtZero: true
+        resizable: {
+            handles: 'e,se,s,sw,w'
+        }
+    }, gridElement);
+
+    // Load user widgets
+    loadUserWidgets();
+
+    // Handle position changes
+    widgetGrid.on('change', function(event, items) {
+        updateWidgetPositions(items);
+    });
+}
+
+function loadUserWidgets() {
+    fetch('{{ route("dashboard.config") }}')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.widgets) {
+                data.widgets.forEach(widget => {
+                    addWidgetToGrid(widget);
+                });
+            } else {
+                // Load default widgets if no user widgets
+                loadDefaultWidgets();
             }
+        })
+        .catch(error => {
+            console.error('Error loading widgets:', error);
+            loadDefaultWidgets();
+        });
+}
+
+function loadDefaultWidgets() {
+    const defaultWidgets = [
+        { type_id: 1, x: 0, y: 0, w: 3, h: 2 }, // Stats
+        { type_id: 2, x: 3, y: 0, w: 3, h: 2 }, // Quick Actions
+        { type_id: 3, x: 0, y: 2, w: 6, h: 2 }, // Welcome Banner
+        { type_id: 5, x: 0, y: 4, w: 3, h: 4 }, // Recent Consumos
+        { type_id: 4, x: 3, y: 4, w: 3, h: 4 }, // Chart
+    ];
+
+    defaultWidgets.forEach(widget => {
+        addWidget(widget.type_id, widget.x, widget.y, widget.w, widget.h);
+    });
+}
+
+function addWidgetToGrid(widget) {
+    const widgetElement = document.createElement('div');
+    widgetElement.className = 'grid-stack-item';
+    widgetElement.setAttribute('gs-id', widget.widget_id);
+    widgetElement.setAttribute('gs-x', widget.col_position);
+    widgetElement.setAttribute('gs-y', widget.row_position);
+    widgetElement.setAttribute('gs-w', widget.width);
+    widgetElement.setAttribute('gs-h', widget.height);
+
+    const contentElement = document.createElement('div');
+    contentElement.className = 'grid-stack-item-content';
+    contentElement.innerHTML = '<div class="text-center p-4"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
+
+    widgetElement.appendChild(contentElement);
+    widgetGrid.addWidget(widgetElement);
+
+    // Load widget content
+    loadWidgetContent(widget.widget_id, contentElement);
+}
+
+function loadWidgetContent(widgetId, container) {
+    fetch(`{{ url('/dashboard/widgets') }}/${widgetId}/data`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.html) {
+                container.innerHTML = data.html;
+            } else {
+                container.innerHTML = '<div class="alert alert-warning">Error cargando widget</div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading widget content:', error);
+            container.innerHTML = '<div class="alert alert-danger">Error de conexión</div>';
+        });
+}
+
+function showAddWidgetModal() {
+    fetch('{{ route("dashboard.config") }}')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.availableWidgets) {
+                renderWidgetTypes(data.availableWidgets);
+                new bootstrap.Modal(document.getElementById('addWidgetModal')).show();
+            }
+        })
+        .catch(error => console.error('Error loading widget types:', error));
+}
+
+function renderWidgetTypes(widgetTypes) {
+    const container = document.getElementById('widgetTypesList');
+    container.innerHTML = '';
+
+    widgetTypes.forEach(type => {
+        const col = document.createElement('div');
+        col.className = 'col-md-6 mb-3';
+        col.innerHTML = `
+            <div class="card widget-type-card h-100" onclick="addWidget(${type.id})" style="cursor: pointer;">
+                <div class="card-body text-center">
+                    <i class="${type.icon} fa-2x mb-2 text-primary"></i>
+                    <h6 class="card-title">${type.name}</h6>
+                    <p class="card-text small text-muted">${type.description}</p>
+                </div>
+            </div>
+        `;
+        container.appendChild(col);
+    });
+}
+
+function addWidget(typeId, x = null, y = null, w = 3, h = 3) {
+    const formData = new FormData();
+    formData.append('type_id', typeId);
+    if (x !== null) {
+        formData.append('col_position', x);
+        formData.append('row_position', y);
+        formData.append('width', w);
+        formData.append('height', h);
+    }
+
+    fetch('{{ route("dashboard.widgets.add") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            addWidgetToGrid(data.widget);
+            bootstrap.Modal.getInstance(document.getElementById('addWidgetModal'))?.hide();
+        } else {
+            alert('Error al agregar widget: ' + (data.message || 'Error desconocido'));
+        }
+    })
+    .catch(error => {
+        console.error('Error adding widget:', error);
+        alert('Error al agregar widget');
+    });
+}
+
+function updateWidgetPositions(items) {
+    const positions = items.map(item => ({
+        widget_id: item.id,
+        col_position: item.x,
+        row_position: item.y,
+        width: item.w,
+        height: item.h
+    }));
+
+    fetch('{{ route("dashboard.widgets.positions") }}', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ positions })
+    })
+    .catch(error => console.error('Error updating positions:', error));
+}
+
+function handleWidgetActions(event) {
+    const target = event.target.closest('button');
+    if (!target) return;
+
+    if (target.classList.contains('widget-config')) {
+        const widget = target.closest('[data-widget-id]');
+        if (widget) {
+            configureWidget(widget.getAttribute('data-widget-id'));
+        }
+    } else if (target.classList.contains('widget-remove')) {
+        const widget = target.closest('[data-widget-id]');
+        if (widget && confirm('¿Estás seguro de que quieres eliminar este widget?')) {
+            removeWidget(widget.getAttribute('data-widget-id'));
+        }
+    } else if (target.classList.contains('widget-collapse')) {
+        const widget = target.closest('[data-widget-id]');
+        if (widget) {
+            toggleWidgetCollapse(widget.getAttribute('data-widget-id'));
         }
     }
-});
+}
+
+function configureWidget(widgetId) {
+    currentConfigWidget = widgetId;
+    // Load widget configuration form
+    fetch(`{{ url('/dashboard/widgets') }}/${widgetId}/data`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                renderWidgetConfigForm(data.config || {});
+                new bootstrap.Modal(document.getElementById('configWidgetModal')).show();
+            }
+        })
+        .catch(error => console.error('Error loading widget config:', error));
+}
+
+function renderWidgetConfigForm(config) {
+    const container = document.getElementById('configFormFields');
+    container.innerHTML = '<p class="text-muted">Las opciones de configuración específicas del widget aparecerán aquí.</p>';
+}
+
+function removeWidget(widgetId) {
+    fetch(`{{ url('/dashboard/widgets') }}/${widgetId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const element = document.querySelector(`[gs-id="${widgetId}"]`);
+            if (element) {
+                widgetGrid.removeWidget(element);
+            }
+        }
+    })
+    .catch(error => console.error('Error removing widget:', error));
+}
+
+function saveLayout() {
+    const form = document.getElementById('saveLayoutForm');
+    const formData = new FormData(form);
+
+    fetch('{{ route("dashboard.layouts.save") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('saveLayoutModal')).hide();
+            alert('Layout guardado exitosamente');
+        } else {
+            alert('Error al guardar layout: ' + (data.message || 'Error desconocido'));
+        }
+    })
+    .catch(error => console.error('Error saving layout:', error));
+}
+
+function resetLayout() {
+    if (confirm('¿Estás seguro de que quieres restablecer el layout a la configuración por defecto?')) {
+        fetch('{{ route("dashboard.reset") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        })
+        .catch(error => console.error('Error resetting layout:', error));
+    }
+}
+
+function showSaveLayoutModal() {
+    new bootstrap.Modal(document.getElementById('saveLayoutModal')).show();
+}
+
+function saveWidgetConfig() {
+    // Widget configuration save functionality
+    if (currentConfigWidget) {
+        bootstrap.Modal.getInstance(document.getElementById('configWidgetModal')).hide();
+    }
+}
 </script>
 @endpush
 @endsection

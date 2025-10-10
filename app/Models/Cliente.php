@@ -100,10 +100,11 @@ class Cliente extends Model
         $mes = $mes ?: date('m');
         $año = $año ?: date('Y');
 
-        return $this->ventas()
-                   ->whereMonth('fecha_venta', $mes)
-                   ->whereYear('fecha_venta', $año)
-                   ->sum('total');
+        $query = $this->ventas();
+        \App\Helpers\DatabaseHelper::whereMonth($query, 'fecha_venta', $mes);
+        \App\Helpers\DatabaseHelper::whereYear($query, 'fecha_venta', $año);
+        
+        return $query->sum('total');
     }
 
     public function saldoPendiente()

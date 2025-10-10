@@ -6,6 +6,7 @@ use App\Models\Compra;
 use App\Models\CompraDetalle;
 use App\Models\Proveedor;
 use App\Models\Producto;
+use App\Helpers\DatabaseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -50,10 +51,12 @@ class CompraController extends Controller
                         ->paginate(15);
 
         // Estadísticas
+        $totalComprasQuery = Compra::query();
+        \App\Helpers\DatabaseHelper::whereMonth($totalComprasQuery, 'fecha_compra', date('m'));
+        \App\Helpers\DatabaseHelper::whereYear($totalComprasQuery, 'fecha_compra', date('Y'));
+
         $estadisticas = [
-            'total_compras_mes' => Compra::whereMonth('fecha_compra', date('m'))
-                                        ->whereYear('fecha_compra', date('Y'))
-                                        ->sum('total'),
+            'total_compras_mes' => $totalComprasQuery->sum('total'),
             'compras_pendientes' => Compra::where('estado', 'enviado')->count(),
             'total_por_recibir' => Compra::whereIn('estado', ['enviado', 'confirmado'])->sum('total'),
         ];

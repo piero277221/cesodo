@@ -37,7 +37,7 @@
                     <!-- Form Configuration -->
                     <div class="mb-4">
                         <h6 class="text-primary border-bottom pb-1 mb-2">Configuración</h6>
-                        
+
                         <div class="mb-2">
                             <label class="form-label small">Módulo:</label>
                             <select class="form-select form-select-sm" id="targetModule">
@@ -50,7 +50,7 @@
                                 <option value="pedidos">Pedidos</option>
                             </select>
                         </div>
-                        
+
                         <div class="mb-2">
                             <label class="form-label small">Grupo de Campos:</label>
                             <select class="form-select form-select-sm" id="fieldGroup">
@@ -463,55 +463,55 @@ class FormBuilder {
         this.fieldCounter = 0;
         this.selectedField = null;
         this.fields = [];
-        
+
         this.init();
     }
-    
+
     init() {
         this.setupDragAndDrop();
         this.setupEventListeners();
         this.setupSortable();
     }
-    
+
     setupDragAndDrop() {
         const fieldItems = document.querySelectorAll('.field-item');
-        
+
         fieldItems.forEach(item => {
             item.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('text/plain', item.dataset.type);
                 item.style.opacity = '0.5';
             });
-            
+
             item.addEventListener('dragend', (e) => {
                 item.style.opacity = '1';
             });
-            
+
             item.setAttribute('draggable', true);
         });
-        
+
         // Canvas drop events
         this.canvas.addEventListener('dragover', (e) => {
             e.preventDefault();
             this.canvas.classList.add('drag-over');
         });
-        
+
         this.canvas.addEventListener('dragleave', (e) => {
             if (!this.canvas.contains(e.relatedTarget)) {
                 this.canvas.classList.remove('drag-over');
             }
         });
-        
+
         this.canvas.addEventListener('drop', (e) => {
             e.preventDefault();
             this.canvas.classList.remove('drag-over');
-            
+
             const fieldType = e.dataTransfer.getData('text/plain');
             if (fieldType) {
                 this.addField(fieldType);
             }
         });
     }
-    
+
     setupSortable() {
         new Sortable(this.canvas, {
             group: 'formFields',
@@ -523,7 +523,7 @@ class FormBuilder {
             }
         });
     }
-    
+
     setupEventListeners() {
         // Clear form
         document.getElementById('clearForm').addEventListener('click', () => {
@@ -531,33 +531,33 @@ class FormBuilder {
                 this.clearForm();
             }
         });
-        
+
         // Preview form
         document.getElementById('previewForm').addEventListener('click', () => {
             this.previewForm();
         });
-        
+
         // Save form
         document.getElementById('saveForm').addEventListener('click', () => {
             this.saveForm();
         });
-        
+
         // Target module change
         document.getElementById('targetModule').addEventListener('change', () => {
             this.updateModuleFields();
         });
     }
-    
+
     addField(type) {
         const targetModule = document.getElementById('targetModule').value;
         if (!targetModule) {
             alert('Por favor selecciona un módulo primero');
             return;
         }
-        
+
         this.fieldCounter++;
         const fieldId = `field_${this.fieldCounter}`;
-        
+
         const fieldData = {
             id: fieldId,
             type: type,
@@ -570,17 +570,17 @@ class FormBuilder {
             options: type === 'select' || type === 'radio' ? ['Opción 1', 'Opción 2'] : null,
             validation_rules: {}
         };
-        
+
         this.fields.push(fieldData);
         this.renderField(fieldData);
         this.updateCanvasState();
     }
-    
+
     renderField(fieldData) {
         const fieldElement = document.createElement('div');
         fieldElement.className = 'form-field';
         fieldElement.dataset.fieldId = fieldData.id;
-        
+
         fieldElement.innerHTML = `
             <div class="field-controls">
                 <button class="field-control-btn edit" onclick="formBuilder.editField('${fieldData.id}')" title="Editar">
@@ -601,17 +601,17 @@ class FormBuilder {
                 ${this.renderFieldInput(fieldData)}
             </div>
         `;
-        
+
         fieldElement.addEventListener('click', () => {
             this.selectField(fieldData.id);
         });
-        
+
         this.canvas.appendChild(fieldElement);
     }
-    
+
     renderFieldInput(fieldData) {
         const commonAttrs = `class="form-control" placeholder="${fieldData.placeholder}" ${fieldData.required ? 'required' : ''}`;
-        
+
         switch (fieldData.type) {
             case 'textarea':
                 return `<textarea ${commonAttrs} rows="3" disabled></textarea>`;
@@ -649,7 +649,7 @@ class FormBuilder {
                 return `<input type="${fieldData.type}" ${commonAttrs} disabled>`;
         }
     }
-    
+
     getDefaultLabel(type) {
         const labels = {
             'text': 'Campo de Texto',
@@ -670,58 +670,58 @@ class FormBuilder {
         };
         return labels[type] || 'Campo';
     }
-    
+
     selectField(fieldId) {
         // Remove previous selection
         document.querySelectorAll('.form-field.selected').forEach(el => {
             el.classList.remove('selected');
         });
-        
+
         // Select new field
         const fieldElement = document.querySelector(`[data-field-id="${fieldId}"]`);
         fieldElement.classList.add('selected');
-        
+
         this.selectedField = fieldId;
         this.showFieldProperties(fieldId);
     }
-    
+
     showFieldProperties(fieldId) {
         const fieldData = this.fields.find(f => f.id === fieldId);
         if (!fieldData) return;
-        
+
         const propertiesPanel = document.getElementById('fieldProperties');
-        
+
         propertiesPanel.innerHTML = `
             <form id="fieldPropertiesForm">
                 <div class="mb-3">
                     <label class="form-label small">Nombre del Campo</label>
                     <input type="text" class="form-control form-control-sm" name="name" value="${fieldData.name}">
                 </div>
-                
+
                 <div class="mb-3">
                     <label class="form-label small">Etiqueta</label>
                     <input type="text" class="form-control form-control-sm" name="label" value="${fieldData.label}">
                 </div>
-                
+
                 <div class="mb-3">
                     <label class="form-label small">Placeholder</label>
                     <input type="text" class="form-control form-control-sm" name="placeholder" value="${fieldData.placeholder}">
                 </div>
-                
+
                 <div class="mb-3">
                     <label class="form-label small">Valor por Defecto</label>
                     <input type="text" class="form-control form-control-sm" name="default_value" value="${fieldData.default_value}">
                 </div>
-                
+
                 <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="required" ${fieldData.required ? 'checked' : ''}>
                         <label class="form-check-label small">Campo Obligatorio</label>
                     </div>
                 </div>
-                
+
                 ${this.renderFieldSpecificProperties(fieldData)}
-                
+
                 <div class="d-grid">
                     <button type="button" class="btn btn-primary btn-sm" onclick="formBuilder.updateFieldProperties('${fieldId}')">
                         Actualizar Campo
@@ -730,11 +730,11 @@ class FormBuilder {
             </form>
         `;
     }
-    
+
     renderFieldSpecificProperties(fieldData) {
         if (fieldData.type === 'select' || fieldData.type === 'radio') {
             let optionsHTML = '<div class="mb-3"><label class="form-label small">Opciones</label>';
-            
+
             if (fieldData.options) {
                 fieldData.options.forEach((option, index) => {
                     optionsHTML += `
@@ -747,33 +747,33 @@ class FormBuilder {
                     `;
                 });
             }
-            
+
             optionsHTML += `
                 <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="formBuilder.addOption(this)">
                     <i class="fas fa-plus me-1"></i>Agregar Opción
                 </button>
             </div>`;
-            
+
             return optionsHTML;
         }
-        
+
         return '';
     }
-    
+
     updateFieldProperties(fieldId) {
         const form = document.getElementById('fieldPropertiesForm');
         const formData = new FormData(form);
-        
+
         const fieldData = this.fields.find(f => f.id === fieldId);
         if (!fieldData) return;
-        
+
         // Update field data
         fieldData.name = formData.get('name');
         fieldData.label = formData.get('label');
         fieldData.placeholder = formData.get('placeholder');
         fieldData.default_value = formData.get('default_value');
         fieldData.required = formData.has('required');
-        
+
                 // Update options if applicable
                 if (fieldData.type === 'select' || fieldData.type === 'radio') {
                     const options = formData.getAll('options[]').filter(option => option && option.trim());
@@ -789,7 +789,7 @@ class FormBuilder {
             ${this.renderFieldInput(fieldData)}
         `;
     }
-    
+
     addOption(button) {
         const optionHTML = `
             <div class="input-group input-group-sm mb-1">
@@ -801,38 +801,38 @@ class FormBuilder {
         `;
         button.insertAdjacentHTML('beforebegin', optionHTML);
     }
-    
+
     editField(fieldId) {
         this.selectField(fieldId);
     }
-    
+
     duplicateField(fieldId) {
         const originalField = this.fields.find(f => f.id === fieldId);
         if (!originalField) return;
-        
+
         this.fieldCounter++;
         const newFieldId = `field_${this.fieldCounter}`;
-        
+
         const newField = {
             ...originalField,
             id: newFieldId,
             name: `${originalField.name}_copy`,
             label: `${originalField.label} (Copia)`
         };
-        
+
         this.fields.push(newField);
         this.renderField(newField);
     }
-    
+
     deleteField(fieldId) {
         if (confirm('¿Estás seguro de que deseas eliminar este campo?')) {
             // Remove from fields array
             this.fields = this.fields.filter(f => f.id !== fieldId);
-            
+
             // Remove from DOM
             const fieldElement = document.querySelector(`[data-field-id="${fieldId}"]`);
             fieldElement.remove();
-            
+
             // Clear properties panel if this field was selected
             if (this.selectedField === fieldId) {
                 document.getElementById('fieldProperties').innerHTML = `
@@ -843,15 +843,15 @@ class FormBuilder {
                 `;
                 this.selectedField = null;
             }
-            
+
             this.updateCanvasState();
         }
     }
-    
+
     updateFieldOrder() {
         const fieldElements = this.canvas.querySelectorAll('.form-field');
         const orderedFields = [];
-        
+
         fieldElements.forEach(element => {
             const fieldId = element.dataset.fieldId;
             const fieldData = this.fields.find(f => f.id === fieldId);
@@ -859,10 +859,10 @@ class FormBuilder {
                 orderedFields.push(fieldData);
             }
         });
-        
+
         this.fields = orderedFields;
     }
-    
+
     updateCanvasState() {
         if (this.fields.length > 0) {
             this.canvas.classList.add('has-fields');
@@ -870,7 +870,7 @@ class FormBuilder {
             this.canvas.classList.remove('has-fields');
         }
     }
-    
+
     clearForm() {
         this.fields = [];
         this.canvas.innerHTML = `
@@ -881,37 +881,37 @@ class FormBuilder {
             </div>
         `;
         this.updateCanvasState();
-        
+
         document.getElementById('fieldProperties').innerHTML = `
             <div class="text-center text-muted p-4">
                 <i class="fas fa-mouse-pointer fa-2x mb-2"></i>
                 <p class="mb-0">Selecciona un campo para ver sus propiedades</p>
             </div>
         `;
-        
+
         this.selectedField = null;
     }
-    
+
     previewForm() {
         const targetModule = document.getElementById('targetModule').value;
         if (!targetModule) {
             alert('Por favor selecciona un módulo primero');
             return;
         }
-        
+
         if (this.fields.length === 0) {
             alert('No hay campos en el formulario para mostrar');
             return;
         }
-        
+
         let previewHTML = `<form class="row g-3">`;
-        
+
         this.fields.forEach(field => {
             const colClass = field.type === 'textarea' ? 'col-12' : 'col-md-6';
-            
+
             previewHTML += `<div class="${colClass}">`;
             previewHTML += `<label class="form-label">${field.label}${field.required ? ' <span class="text-danger">*</span>' : ''}</label>`;
-            
+
             switch (field.type) {
                 case 'textarea':
                     previewHTML += `<textarea class="form-control" placeholder="${field.placeholder}" ${field.required ? 'required' : ''}></textarea>`;
@@ -948,10 +948,10 @@ class FormBuilder {
                 default:
                     previewHTML += `<input type="${field.type}" class="form-control" placeholder="${field.placeholder}" ${field.required ? 'required' : ''}>`;
             }
-            
+
             previewHTML += '</div>';
         });
-        
+
         previewHTML += `
             <div class="col-12">
                 <hr>
@@ -959,25 +959,25 @@ class FormBuilder {
                 <button type="reset" class="btn btn-secondary ms-2">Limpiar</button>
             </div>
         </form>`;
-        
+
         document.getElementById('formPreview').innerHTML = previewHTML;
         new bootstrap.Modal(document.getElementById('previewModal')).show();
     }
-    
+
     async saveForm() {
         const targetModule = document.getElementById('targetModule').value;
         const fieldGroup = document.getElementById('fieldGroup').value;
-        
+
         if (!targetModule) {
             alert('Por favor selecciona un módulo');
             return;
         }
-        
+
         if (this.fields.length === 0) {
             alert('No hay campos para guardar');
             return;
         }
-        
+
         // Prepare fields data for saving
         const fieldsToSave = this.fields.map((field, index) => ({
             name: field.name,
@@ -994,7 +994,7 @@ class FormBuilder {
             sort_order: index + 1,
             is_active: true
         }));
-        
+
         try {
             const response = await fetch('/dynamic-fields/bulk-create', {
                 method: 'POST',
@@ -1006,9 +1006,9 @@ class FormBuilder {
                     fields: fieldsToSave
                 })
             });
-            
+
             const result = await response.json();
-            
+
             if (response.ok) {
                 alert(`¡Formulario guardado exitosamente! Se crearon ${result.created} campos.`);
                 this.clearForm();

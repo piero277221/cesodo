@@ -189,7 +189,7 @@
                         @php
                             $rules = $dynamicField->validation_rules;
                         @endphp
-                        
+
                         @if(isset($rules['required']))
                         <div class="col-md-6 mb-3">
                             <div class="d-flex align-items-center">
@@ -198,7 +198,7 @@
                             </div>
                         </div>
                         @endif
-                        
+
                         @if(isset($rules['unique']))
                         <div class="col-md-6 mb-3">
                             <div class="d-flex align-items-center">
@@ -207,7 +207,7 @@
                             </div>
                         </div>
                         @endif
-                        
+
                         @if(isset($rules['min_length']))
                         <div class="col-md-6 mb-3">
                             <div class="d-flex align-items-center">
@@ -216,7 +216,7 @@
                             </div>
                         </div>
                         @endif
-                        
+
                         @if(isset($rules['max_length']))
                         <div class="col-md-6 mb-3">
                             <div class="d-flex align-items-center">
@@ -225,7 +225,7 @@
                             </div>
                         </div>
                         @endif
-                        
+
                         @if(isset($rules['min_value']))
                         <div class="col-md-6 mb-3">
                             <div class="d-flex align-items-center">
@@ -234,7 +234,7 @@
                             </div>
                         </div>
                         @endif
-                        
+
                         @if(isset($rules['max_value']))
                         <div class="col-md-6 mb-3">
                             <div class="d-flex align-items-center">
@@ -243,7 +243,7 @@
                             </div>
                         </div>
                         @endif
-                        
+
                         @if(isset($rules['pattern']))
                         <div class="col-12 mb-3">
                             <div class="d-flex align-items-start">
@@ -293,7 +293,7 @@
                             ->distinct('model_type', 'model_id')
                             ->count();
                     @endphp
-                    
+
                     <div class="row text-center">
                         <div class="col-6">
                             <div class="h4 mb-0 text-primary">{{ $usageCount }}</div>
@@ -304,7 +304,7 @@
                             <small class="text-muted">Registros Únicos</small>
                         </div>
                     </div>
-                    
+
                     @if($usageCount > 0)
                     <hr>
                     <div class="alert alert-info alert-sm mb-0">
@@ -331,15 +331,15 @@
                 </div>
                 <div class="card-body">
                     <small class="text-muted d-block mb-2">
-                        <strong>Creado:</strong> 
+                        <strong>Creado:</strong>
                         {{ $dynamicField->created_at->format('d/m/Y H:i') }}
                     </small>
                     <small class="text-muted d-block mb-2">
-                        <strong>Actualizado:</strong> 
+                        <strong>Actualizado:</strong>
                         {{ $dynamicField->updated_at->format('d/m/Y H:i') }}
                     </small>
                     <small class="text-muted d-block">
-                        <strong>ID:</strong> 
+                        <strong>ID:</strong>
                         <code>{{ $dynamicField->id }}</code>
                     </small>
                 </div>
@@ -357,14 +357,14 @@
                     <p class="text-muted small mb-3">
                         Esta acción eliminará permanentemente el campo y todos sus datos asociados.
                     </p>
-                    
-                    <form action="{{ route('dynamic-fields.destroy', $dynamicField) }}" 
-                          method="POST" 
+
+                    <form action="{{ route('dynamic-fields.destroy', $dynamicField) }}"
+                          method="POST"
                           onsubmit="return confirm('¿Estás seguro de que deseas eliminar este campo? Esta acción no se puede deshacer.')">
                         @csrf
                         @method('DELETE')
-                        
-                        <button type="submit" 
+
+                        <button type="submit"
                                 class="btn btn-danger btn-sm w-100"
                                 @if($usageCount > 0) disabled title="No se puede eliminar porque está en uso" @endif>
                             <i class="fas fa-trash me-1"></i>
@@ -375,7 +375,7 @@
                             @endif
                         </button>
                     </form>
-                    
+
                     @if($usageCount > 0)
                     <small class="text-muted d-block mt-2">
                         <i class="fas fa-info-circle me-1"></i>

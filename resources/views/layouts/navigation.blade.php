@@ -4,10 +4,10 @@
 
 <!-- Navbar principal -->
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed-top" style="height: var(--header-height); z-index: 1050;">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-        <div class="flex justify-between items-center h-full">
+    <div class="w-full mx-auto px-1 h-full">
+        <div class="flex items-center h-full" style="justify-content: flex-start;">
             <!-- Logo y Toggle Sidebar -->
-            <div class="flex items-center">
+            <div class="flex items-center flex-shrink-0" style="margin-left: -15px; margin-right: 15px;">
                 <button id="sidebar-toggle" class="p-2 rounded-md lg:hidden">
                     <i class="bi bi-list"></i>
                 </button>
@@ -22,7 +22,7 @@
                         <div class="nav-gradient nav-gradient-left"></div>
                         <div id="nav-container" class="nav-container">
                             <div class="nav-inner">
-                            <!-- Módulos y Dashboard (sin agrupar) -->
+                            <!-- Inicio y Dashboard -->
                             <x-nav-link :href="route('modules.index')" :active="request()->routeIs('modules.*')">
                                 <i class="bi bi-grid-3x3-gap me-1"></i>{{ __('Módulos') }}
                             </x-nav-link>
@@ -31,30 +31,47 @@
                                 <i class="bi bi-speedometer2 me-1"></i>{{ __('Dashboard') }}
                             </x-nav-link>
 
+                            <!-- Enlace simple de Reportes para test -->
+                            <x-nav-link :href="route('reportes.index')" :active="request()->routeIs('reportes.*')">
+                                <i class="bi bi-graph-up me-1"></i>{{ __('Reportes') }}
+                            </x-nav-link>
+
                             <!-- Grupo: Gestión de Personal -->
+                            @canany(['ver-trabajadores', 'ver-usuarios'])
                             <div class="nav-dropdown" id="dropdown-personal">
-                                <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*']) ? 'active' : '' }}"
+                                <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*', 'condiciones-salud.*']) ? 'active' : '' }}"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-personal');">
                                     <i class="bi bi-people-fill me-1"></i>{{ __('Personal') }}
                                     <i class="bi bi-chevron-down ms-1"></i>
                                 </button>
                                 <div class="nav-dropdown-menu" style="display: none;">
+                                    @can('ver-trabajadores')
                                     <a href="{{ route('personas.index') }}" class="nav-dropdown-item {{ request()->routeIs('personas.*') ? 'active' : '' }}">
                                         <i class="bi bi-person-vcard me-1"></i>{{ __('Personas') }}
                                     </a>
                                     <a href="{{ route('trabajadores.index') }}" class="nav-dropdown-item {{ request()->routeIs('trabajadores.*') ? 'active' : '' }}">
                                         <i class="bi bi-people me-1"></i>{{ __('Trabajadores') }}
                                     </a>
-                                    <a href="{{ route('usuarios.index') }}" class="nav-dropdown-item {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
-                                        <i class="bi bi-person-gear me-1"></i>{{ __('Usuarios') }}
-                                    </a>
                                     <a href="{{ route('contratos.index') }}" class="nav-dropdown-item {{ request()->routeIs('contratos.*') ? 'active' : '' }}">
                                         <i class="bi bi-file-earmark-text me-1"></i>{{ __('Contratos') }}
                                     </a>
+                                    @endcan
+                                    @can('ver-inventario')
+                                    <a href="{{ route('condiciones-salud.index') }}" class="nav-dropdown-item {{ request()->routeIs('condiciones-salud.*') ? 'active' : '' }}">
+                                        <i class="bi bi-heart-pulse me-1"></i>{{ __('Condiciones de Salud') }}
+                                    </a>
+                                    @endcan
+                                    @can('ver-usuarios')
+                                    <a href="{{ route('usuarios.index') }}" class="nav-dropdown-item {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
+                                        <i class="bi bi-person-gear me-1"></i>{{ __('Usuarios') }}
+                                    </a>
+                                    @endcan
                                 </div>
                             </div>
+                            @endcanany
 
                             <!-- Grupo: Inventario y Productos -->
+                            @canany(['ver-inventario', 'ver-productos'])
                             <div class="nav-dropdown nav-item-container" id="dropdown-inventario">
                                 <button type="button" class="nav-dropdown-trigger d-inline-flex align-items-center gap-2 {{ request()->routeIs(['inventarios.*', 'productos.*', 'categorias.*', 'kardex.*']) ? 'active' : '' }}"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-inventario');">
@@ -70,6 +87,7 @@
                                         <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
                                             {{ __('Gestión de Inventario') }}
                                         </div>
+                                        @can('ver-productos')
                                         <a href="{{ route('categorias.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('categorias.*') ? 'active' : '' }}">
                                             <i class="bi bi-tags"></i>
                                             <div>
@@ -84,6 +102,8 @@
                                                 <small class="text-muted">Catálogo de productos</small>
                                             </div>
                                         </a>
+                                        @endcan
+                                        @can('ver-inventario')
                                         <a href="{{ route('inventarios.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('inventarios.*') ? 'active' : '' }}">
                                             <i class="bi bi-boxes"></i>
                                             <div>
@@ -98,11 +118,14 @@
                                                 <small class="text-muted">Movimientos de inventario</small>
                                             </div>
                                         </a>
+                                        @endcan
                                     </div>
                                 </div>
                             </div>
+                            @endcanany
 
-                            <!-- Grupo: Operaciones -->
+                            <!-- Grupo: Operaciones y Producción -->
+                            @canany(['ver-consumos', 'ver-inventario'])
                             <div class="nav-dropdown" id="dropdown-operaciones">
                                 <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['consumos.*', 'menus.*', 'recetas.*']) ? 'active' : '' }}"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-operaciones');">
@@ -110,19 +133,24 @@
                                     <i class="bi bi-chevron-down ms-1"></i>
                                 </button>
                                 <div class="nav-dropdown-menu" style="display: none;">
+                                    @can('ver-inventario')
                                     <a href="{{ route('menus.index') }}" class="nav-dropdown-item {{ request()->routeIs('menus.*') ? 'active' : '' }}">
                                         <i class="bi bi-calendar-week me-1"></i>{{ __('Menús') }}
                                     </a>
                                     <a href="{{ route('recetas.index') }}" class="nav-dropdown-item {{ request()->routeIs('recetas.*') ? 'active' : '' }}">
                                         <i class="bi bi-journal-bookmark me-1"></i>{{ __('Recetas') }}
                                     </a>
+                                    @endcan
+                                    @can('ver-consumos')
                                     <a href="{{ route('consumos.index') }}" class="nav-dropdown-item {{ request()->routeIs('consumos.*') ? 'active' : '' }}">
                                         <i class="bi bi-journal-text me-1"></i>{{ __('Consumos') }}
                                     </a>
+                                    @endcan
                                 </div>
                             </div>
+                            @endcanany
 
-                            <!-- Grupo: Comercial -->
+                            <!-- Grupo: Comercial y Ventas -->
                             <div class="nav-dropdown" id="dropdown-comercial">
                                 <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['clientes.*', 'ventas.*', 'pedidos.*']) ? 'active' : '' }}"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-comercial');">
@@ -130,19 +158,23 @@
                                     <i class="bi bi-chevron-down ms-1"></i>
                                 </button>
                                 <div class="nav-dropdown-menu" style="display: none;">
+                                    <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
+                                        {{ __('Gestión Comercial') }}
+                                    </div>
                                     <a href="{{ route('clientes.index') }}" class="nav-dropdown-item {{ request()->routeIs('clientes.*') ? 'active' : '' }}">
                                         <i class="bi bi-people me-1"></i>{{ __('Clientes') }}
-                                    </a>
-                                    <a href="{{ route('pedidos.index') }}" class="nav-dropdown-item {{ request()->routeIs('pedidos.*') ? 'active' : '' }}">
-                                        <i class="bi bi-cart3 me-1"></i>{{ __('Pedidos') }}
                                     </a>
                                     <a href="{{ route('ventas.index') }}" class="nav-dropdown-item {{ request()->routeIs('ventas.*') ? 'active' : '' }}">
                                         <i class="bi bi-receipt me-1"></i>{{ __('Ventas') }}
                                     </a>
+                                    <a href="{{ route('pedidos.index') }}" class="nav-dropdown-item {{ request()->routeIs('pedidos.*') ? 'active' : '' }}">
+                                        <i class="bi bi-cart3 me-1"></i>{{ __('Pedidos') }}
+                                    </a>
                                 </div>
                             </div>
 
-                            <!-- Grupo: Compras -->
+                            <!-- Grupo: Compras y Proveedores -->
+                            @can('ver-proveedores')
                             <div class="nav-dropdown" id="dropdown-compras">
                                 <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['proveedores.*', 'compras.*']) ? 'active' : '' }}"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-compras');">
@@ -150,6 +182,9 @@
                                     <i class="bi bi-chevron-down ms-1"></i>
                                 </button>
                                 <div class="nav-dropdown-menu" style="display: none;">
+                                    <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
+                                        {{ __('Gestión de Compras') }}
+                                    </div>
                                     <a href="{{ route('proveedores.index') }}" class="nav-dropdown-item {{ request()->routeIs('proveedores.*') ? 'active' : '' }}">
                                         <i class="bi bi-truck me-1"></i>{{ __('Proveedores') }}
                                     </a>
@@ -158,11 +193,53 @@
                                     </a>
                                 </div>
                             </div>
+                            @endcan
 
-                            <!-- Reportes (sin agrupar) -->
-                            <x-nav-link :href="route('reportes.index')" :active="request()->routeIs('reportes.*')">
-                                <i class="bi bi-graph-up me-1"></i>{{ __('Reportes') }}
-                            </x-nav-link>
+                            <!-- Grupo: Administración del Sistema -->
+                            @can('ver-configuraciones')
+                            <div class="nav-dropdown" id="dropdown-administracion">
+                                <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['configurations.*', 'role-management.*', 'dynamic-fields.*', 'contratos.templates.*']) ? 'active' : '' }}"
+                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-administracion');">
+                                    <i class="bi bi-gear-fill me-1"></i>{{ __('Administración') }}
+                                    <i class="bi bi-chevron-down ms-1"></i>
+                                </button>
+                                <div class="nav-dropdown-menu shadow-sm border" style="display: none; min-width: 250px;">
+                                    <div class="py-2">
+                                        <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
+                                            {{ __('Sistema y Configuración') }}
+                                        </div>
+                                        <a href="{{ route('configurations.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('configurations.*') ? 'active' : '' }}">
+                                            <i class="bi bi-sliders"></i>
+                                            <div>
+                                                <span class="d-block">{{ __('Configuraciones') }}</span>
+                                                <small class="text-muted">Parámetros del sistema</small>
+                                            </div>
+                                        </a>
+                                        <a href="{{ route('role-management.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('role-management.*') ? 'active' : '' }}">
+                                            <i class="bi bi-shield-lock"></i>
+                                            <div>
+                                                <span class="d-block">{{ __('Gestión de Roles') }}</span>
+                                                <small class="text-muted">Roles y permisos</small>
+                                            </div>
+                                        </a>
+                                        <a href="{{ route('dynamic-fields.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('dynamic-fields.*') ? 'active' : '' }}">
+                                            <i class="bi bi-puzzle"></i>
+                                            <div>
+                                                <span class="d-block">{{ __('Campos Dinámicos') }}</span>
+                                                <small class="text-muted">Extensibilidad de módulos</small>
+                                            </div>
+                                        </a>
+                                        <a href="{{ route('contratos.templates.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('contratos.templates.*') ? 'active' : '' }}">
+                                            <i class="bi bi-file-earmark-plus"></i>
+                                            <div>
+                                                <span class="d-block">{{ __('Plantillas de Contratos') }}</span>
+                                                <small class="text-muted">Templates y documentos</small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
                             </div>
                         </div>
                         <div class="nav-gradient nav-gradient-right"></div>
@@ -176,7 +253,7 @@
             </div>
 
             <!-- Settings Dropdown - Esquina derecha -->
-            <div class="hidden sm:flex sm:items-center user-dropdown-right">
+            <div class="hidden sm:flex sm:items-center user-dropdown-right flex-shrink-0" style="margin-left: 20px;">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-4 py-2 border border-gray-200 text-sm leading-4 font-medium rounded-lg text-gray-600 bg-white hover:text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition ease-in-out duration-150 shadow-sm">
@@ -224,9 +301,151 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <!-- Navegación principal -->
+            <x-responsive-nav-link :href="route('modules.index')" :active="request()->routeIs('modules.*')">
+                <i class="bi bi-grid-3x3-gap me-2"></i>{{ __('Módulos') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <i class="bi bi-speedometer2 me-2"></i>{{ __('Dashboard') }}
+            </x-responsive-nav-link>
+
+            <!-- Personal -->
+            @canany(['ver-trabajadores', 'ver-usuarios'])
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Personal') }}</div>
+            </div>
+            @can('ver-trabajadores')
+            <x-responsive-nav-link :href="route('personas.index')" :active="request()->routeIs('personas.*')">
+                <i class="bi bi-person-vcard me-2"></i>{{ __('Personas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('trabajadores.index')" :active="request()->routeIs('trabajadores.*')">
+                <i class="bi bi-people me-2"></i>{{ __('Trabajadores') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contratos.index')" :active="request()->routeIs('contratos.*')">
+                <i class="bi bi-file-earmark-text me-2"></i>{{ __('Contratos') }}
+            </x-responsive-nav-link>
+            @endcan
+            @can('ver-inventario')
+            <x-responsive-nav-link :href="route('condiciones-salud.index')" :active="request()->routeIs('condiciones-salud.*')">
+                <i class="bi bi-heart-pulse me-2"></i>{{ __('Condiciones de Salud') }}
+            </x-responsive-nav-link>
+            @endcan
+            @can('ver-usuarios')
+            <x-responsive-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.*')">
+                <i class="bi bi-person-gear me-2"></i>{{ __('Usuarios') }}
+            </x-responsive-nav-link>
+            @endcan
+            @endcanany
+
+            <!-- Inventario -->
+            @canany(['ver-inventario', 'ver-productos'])
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Inventario') }}</div>
+            </div>
+            @can('ver-productos')
+            <x-responsive-nav-link :href="route('categorias.index')" :active="request()->routeIs('categorias.*')">
+                <i class="bi bi-tags me-2"></i>{{ __('Categorías') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('productos.index')" :active="request()->routeIs('productos.*')">
+                <i class="bi bi-box-seam me-2"></i>{{ __('Productos') }}
+            </x-responsive-nav-link>
+            @endcan
+            @can('ver-inventario')
+            <x-responsive-nav-link :href="route('inventarios.index')" :active="request()->routeIs('inventarios.*')">
+                <i class="bi bi-boxes me-2"></i>{{ __('Stock') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('kardex.index')" :active="request()->routeIs('kardex.*')">
+                <i class="bi bi-clipboard-data me-2"></i>{{ __('Kardex') }}
+            </x-responsive-nav-link>
+            @endcan
+            @endcanany
+
+            <!-- Operaciones -->
+            @canany(['ver-consumos', 'ver-inventario'])
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Operaciones') }}</div>
+            </div>
+            @can('ver-inventario')
+            <x-responsive-nav-link :href="route('menus.index')" :active="request()->routeIs('menus.*')">
+                <i class="bi bi-calendar-week me-2"></i>{{ __('Menús') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('recetas.index')" :active="request()->routeIs('recetas.*')">
+                <i class="bi bi-journal-bookmark me-2"></i>{{ __('Recetas') }}
+            </x-responsive-nav-link>
+            @endcan
+            @can('ver-consumos')
+            <x-responsive-nav-link :href="route('consumos.index')" :active="request()->routeIs('consumos.*')">
+                <i class="bi bi-journal-text me-2"></i>{{ __('Consumos') }}
+            </x-responsive-nav-link>
+            @endcan
+            @endcanany
+
+            <!-- Comercial -->
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Comercial') }}</div>
+            </div>
+            <x-responsive-nav-link :href="route('clientes.index')" :active="request()->routeIs('clientes.*')">
+                <i class="bi bi-people me-2"></i>{{ __('Clientes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('ventas.index')" :active="request()->routeIs('ventas.*')">
+                <i class="bi bi-receipt me-2"></i>{{ __('Ventas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('pedidos.index')" :active="request()->routeIs('pedidos.*')">
+                <i class="bi bi-cart3 me-2"></i>{{ __('Pedidos') }}
+            </x-responsive-nav-link>
+
+            <!-- Compras -->
+            @can('ver-proveedores')
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Compras') }}</div>
+            </div>
+            <x-responsive-nav-link :href="route('proveedores.index')" :active="request()->routeIs('proveedores.*')">
+                <i class="bi bi-truck me-2"></i>{{ __('Proveedores') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('compras.index')" :active="request()->routeIs('compras.*')">
+                <i class="bi bi-bag me-2"></i>{{ __('Órdenes de Compra') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            <!-- Reportes -->
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Reportes') }}</div>
+            </div>
+            <x-responsive-nav-link :href="route('reportes.index')" :active="request()->routeIs('reportes.*')">
+                <i class="bi bi-graph-up me-2"></i>{{ __('Dashboard de Reportes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('reportes.consumos')" :active="request()->routeIs('reportes.consumos')">
+                <i class="bi bi-journal-text me-2"></i>{{ __('Reportes de Consumos') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('reportes.inventario')" :active="request()->routeIs('reportes.inventario')">
+                <i class="bi bi-boxes me-2"></i>{{ __('Reportes de Inventario') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('reportes.ventas')" :active="request()->routeIs('reportes.ventas')">
+                <i class="bi bi-receipt me-2"></i>{{ __('Reportes de Ventas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('reportes.proveedores')" :active="request()->routeIs('reportes.proveedores')">
+                <i class="bi bi-truck me-2"></i>{{ __('Reportes de Proveedores') }}
+            </x-responsive-nav-link>
+
+            <!-- Administración -->
+            @can('ver-configuraciones')
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Administración') }}</div>
+            </div>
+            <x-responsive-nav-link :href="route('configurations.index')" :active="request()->routeIs('configurations.*')">
+                <i class="bi bi-sliders me-2"></i>{{ __('Configuraciones') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('role-management.index')" :active="request()->routeIs('role-management.*')">
+                <i class="bi bi-shield-lock me-2"></i>{{ __('Gestión de Roles') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dynamic-fields.index')" :active="request()->routeIs('dynamic-fields.*')">
+                <i class="bi bi-puzzle me-2"></i>{{ __('Campos Dinámicos') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contratos.templates.index')" :active="request()->routeIs('contratos.templates.*')">
+                <i class="bi bi-file-earmark-plus me-2"></i>{{ __('Plantillas de Contratos') }}
+            </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->
@@ -261,9 +480,10 @@
     /* Contenedor principal de navegación */
     .nav-wrapper {
         position: relative;
-        max-width: 900px;
         width: 100%;
-        margin: 0 8px;
+        max-width: none; /* Sin límite de ancho */
+        margin: 0;
+        flex: 1; /* Tomar todo el espacio disponible */
     }
 
     /* Container scrolleable */
@@ -295,10 +515,11 @@
     .nav-inner {
         display: flex;
         align-items: center;
-        gap: 24px;
+        gap: 32px; /* Mucho más espacio entre elementos */
         white-space: nowrap;
         min-width: max-content;
-        padding: 0 20px;
+        padding: 0 30px; /* Más padding para respirar */
+        justify-content: flex-start;
     }
 
     /* Gradientes para indicar más contenido */
@@ -394,26 +615,36 @@
 
     /* Mejoras responsivas */
     @media (max-width: 1200px) {
-        .nav-wrapper {
-            max-width: 700px;
+        .nav-inner {
+            gap: 24px; /* Menos espacio en pantallas medianas */
+            padding: 0 20px;
         }
     }
 
     @media (max-width: 992px) {
-        .nav-wrapper {
-            max-width: 500px;
+        .nav-inner {
+            gap: 16px; /* Más compacto en móviles */
+            padding: 0 15px;
         }
 
-        .nav-inner {
-            gap: 16px;
+        .nav-inner a {
+            padding: 8px 12px !important;
+        }
+
+        .nav-dropdown-trigger {
+            padding: 8px 12px;
         }
     }
 
     /* Animación suave al hacer hover en los enlaces */
     .nav-inner a {
         transition: all 0.2s ease;
-        border-radius: 6px;
-        padding: 8px 12px !important;
+        border-radius: 8px;
+        padding: 10px 16px !important; /* Más espacio interno */
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0; /* Sin márgenes adicionales */
+        flex-shrink: 0; /* No se compriman */
     }
 
     .nav-inner a:hover {
@@ -431,8 +662,8 @@
         background: none;
         border: none;
         color: #6b7280;
-        padding: 8px 12px;
-        border-radius: 6px;
+        padding: 10px 16px; /* Consistente con enlaces */
+        border-radius: 8px;
         transition: all 0.2s ease;
         cursor: pointer;
         font-size: 14px;
@@ -442,6 +673,9 @@
         text-decoration: none;
         white-space: nowrap;
         font-family: inherit;
+        line-height: 1.5;
+        margin: 0;
+        flex-shrink: 0;
     }
 
     .nav-dropdown-trigger:hover {

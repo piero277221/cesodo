@@ -17,13 +17,13 @@ class DynamicFieldController extends Controller
     public function index(Request $request)
     {
         $module = $request->get('module');
-        
+
         $query = DynamicField::with('fieldGroup');
-        
+
         if ($module) {
             $query->where('module', $module);
         }
-        
+
         $fields = $query->orderBy('module')
                        ->orderBy('sort_order')
                        ->orderBy('id')
@@ -31,7 +31,7 @@ class DynamicFieldController extends Controller
 
         // Obtener módulos disponibles
         $availableModules = $this->getAvailableModules();
-        
+
         // Obtener grupos por módulo
         $groups = DynamicFieldGroup::when($module, function ($q) use ($module) {
             return $q->where('module', $module);
@@ -48,7 +48,7 @@ class DynamicFieldController extends Controller
         $module = $request->get('module');
         $availableModules = $this->getAvailableModules();
         $fieldTypes = $this->getFieldTypes();
-        
+
         $groups = collect();
         if ($module) {
             $groups = DynamicFieldGroup::where('module', $module)->ordered()->get();
@@ -85,7 +85,7 @@ class DynamicFieldController extends Controller
             $exists = DynamicField::where('module', $request->module)
                                   ->where('name', $request->name)
                                   ->exists();
-            
+
             if ($exists) {
                 $validator->errors()->add('name', 'Ya existe un campo con este nombre en el módulo seleccionado.');
             }
@@ -99,10 +99,10 @@ class DynamicFieldController extends Controller
             DB::beginTransaction();
 
             $data = $request->all();
-            
+
             // Obtener model_class basado en el módulo
             $data['model_class'] = $this->getModelClassForModule($request->module);
-            
+
             // Procesar opciones para select, radio, checkbox
             if (in_array($request->type, ['select', 'radio', 'checkbox']) && $request->options) {
                 $options = [];
@@ -152,7 +152,7 @@ class DynamicFieldController extends Controller
     {
         $availableModules = $this->getAvailableModules();
         $fieldTypes = $this->getFieldTypes();
-        
+
         $groups = DynamicFieldGroup::where('module', $dynamicField->module)->ordered()->get();
 
         return view('dynamic-fields.edit', compact('dynamicField', 'availableModules', 'fieldTypes', 'groups'));
@@ -187,7 +187,7 @@ class DynamicFieldController extends Controller
                                   ->where('name', $request->name)
                                   ->where('id', '!=', $dynamicField->id)
                                   ->exists();
-            
+
             if ($exists) {
                 $validator->errors()->add('name', 'Ya existe un campo con este nombre en el módulo seleccionado.');
             }
@@ -201,10 +201,10 @@ class DynamicFieldController extends Controller
             DB::beginTransaction();
 
             $data = $request->all();
-            
+
             // Obtener model_class basado en el módulo
             $data['model_class'] = $this->getModelClassForModule($request->module);
-            
+
             // Procesar opciones para select, radio, checkbox
             if (in_array($request->type, ['select', 'radio', 'checkbox']) && $request->options) {
                 $options = [];
@@ -248,10 +248,10 @@ class DynamicFieldController extends Controller
     {
         try {
             $module = $dynamicField->module;
-            
+
             // Verificar si el campo tiene valores asociados
             $hasValues = $dynamicField->values()->exists();
-            
+
             if ($hasValues) {
                 return back()->withErrors(['error' => 'No se puede eliminar un campo que tiene valores asociados.']);
             }
@@ -443,11 +443,11 @@ class DynamicFieldController extends Controller
                     // Si ya existe, generar un nombre único
                     $counter = 1;
                     $originalName = $fieldData['name'];
-                    
+
                     do {
                         $fieldData['name'] = $originalName . '_' . $counter;
                         $counter++;
-                        
+
                         $exists = DynamicField::where('module', $fieldData['module'])
                                               ->where('name', $fieldData['name'])
                                               ->exists();
@@ -459,7 +459,7 @@ class DynamicFieldController extends Controller
                     $fieldData['options'] = array_filter($fieldData['options'], function($option) {
                         return !empty(trim($option));
                     });
-                    
+
                     if (empty($fieldData['options'])) {
                         $fieldData['options'] = ['Opción 1', 'Opción 2'];
                     }
@@ -469,7 +469,7 @@ class DynamicFieldController extends Controller
 
                 // Procesar reglas de validación
                 $validationRules = $fieldData['validation_rules'] ?? [];
-                
+
                 // Asegurar que la estructura sea correcta
                 if (!is_array($validationRules)) {
                     $validationRules = [];
@@ -510,7 +510,7 @@ class DynamicFieldController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return response()->json([
                 'message' => 'Error al crear los campos: ' . $e->getMessage(),
                 'error' => $e->getMessage()

@@ -4,10 +4,10 @@
 
 <!-- Navbar principal -->
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed-top" style="height: var(--header-height); z-index: 1050;">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-        <div class="flex justify-between items-center h-full">
+    <div class="w-full mx-auto px-1 h-full">
+        <div class="flex items-center h-full" style="justify-content: flex-start;">
             <!-- Logo y Toggle Sidebar -->
-            <div class="flex items-center">
+            <div class="flex items-center flex-shrink-0" style="margin-left: -15px; margin-right: 15px;">
                 <button id="sidebar-toggle" class="p-2 rounded-md lg:hidden">
                     <i class="bi bi-list"></i>
                 </button>
@@ -41,7 +41,7 @@
                         <div class="nav-gradient nav-gradient-left"></div>
                         <div id="nav-container" class="nav-container">
                             <div class="nav-inner">
-                            <!-- Módulos y Dashboard (sin agrupar) -->
+                            <!-- Inicio y Dashboard -->
                             <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('modules.index'),'active' => request()->routeIs('modules.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -88,152 +88,7 @@
 <?php unset($__componentOriginalc295f12dca9d42f28a259237a5724830); ?>
 <?php endif; ?>
 
-                            <!-- Grupo: Gestión de Personal -->
-                            <div class="nav-dropdown" id="dropdown-personal">
-                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*']) ? 'active' : ''); ?>"
-                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-personal');">
-                                    <i class="bi bi-people-fill me-1"></i><?php echo e(__('Personal')); ?>
-
-                                    <i class="bi bi-chevron-down ms-1"></i>
-                                </button>
-                                <div class="nav-dropdown-menu" style="display: none;">
-                                    <a href="<?php echo e(route('personas.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('personas.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-person-vcard me-1"></i><?php echo e(__('Personas')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('trabajadores.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('trabajadores.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-people me-1"></i><?php echo e(__('Trabajadores')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('usuarios.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('usuarios.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-person-gear me-1"></i><?php echo e(__('Usuarios')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('contratos.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('contratos.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-file-earmark-text me-1"></i><?php echo e(__('Contratos')); ?>
-
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Grupo: Inventario y Productos -->
-                            <div class="nav-dropdown nav-item-container" id="dropdown-inventario">
-                                <button type="button" class="nav-dropdown-trigger d-inline-flex align-items-center gap-2 <?php echo e(request()->routeIs(['inventarios.*', 'productos.*', 'categorias.*', 'kardex.*']) ? 'active' : ''); ?>"
-                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-inventario');">
-                                    <i class="bi bi-boxes"></i>
-                                    <span class="d-none d-lg-inline"><?php echo e(__('Inventario')); ?></span>
-                                    <span class="d-lg-none" title="<?php echo e(__('Inventario')); ?>">
-                                        <i class="bi bi-boxes-fill"></i>
-                                    </span>
-                                    <i class="bi bi-chevron-down"></i>
-                                </button>
-                                <div class="nav-dropdown-menu shadow-sm border" style="display: none; min-width: 220px;">
-                                    <div class="py-2">
-                                        <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
-                                            <?php echo e(__('Gestión de Inventario')); ?>
-
-                                        </div>
-                                        <a href="<?php echo e(route('categorias.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('categorias.*') ? 'active' : ''); ?>">
-                                            <i class="bi bi-tags"></i>
-                                            <div>
-                                                <span class="d-block"><?php echo e(__('Categorías')); ?></span>
-                                                <small class="text-muted">Organiza tus productos</small>
-                                            </div>
-                                        </a>
-                                        <a href="<?php echo e(route('productos.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('productos.*') ? 'active' : ''); ?>">
-                                            <i class="bi bi-box-seam"></i>
-                                            <div>
-                                                <span class="d-block"><?php echo e(__('Productos')); ?></span>
-                                                <small class="text-muted">Catálogo de productos</small>
-                                            </div>
-                                        </a>
-                                        <a href="<?php echo e(route('inventarios.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('inventarios.*') ? 'active' : ''); ?>">
-                                            <i class="bi bi-boxes"></i>
-                                            <div>
-                                                <span class="d-block"><?php echo e(__('Stock')); ?></span>
-                                                <small class="text-muted">Control de existencias</small>
-                                            </div>
-                                        </a>
-                                        <a href="<?php echo e(route('kardex.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('kardex.*') ? 'active' : ''); ?>">
-                                            <i class="bi bi-clipboard-data"></i>
-                                            <div>
-                                                <span class="d-block"><?php echo e(__('Kardex')); ?></span>
-                                                <small class="text-muted">Movimientos de inventario</small>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Grupo: Operaciones -->
-                            <div class="nav-dropdown" id="dropdown-operaciones">
-                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['consumos.*', 'menus.*', 'recetas.*']) ? 'active' : ''); ?>"
-                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-operaciones');">
-                                    <i class="bi bi-calendar-week me-1"></i><?php echo e(__('Operaciones')); ?>
-
-                                    <i class="bi bi-chevron-down ms-1"></i>
-                                </button>
-                                <div class="nav-dropdown-menu" style="display: none;">
-                                    <a href="<?php echo e(route('menus.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('menus.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-calendar-week me-1"></i><?php echo e(__('Menús')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('recetas.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('recetas.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-journal-bookmark me-1"></i><?php echo e(__('Recetas')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('consumos.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('consumos.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-journal-text me-1"></i><?php echo e(__('Consumos')); ?>
-
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Grupo: Comercial -->
-                            <div class="nav-dropdown" id="dropdown-comercial">
-                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['clientes.*', 'ventas.*', 'pedidos.*']) ? 'active' : ''); ?>"
-                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-comercial');">
-                                    <i class="bi bi-cart3 me-1"></i><?php echo e(__('Comercial')); ?>
-
-                                    <i class="bi bi-chevron-down ms-1"></i>
-                                </button>
-                                <div class="nav-dropdown-menu" style="display: none;">
-                                    <a href="<?php echo e(route('clientes.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('clientes.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-people me-1"></i><?php echo e(__('Clientes')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('pedidos.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('pedidos.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-cart3 me-1"></i><?php echo e(__('Pedidos')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('ventas.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('ventas.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-receipt me-1"></i><?php echo e(__('Ventas')); ?>
-
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Grupo: Compras -->
-                            <div class="nav-dropdown" id="dropdown-compras">
-                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['proveedores.*', 'compras.*']) ? 'active' : ''); ?>"
-                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-compras');">
-                                    <i class="bi bi-truck me-1"></i><?php echo e(__('Compras')); ?>
-
-                                    <i class="bi bi-chevron-down ms-1"></i>
-                                </button>
-                                <div class="nav-dropdown-menu" style="display: none;">
-                                    <a href="<?php echo e(route('proveedores.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('proveedores.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-truck me-1"></i><?php echo e(__('Proveedores')); ?>
-
-                                    </a>
-                                    <a href="<?php echo e(route('compras.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('compras.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-bag me-1"></i><?php echo e(__('Órdenes de Compra')); ?>
-
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Reportes (sin agrupar) -->
+                            <!-- Enlace simple de Reportes para test -->
                             <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('reportes.index'),'active' => request()->routeIs('reportes.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -256,6 +111,233 @@
 <?php $component = $__componentOriginalc295f12dca9d42f28a259237a5724830; ?>
 <?php unset($__componentOriginalc295f12dca9d42f28a259237a5724830); ?>
 <?php endif; ?>
+
+                            <!-- Grupo: Gestión de Personal -->
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ver-trabajadores', 'ver-usuarios'])): ?>
+                            <div class="nav-dropdown" id="dropdown-personal">
+                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*', 'condiciones-salud.*']) ? 'active' : ''); ?>"
+                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-personal');">
+                                    <i class="bi bi-people-fill me-1"></i><?php echo e(__('Personal')); ?>
+
+                                    <i class="bi bi-chevron-down ms-1"></i>
+                                </button>
+                                <div class="nav-dropdown-menu" style="display: none;">
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-trabajadores')): ?>
+                                    <a href="<?php echo e(route('personas.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('personas.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-person-vcard me-1"></i><?php echo e(__('Personas')); ?>
+
+                                    </a>
+                                    <a href="<?php echo e(route('trabajadores.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('trabajadores.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-people me-1"></i><?php echo e(__('Trabajadores')); ?>
+
+                                    </a>
+                                    <a href="<?php echo e(route('contratos.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('contratos.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-file-earmark-text me-1"></i><?php echo e(__('Contratos')); ?>
+
+                                    </a>
+                                    <?php endif; ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
+                                    <a href="<?php echo e(route('condiciones-salud.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('condiciones-salud.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-heart-pulse me-1"></i><?php echo e(__('Condiciones de Salud')); ?>
+
+                                    </a>
+                                    <?php endif; ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-usuarios')): ?>
+                                    <a href="<?php echo e(route('usuarios.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('usuarios.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-person-gear me-1"></i><?php echo e(__('Usuarios')); ?>
+
+                                    </a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+                            <!-- Grupo: Inventario y Productos -->
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ver-inventario', 'ver-productos'])): ?>
+                            <div class="nav-dropdown nav-item-container" id="dropdown-inventario">
+                                <button type="button" class="nav-dropdown-trigger d-inline-flex align-items-center gap-2 <?php echo e(request()->routeIs(['inventarios.*', 'productos.*', 'categorias.*', 'kardex.*']) ? 'active' : ''); ?>"
+                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-inventario');">
+                                    <i class="bi bi-boxes"></i>
+                                    <span class="d-none d-lg-inline"><?php echo e(__('Inventario')); ?></span>
+                                    <span class="d-lg-none" title="<?php echo e(__('Inventario')); ?>">
+                                        <i class="bi bi-boxes-fill"></i>
+                                    </span>
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
+                                <div class="nav-dropdown-menu shadow-sm border" style="display: none; min-width: 220px;">
+                                    <div class="py-2">
+                                        <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
+                                            <?php echo e(__('Gestión de Inventario')); ?>
+
+                                        </div>
+                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-productos')): ?>
+                                        <a href="<?php echo e(route('categorias.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('categorias.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-tags"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Categorías')); ?></span>
+                                                <small class="text-muted">Organiza tus productos</small>
+                                            </div>
+                                        </a>
+                                        <a href="<?php echo e(route('productos.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('productos.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-box-seam"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Productos')); ?></span>
+                                                <small class="text-muted">Catálogo de productos</small>
+                                            </div>
+                                        </a>
+                                        <?php endif; ?>
+                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
+                                        <a href="<?php echo e(route('inventarios.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('inventarios.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-boxes"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Stock')); ?></span>
+                                                <small class="text-muted">Control de existencias</small>
+                                            </div>
+                                        </a>
+                                        <a href="<?php echo e(route('kardex.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('kardex.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-clipboard-data"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Kardex')); ?></span>
+                                                <small class="text-muted">Movimientos de inventario</small>
+                                            </div>
+                                        </a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+                            <!-- Grupo: Operaciones y Producción -->
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ver-consumos', 'ver-inventario'])): ?>
+                            <div class="nav-dropdown" id="dropdown-operaciones">
+                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['consumos.*', 'menus.*', 'recetas.*']) ? 'active' : ''); ?>"
+                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-operaciones');">
+                                    <i class="bi bi-calendar-week me-1"></i><?php echo e(__('Operaciones')); ?>
+
+                                    <i class="bi bi-chevron-down ms-1"></i>
+                                </button>
+                                <div class="nav-dropdown-menu" style="display: none;">
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
+                                    <a href="<?php echo e(route('menus.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('menus.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-calendar-week me-1"></i><?php echo e(__('Menús')); ?>
+
+                                    </a>
+                                    <a href="<?php echo e(route('recetas.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('recetas.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-journal-bookmark me-1"></i><?php echo e(__('Recetas')); ?>
+
+                                    </a>
+                                    <?php endif; ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-consumos')): ?>
+                                    <a href="<?php echo e(route('consumos.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('consumos.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-journal-text me-1"></i><?php echo e(__('Consumos')); ?>
+
+                                    </a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+                            <!-- Grupo: Comercial y Ventas -->
+                            <div class="nav-dropdown" id="dropdown-comercial">
+                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['clientes.*', 'ventas.*', 'pedidos.*']) ? 'active' : ''); ?>"
+                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-comercial');">
+                                    <i class="bi bi-cart3 me-1"></i><?php echo e(__('Comercial')); ?>
+
+                                    <i class="bi bi-chevron-down ms-1"></i>
+                                </button>
+                                <div class="nav-dropdown-menu" style="display: none;">
+                                    <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
+                                        <?php echo e(__('Gestión Comercial')); ?>
+
+                                    </div>
+                                    <a href="<?php echo e(route('clientes.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('clientes.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-people me-1"></i><?php echo e(__('Clientes')); ?>
+
+                                    </a>
+                                    <a href="<?php echo e(route('ventas.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('ventas.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-receipt me-1"></i><?php echo e(__('Ventas')); ?>
+
+                                    </a>
+                                    <a href="<?php echo e(route('pedidos.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('pedidos.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-cart3 me-1"></i><?php echo e(__('Pedidos')); ?>
+
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Grupo: Compras y Proveedores -->
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-proveedores')): ?>
+                            <div class="nav-dropdown" id="dropdown-compras">
+                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['proveedores.*', 'compras.*']) ? 'active' : ''); ?>"
+                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-compras');">
+                                    <i class="bi bi-truck me-1"></i><?php echo e(__('Compras')); ?>
+
+                                    <i class="bi bi-chevron-down ms-1"></i>
+                                </button>
+                                <div class="nav-dropdown-menu" style="display: none;">
+                                    <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
+                                        <?php echo e(__('Gestión de Compras')); ?>
+
+                                    </div>
+                                    <a href="<?php echo e(route('proveedores.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('proveedores.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-truck me-1"></i><?php echo e(__('Proveedores')); ?>
+
+                                    </a>
+                                    <a href="<?php echo e(route('compras.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('compras.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-bag me-1"></i><?php echo e(__('Órdenes de Compra')); ?>
+
+                                    </a>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+                            <!-- Grupo: Administración del Sistema -->
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-configuraciones')): ?>
+                            <div class="nav-dropdown" id="dropdown-administracion">
+                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['configurations.*', 'role-management.*', 'dynamic-fields.*', 'contratos.templates.*']) ? 'active' : ''); ?>"
+                                        onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-administracion');">
+                                    <i class="bi bi-gear-fill me-1"></i><?php echo e(__('Administración')); ?>
+
+                                    <i class="bi bi-chevron-down ms-1"></i>
+                                </button>
+                                <div class="nav-dropdown-menu shadow-sm border" style="display: none; min-width: 250px;">
+                                    <div class="py-2">
+                                        <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
+                                            <?php echo e(__('Sistema y Configuración')); ?>
+
+                                        </div>
+                                        <a href="<?php echo e(route('configurations.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('configurations.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-sliders"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Configuraciones')); ?></span>
+                                                <small class="text-muted">Parámetros del sistema</small>
+                                            </div>
+                                        </a>
+                                        <a href="<?php echo e(route('role-management.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('role-management.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-shield-lock"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Gestión de Roles')); ?></span>
+                                                <small class="text-muted">Roles y permisos</small>
+                                            </div>
+                                        </a>
+                                        <a href="<?php echo e(route('dynamic-fields.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('dynamic-fields.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-puzzle"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Campos Dinámicos')); ?></span>
+                                                <small class="text-muted">Extensibilidad de módulos</small>
+                                            </div>
+                                        </a>
+                                        <a href="<?php echo e(route('contratos.templates.index')); ?>" class="nav-dropdown-item d-flex align-items-center gap-2 <?php echo e(request()->routeIs('contratos.templates.*') ? 'active' : ''); ?>">
+                                            <i class="bi bi-file-earmark-plus"></i>
+                                            <div>
+                                                <span class="d-block"><?php echo e(__('Plantillas de Contratos')); ?></span>
+                                                <small class="text-muted">Templates y documentos</small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
                             </div>
                         </div>
                         <div class="nav-gradient nav-gradient-right"></div>
@@ -269,7 +351,7 @@
             </div>
 
             <!-- Settings Dropdown - Esquina derecha -->
-            <div class="hidden sm:flex sm:items-center user-dropdown-right">
+            <div class="hidden sm:flex sm:items-center user-dropdown-right flex-shrink-0" style="margin-left: 20px;">
                 <?php if (isset($component)) { $__componentOriginaldf8083d4a852c446488d8d384bbc7cbe = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginaldf8083d4a852c446488d8d384bbc7cbe = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown','data' => ['align' => 'right','width' => '48']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -373,17 +455,18 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            <!-- Navegación principal -->
             <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('dashboard'),'active' => request()->routeIs('dashboard')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('modules.index'),'active' => request()->routeIs('modules.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('responsive-nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('dashboard')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('dashboard'))]); ?>
-                <?php echo e(__('Dashboard')); ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('modules.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('modules.*'))]); ?>
+                <i class="bi bi-grid-3x3-gap me-2"></i><?php echo e(__('Módulos')); ?>
 
              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -395,6 +478,660 @@
 <?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
 <?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
 <?php endif; ?>
+
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('dashboard'),'active' => request()->routeIs('dashboard')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('dashboard')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('dashboard'))]); ?>
+                <i class="bi bi-speedometer2 me-2"></i><?php echo e(__('Dashboard')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+
+            <!-- Personal -->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ver-trabajadores', 'ver-usuarios'])): ?>
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider"><?php echo e(__('Personal')); ?></div>
+            </div>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-trabajadores')): ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('personas.index'),'active' => request()->routeIs('personas.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('personas.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('personas.*'))]); ?>
+                <i class="bi bi-person-vcard me-2"></i><?php echo e(__('Personas')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('trabajadores.index'),'active' => request()->routeIs('trabajadores.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('trabajadores.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('trabajadores.*'))]); ?>
+                <i class="bi bi-people me-2"></i><?php echo e(__('Trabajadores')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('contratos.index'),'active' => request()->routeIs('contratos.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('contratos.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('contratos.*'))]); ?>
+                <i class="bi bi-file-earmark-text me-2"></i><?php echo e(__('Contratos')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('condiciones-salud.index'),'active' => request()->routeIs('condiciones-salud.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('condiciones-salud.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('condiciones-salud.*'))]); ?>
+                <i class="bi bi-heart-pulse me-2"></i><?php echo e(__('Condiciones de Salud')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-usuarios')): ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('usuarios.index'),'active' => request()->routeIs('usuarios.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('usuarios.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('usuarios.*'))]); ?>
+                <i class="bi bi-person-gear me-2"></i><?php echo e(__('Usuarios')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+            <?php endif; ?>
+
+            <!-- Inventario -->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ver-inventario', 'ver-productos'])): ?>
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider"><?php echo e(__('Inventario')); ?></div>
+            </div>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-productos')): ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('categorias.index'),'active' => request()->routeIs('categorias.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('categorias.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('categorias.*'))]); ?>
+                <i class="bi bi-tags me-2"></i><?php echo e(__('Categorías')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('productos.index'),'active' => request()->routeIs('productos.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('productos.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('productos.*'))]); ?>
+                <i class="bi bi-box-seam me-2"></i><?php echo e(__('Productos')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('inventarios.index'),'active' => request()->routeIs('inventarios.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('inventarios.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('inventarios.*'))]); ?>
+                <i class="bi bi-boxes me-2"></i><?php echo e(__('Stock')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('kardex.index'),'active' => request()->routeIs('kardex.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('kardex.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('kardex.*'))]); ?>
+                <i class="bi bi-clipboard-data me-2"></i><?php echo e(__('Kardex')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+            <?php endif; ?>
+
+            <!-- Operaciones -->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ver-consumos', 'ver-inventario'])): ?>
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider"><?php echo e(__('Operaciones')); ?></div>
+            </div>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('menus.index'),'active' => request()->routeIs('menus.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('menus.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('menus.*'))]); ?>
+                <i class="bi bi-calendar-week me-2"></i><?php echo e(__('Menús')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('recetas.index'),'active' => request()->routeIs('recetas.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('recetas.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('recetas.*'))]); ?>
+                <i class="bi bi-journal-bookmark me-2"></i><?php echo e(__('Recetas')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-consumos')): ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('consumos.index'),'active' => request()->routeIs('consumos.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('consumos.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('consumos.*'))]); ?>
+                <i class="bi bi-journal-text me-2"></i><?php echo e(__('Consumos')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+            <?php endif; ?>
+
+            <!-- Comercial -->
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider"><?php echo e(__('Comercial')); ?></div>
+            </div>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('clientes.index'),'active' => request()->routeIs('clientes.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('clientes.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('clientes.*'))]); ?>
+                <i class="bi bi-people me-2"></i><?php echo e(__('Clientes')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('ventas.index'),'active' => request()->routeIs('ventas.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('ventas.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('ventas.*'))]); ?>
+                <i class="bi bi-receipt me-2"></i><?php echo e(__('Ventas')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('pedidos.index'),'active' => request()->routeIs('pedidos.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('pedidos.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('pedidos.*'))]); ?>
+                <i class="bi bi-cart3 me-2"></i><?php echo e(__('Pedidos')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+
+            <!-- Compras -->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-proveedores')): ?>
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider"><?php echo e(__('Compras')); ?></div>
+            </div>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('proveedores.index'),'active' => request()->routeIs('proveedores.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('proveedores.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('proveedores.*'))]); ?>
+                <i class="bi bi-truck me-2"></i><?php echo e(__('Proveedores')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('compras.index'),'active' => request()->routeIs('compras.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('compras.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('compras.*'))]); ?>
+                <i class="bi bi-bag me-2"></i><?php echo e(__('Órdenes de Compra')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
+
+            <!-- Reportes -->
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider"><?php echo e(__('Reportes')); ?></div>
+            </div>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('reportes.index'),'active' => request()->routeIs('reportes.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('reportes.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('reportes.*'))]); ?>
+                <i class="bi bi-graph-up me-2"></i><?php echo e(__('Dashboard de Reportes')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('reportes.consumos'),'active' => request()->routeIs('reportes.consumos')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('reportes.consumos')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('reportes.consumos'))]); ?>
+                <i class="bi bi-journal-text me-2"></i><?php echo e(__('Reportes de Consumos')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('reportes.inventario'),'active' => request()->routeIs('reportes.inventario')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('reportes.inventario')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('reportes.inventario'))]); ?>
+                <i class="bi bi-boxes me-2"></i><?php echo e(__('Reportes de Inventario')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('reportes.ventas'),'active' => request()->routeIs('reportes.ventas')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('reportes.ventas')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('reportes.ventas'))]); ?>
+                <i class="bi bi-receipt me-2"></i><?php echo e(__('Reportes de Ventas')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('reportes.proveedores'),'active' => request()->routeIs('reportes.proveedores')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('reportes.proveedores')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('reportes.proveedores'))]); ?>
+                <i class="bi bi-truck me-2"></i><?php echo e(__('Reportes de Proveedores')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+
+            <!-- Administración -->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-configuraciones')): ?>
+            <div class="px-4 py-2">
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider"><?php echo e(__('Administración')); ?></div>
+            </div>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('configurations.index'),'active' => request()->routeIs('configurations.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('configurations.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('configurations.*'))]); ?>
+                <i class="bi bi-sliders me-2"></i><?php echo e(__('Configuraciones')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('role-management.index'),'active' => request()->routeIs('role-management.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('role-management.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('role-management.*'))]); ?>
+                <i class="bi bi-shield-lock me-2"></i><?php echo e(__('Gestión de Roles')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('dynamic-fields.index'),'active' => request()->routeIs('dynamic-fields.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('dynamic-fields.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('dynamic-fields.*'))]); ?>
+                <i class="bi bi-puzzle me-2"></i><?php echo e(__('Campos Dinámicos')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('contratos.templates.index'),'active' => request()->routeIs('contratos.templates.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('responsive-nav-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('contratos.templates.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('contratos.templates.*'))]); ?>
+                <i class="bi bi-file-earmark-plus me-2"></i><?php echo e(__('Plantillas de Contratos')); ?>
+
+             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $attributes = $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__attributesOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18)): ?>
+<?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
+<?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
+<?php endif; ?>
+            <?php endif; ?>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -467,9 +1204,10 @@
     /* Contenedor principal de navegación */
     .nav-wrapper {
         position: relative;
-        max-width: 900px;
         width: 100%;
-        margin: 0 8px;
+        max-width: none; /* Sin límite de ancho */
+        margin: 0;
+        flex: 1; /* Tomar todo el espacio disponible */
     }
 
     /* Container scrolleable */
@@ -501,10 +1239,11 @@
     .nav-inner {
         display: flex;
         align-items: center;
-        gap: 24px;
+        gap: 32px; /* Mucho más espacio entre elementos */
         white-space: nowrap;
         min-width: max-content;
-        padding: 0 20px;
+        padding: 0 30px; /* Más padding para respirar */
+        justify-content: flex-start;
     }
 
     /* Gradientes para indicar más contenido */
@@ -600,26 +1339,36 @@
 
     /* Mejoras responsivas */
     @media (max-width: 1200px) {
-        .nav-wrapper {
-            max-width: 700px;
+        .nav-inner {
+            gap: 24px; /* Menos espacio en pantallas medianas */
+            padding: 0 20px;
         }
     }
 
     @media (max-width: 992px) {
-        .nav-wrapper {
-            max-width: 500px;
-        }
-
         .nav-inner {
-            gap: 16px;
+            gap: 16px; /* Más compacto en móviles */
+            padding: 0 15px;
+        }
+        
+        .nav-inner a {
+            padding: 8px 12px !important;
+        }
+        
+        .nav-dropdown-trigger {
+            padding: 8px 12px;
         }
     }
 
     /* Animación suave al hacer hover en los enlaces */
     .nav-inner a {
         transition: all 0.2s ease;
-        border-radius: 6px;
-        padding: 8px 12px !important;
+        border-radius: 8px;
+        padding: 10px 16px !important; /* Más espacio interno */
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0; /* Sin márgenes adicionales */
+        flex-shrink: 0; /* No se compriman */
     }
 
     .nav-inner a:hover {
@@ -637,8 +1386,8 @@
         background: none;
         border: none;
         color: #6b7280;
-        padding: 8px 12px;
-        border-radius: 6px;
+        padding: 10px 16px; /* Consistente con enlaces */
+        border-radius: 8px;
         transition: all 0.2s ease;
         cursor: pointer;
         font-size: 14px;
@@ -648,6 +1397,9 @@
         text-decoration: none;
         white-space: nowrap;
         font-family: inherit;
+        line-height: 1.5;
+        margin: 0;
+        flex-shrink: 0;
     }
 
     .nav-dropdown-trigger:hover {

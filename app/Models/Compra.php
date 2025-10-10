@@ -201,7 +201,8 @@ class Compra extends Model
     public function generarNumeroCompra()
     {
         $año = date('Y');
-        $ultimaCompra = static::whereYear('created_at', $año)->orderBy('id', 'desc')->first();
+        $query = static::query();
+        $ultimaCompra = \App\Helpers\DatabaseHelper::whereYear($query, 'created_at', $año)->orderBy('id', 'desc')->first();
         $siguiente = $ultimaCompra ? (int)substr($ultimaCompra->numero_compra, -6) + 1 : 1;
 
         return 'C' . $año . str_pad($siguiente, 6, '0', STR_PAD_LEFT);
