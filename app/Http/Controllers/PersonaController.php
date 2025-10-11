@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Persona;
 use App\Models\Trabajador;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class PersonaController extends Controller
 {
@@ -131,5 +133,107 @@ class PersonaController extends Controller
 
         return redirect()->route('personas.index')
             ->with('success', "Persona {$nombreCompleto} eliminada exitosamente");
+    }
+
+    public function generarReportePDF(Request $request)
+    {
+        // Construir la consulta con los filtros
+        $query = Persona::with('trabajador');
+
+        // Filtro de búsqueda
+        if ($request->search) {
+            $s = "%{$request->search}%";
+            $query->where(function($q) use ($s) {
+                $q->where('nombres', 'like', $s)
+                  ->orWhere('apellidos', 'like', $s)
+                  ->orWhere('numero_documento', 'like', $s);
+            });
+        }
+
+        // Filtro de tipo de documento
+        if ($request->tipo_documento) {
+            $query->where('tipo_documento', $request->tipo_documento);
+        }
+
+        // Filtro de género
+        if ($request->genero) {
+            $query->where('sexo', $request->genero);
+        }
+
+        // Filtro de estado civil
+        if ($request->estado_civil) {
+            $query->where('estado_civil', $request->estado_civil);
+        }
+
+        // Filtro de relación laboral
+        if ($request->con_trabajador === 'si') {
+            $query->whereHas('trabajador');
+        } elseif ($request->con_trabajador === 'no') {
+            $query->whereDoesntHave('trabajador');
+        }
+
+        // Filtro de rango de fechas
+        if ($request->fecha_inicio) {
+            $query->whereDate('created_at', '>=', $request->fecha_inicio);
+        }
+        if ($request->fecha_fin) {
+            $query->whereDate('created_at', '<=', $request->fecha_fin);
+        }
+
+        // Ordenamiento
+        switch ($request->orden) {
+            case 'nombres':
+                $query->orderBy('nombres', 'asc');
+                break;
+            case 'created_at_desc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'created_at_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'numero_documento':
+                $query->orderBy('numero_documento', 'asc');
+                break;
+            default: // apellidos
+                $query->orderBy('apellidos', 'asc')->orderBy('nombres', 'asc');
+                break;
+        }
+
+        // Obtener las personas
+        $personas = $query->get();
+
+        // Opciones de visualización
+        $opciones = [
+            'incluir_foto' => $request->has('incluir_foto'),
+            'incluir_contacto' => $request->has('incluir_contacto'),
+            'incluir_direccion' => $request->has('incluir_direccion'),
+        ];
+
+        // Datos para el PDF
+        $data = [
+            'personas' => $personas,
+            'opciones' => $opciones,
+            'filtros' => [
+                'search' => $request->search,
+                'tipo_documento' => $request->tipo_documento,
+                'genero' => $request->genero,
+                'estado_civil' => $request->estado_civil,
+                'con_trabajador' => $request->con_trabajador,
+                'fecha_inicio' => $request->fecha_inicio,
+                'fecha_fin' => $request->fecha_fin,
+                'orden' => $request->orden,
+            ],
+            'fecha_generacion' => Carbon::now()->format('d/m/Y H:i:s'),
+            'total_personas' => $personas->count(),
+        ];
+
+        // Generar PDF
+        $pdf = Pdf::loadView('personas.reporte-pdf', $data);
+        $pdf->setPaper('letter', 'portrait');
+
+        // Nombre del archivo
+        $nombreArchivo = 'reporte_personas_' . date('Y-m-d_His') . '.pdf';
+
+        return $pdf->download($nombreArchivo);
     }
 }

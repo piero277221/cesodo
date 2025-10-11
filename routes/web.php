@@ -307,6 +307,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Personas
     Route::resource('personas', PersonaController::class);
+    Route::post('personas/reporte/pdf', [PersonaController::class, 'generarReportePDF'])->name('personas.reporte.pdf');
 
     // Menús - Sistema de Gestión de Menús
     Route::resource('menus', MenuController::class);

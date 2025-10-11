@@ -11,10 +11,16 @@
                     <i class="fas fa-user-friends text-primary me-2"></i>
                     Gestión de Personas
                 </h2>
-                <a href="{{ route('personas.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus me-1"></i>
-                    Nueva Persona
-                </a>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn" style="background-color: #dc2626; color: white;" data-bs-toggle="modal" data-bs-target="#modalReporte">
+                        <i class="fas fa-file-pdf me-1"></i>
+                        Generar Reporte
+                    </button>
+                    <a href="{{ route('personas.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>
+                        Nueva Persona
+                    </a>
+                </div>
             </div>
 
             @if(session('success'))
@@ -300,4 +306,167 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de Reporte -->
+<div class="modal fade" id="modalReporte" tabindex="-1" aria-labelledby="modalReporteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
+                <h5 class="modal-title text-white fw-bold" id="modalReporteLabel">
+                    <i class="fas fa-file-pdf me-2"></i>
+                    Generar Reporte de Personas
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formReporte" method="POST" action="{{ route('personas.reporte.pdf') }}" target="_blank">
+                @csrf
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Instrucciones:</strong> Seleccione los filtros deseados para generar el reporte. El archivo PDF se descargará automáticamente.
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- Filtro por búsqueda -->
+                        <div class="col-md-12">
+                            <label for="reporte_search" class="form-label fw-semibold">
+                                <i class="fas fa-search me-1" style="color: #dc2626;"></i>
+                                Buscar por Nombre o Documento
+                            </label>
+                            <input type="text" class="form-control" id="reporte_search" name="search"
+                                   placeholder="Ingrese nombre, apellidos o número de documento...">
+                        </div>
+
+                        <!-- Filtro por tipo de documento -->
+                        <div class="col-md-6">
+                            <label for="reporte_tipo_documento" class="form-label fw-semibold">
+                                <i class="fas fa-id-card me-1" style="color: #dc2626;"></i>
+                                Tipo de Documento
+                            </label>
+                            <select class="form-select" id="reporte_tipo_documento" name="tipo_documento">
+                                <option value="">Todos los tipos</option>
+                                <option value="dni">DNI</option>
+                                <option value="ce">Carnet de Extranjería (CE)</option>
+                                <option value="pasaporte">Pasaporte</option>
+                                <option value="ruc">RUC</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por género -->
+                        <div class="col-md-6">
+                            <label for="reporte_genero" class="form-label fw-semibold">
+                                <i class="fas fa-venus-mars me-1" style="color: #dc2626;"></i>
+                                Género
+                            </label>
+                            <select class="form-select" id="reporte_genero" name="genero">
+                                <option value="">Todos los géneros</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="O">Otro</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por estado civil -->
+                        <div class="col-md-6">
+                            <label for="reporte_estado_civil" class="form-label fw-semibold">
+                                <i class="fas fa-ring me-1" style="color: #dc2626;"></i>
+                                Estado Civil
+                            </label>
+                            <select class="form-select" id="reporte_estado_civil" name="estado_civil">
+                                <option value="">Todos los estados</option>
+                                <option value="soltero">Soltero(a)</option>
+                                <option value="casado">Casado(a)</option>
+                                <option value="divorciado">Divorciado(a)</option>
+                                <option value="viudo">Viudo(a)</option>
+                                <option value="conviviente">Conviviente</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por relación laboral -->
+                        <div class="col-md-6">
+                            <label for="reporte_con_trabajador" class="form-label fw-semibold">
+                                <i class="fas fa-briefcase me-1" style="color: #dc2626;"></i>
+                                Relación Laboral
+                            </label>
+                            <select class="form-select" id="reporte_con_trabajador" name="con_trabajador">
+                                <option value="">Todos</option>
+                                <option value="si">Solo con relación laboral</option>
+                                <option value="no">Sin relación laboral</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por rango de fechas -->
+                        <div class="col-md-6">
+                            <label for="reporte_fecha_inicio" class="form-label fw-semibold">
+                                <i class="fas fa-calendar-alt me-1" style="color: #dc2626;"></i>
+                                Fecha Registro Desde
+                            </label>
+                            <input type="date" class="form-control" id="reporte_fecha_inicio" name="fecha_inicio">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="reporte_fecha_fin" class="form-label fw-semibold">
+                                <i class="fas fa-calendar-check me-1" style="color: #dc2626;"></i>
+                                Fecha Registro Hasta
+                            </label>
+                            <input type="date" class="form-control" id="reporte_fecha_fin" name="fecha_fin">
+                        </div>
+
+                        <!-- Opciones de ordenamiento -->
+                        <div class="col-md-6">
+                            <label for="reporte_orden" class="form-label fw-semibold">
+                                <i class="fas fa-sort me-1" style="color: #dc2626;"></i>
+                                Ordenar Por
+                            </label>
+                            <select class="form-select" id="reporte_orden" name="orden">
+                                <option value="apellidos">Apellidos (A-Z)</option>
+                                <option value="nombres">Nombres (A-Z)</option>
+                                <option value="created_at_desc">Fecha de Registro (Más Recientes)</option>
+                                <option value="created_at_asc">Fecha de Registro (Más Antiguos)</option>
+                                <option value="numero_documento">Número de Documento</option>
+                            </select>
+                        </div>
+
+                        <!-- Opciones de visualización -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-eye me-1" style="color: #dc2626;"></i>
+                                Incluir en el Reporte
+                            </label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="incluir_foto" id="incluir_foto" checked>
+                                <label class="form-check-label" for="incluir_foto">
+                                    Fotografía
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="incluir_contacto" id="incluir_contacto" checked>
+                                <label class="form-check-label" for="incluir_contacto">
+                                    Información de Contacto
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="incluir_direccion" id="incluir_direccion" checked>
+                                <label class="form-check-label" for="incluir_direccion">
+                                    Dirección
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn" style="background-color: #dc2626; color: white;">
+                        <i class="fas fa-download me-1"></i>
+                        Descargar PDF
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
