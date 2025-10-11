@@ -141,7 +141,7 @@ body {
 .btn-primary:hover:not(:disabled) {
     background-color: var(--cesodo-red-dark);
     border-color: var(--cesodo-red-dark);
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado para mejor UX */
     box-shadow: var(--cesodo-shadow-md);
 }
 
@@ -156,7 +156,7 @@ body {
     background-color: var(--cesodo-black);
     color: var(--cesodo-white);
     border-color: var(--cesodo-black);
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado para mejor UX */
 }
 
 .btn-success {
@@ -167,7 +167,7 @@ body {
 
 .btn-success:hover:not(:disabled) {
     background-color: var(--cesodo-black-light);
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado para mejor UX */
     box-shadow: var(--cesodo-shadow-md);
 }
 
@@ -179,7 +179,7 @@ body {
 
 .btn-warning:hover:not(:disabled) {
     background-color: var(--cesodo-red);
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado para mejor UX */
     box-shadow: var(--cesodo-shadow-md);
 }
 
@@ -192,7 +192,7 @@ body {
 .btn-info:hover:not(:disabled) {
     background-color: var(--cesodo-black);
     color: var(--cesodo-white);
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado para mejor UX */
     box-shadow: var(--cesodo-shadow-md);
 }
 
@@ -204,7 +204,7 @@ body {
 
 .btn-danger:hover:not(:disabled) {
     background-color: var(--cesodo-danger-light);
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado para mejor UX */
     box-shadow: var(--cesodo-shadow-md);
 }
 
@@ -289,7 +289,7 @@ body {
 
 .card:hover {
     box-shadow: var(--cesodo-shadow-md);
-    transform: translateY(-2px);
+    /* Efecto de movimiento eliminado para mejor UX */
 }
 
 .card-header {
