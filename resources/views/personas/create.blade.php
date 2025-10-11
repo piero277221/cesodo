@@ -398,19 +398,36 @@
 
                                     <div class="col-md-6 mb-3">
                                         <label for="numero_documento" class="form-label">Número de Documento <span class="text-danger">*</span></label>
-                                        <input type="text"
-                                               class="form-control @error('numero_documento') is-invalid @enderror"
-                                               id="numero_documento"
-                                               name="numero_documento"
-                                               value="{{ old('numero_documento') }}"
-                                               required>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control @error('numero_documento') is-invalid @enderror"
+                                                   id="numero_documento"
+                                                   name="numero_documento"
+                                                   value="{{ old('numero_documento') }}"
+                                                   required>
+                                            <button class="btn btn-outline-secondary" type="button" id="btn-consultar-reniec" 
+                                                    style="background-color: #dc2626; color: white; border-color: #dc2626;"
+                                                    title="Consultar DNI en RENIEC Perú">
+                                                <i class="fas fa-search"></i> RENIEC
+                                            </button>
+                                        </div>
                                         @error('numero_documento')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <small class="text-muted">
+                                            <i class="fas fa-cloud"></i> 
+                                            Consultas disponibles hoy: <strong id="consultas-disponibles" class="text-success">-</strong>/100
+                                        </small>
                                     </div>
                                 </div>
 
-                                <div class="alert alert-info">
+                                <!-- Estado de consulta RENIEC -->
+                                <div id="reniec-resultado" class="alert alert-dismissible fade" role="alert" style="display: none;">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <div id="reniec-mensaje"></div>
+                                </div>
+
+                                <div class="alert alert-info"
                                     <i class="fas fa-info-circle me-2"></i>
                                     <strong>Información:</strong>
                                     <ul class="mb-0 mt-2">
@@ -609,6 +626,153 @@ function calcularEdad() {
 // Auto-ocultar mensajes de error después de 3 segundos
 document.addEventListener('DOMContentLoaded', function() {
     const errorMessages = document.querySelectorAll('.invalid-feedback');
+    
+    // Cargar contador de consultas disponibles
+    cargarConsultasDisponibles();
+    
+    // Configurar botón de consulta RENIEC
+    const btnConsultarReniec = document.getElementById('btn-consultar-reniec');
+    const numeroDocumento = document.getElementById('numero_documento');
+    const tipoDocumento = document.getElementById('tipo_documento');
+    
+    if (btnConsultarReniec) {
+        btnConsultarReniec.addEventListener('click', function() {
+            consultarReniec();
+        });
+    }
+    
+    // Permitir consulta con Enter en el campo de documento
+    numeroDocumento.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && tipoDocumento.value === 'dni') {
+            e.preventDefault();
+            consultarReniec();
+        }
+    });
+});
+
+/**
+ * Cargar consultas disponibles desde la API
+ */
+function cargarConsultasDisponibles() {
+    fetch('{{ route('reniec.disponibles') }}')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const consultasElement = document.getElementById('consultas-disponibles');
+                consultasElement.textContent = data.consultas_disponibles;
+                
+                // Cambiar color según disponibilidad
+                if (data.consultas_disponibles <= 10) {
+                    consultasElement.className = 'text-danger';
+                } else if (data.consultas_disponibles <= 30) {
+                    consultasElement.className = 'text-warning';
+                } else {
+                    consultasElement.className = 'text-success';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar consultas:', error);
+            document.getElementById('consultas-disponibles').textContent = '?';
+        });
+}
+
+/**
+ * Consultar DNI en RENIEC Perú
+ */
+function consultarReniec() {
+    const numeroDocumento = document.getElementById('numero_documento').value;
+    const tipoDocumento = document.getElementById('tipo_documento').value;
+    const btnConsultar = document.getElementById('btn-consultar-reniec');
+    const resultadoDiv = document.getElementById('reniec-resultado');
+    const mensajeDiv = document.getElementById('reniec-mensaje');
+    
+    // Validar tipo de documento
+    if (tipoDocumento !== 'dni') {
+        mostrarMensajeReniec('warning', 'Por favor selecciona "DNI" como tipo de documento para consultar RENIEC.');
+        return;
+    }
+    
+    // Validar DNI (8 dígitos)
+    if (!/^\d{8}$/.test(numeroDocumento)) {
+        mostrarMensajeReniec('warning', 'El DNI debe tener exactamente 8 dígitos.');
+        return;
+    }
+    
+    // Deshabilitar botón
+    btnConsultar.disabled = true;
+    btnConsultar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Consultando...';
+    
+    // Realizar consulta
+    fetch('{{ route('reniec.consultar') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            dni: numeroDocumento
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.data) {
+            // Rellenar campos con los datos obtenidos
+            document.getElementById('nombres').value = data.data.nombres || '';
+            document.getElementById('apellidos').value = 
+                (data.data.apellido_paterno || '') + ' ' + (data.data.apellido_materno || '');
+            
+            mostrarMensajeReniec('success', 
+                `<strong><i class="fas fa-check-circle"></i> ¡Consulta Exitosa!</strong><br>
+                Se encontró: <strong>${data.data.nombre_completo}</strong>`
+            );
+            
+            // Actualizar contador
+            document.getElementById('consultas-disponibles').textContent = data.consultas_disponibles || '?';
+        } else {
+            mostrarMensajeReniec('danger', 
+                `<strong><i class="fas fa-exclamation-triangle"></i> Error</strong><br>
+                ${data.message || 'No se pudo consultar el DNI'}`
+            );
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        mostrarMensajeReniec('danger', 
+            `<strong><i class="fas fa-times-circle"></i> Error de conexión</strong><br>
+            No se pudo conectar con el servicio RENIEC. Por favor, intenta nuevamente.`
+        );
+    })
+    .finally(() => {
+        // Rehabilitar botón
+        btnConsultar.disabled = false;
+        btnConsultar.innerHTML = '<i class="fas fa-search"></i> RENIEC';
+        
+        // Recargar contador de consultas
+        cargarConsultasDisponibles();
+    });
+}
+
+/**
+ * Mostrar mensaje de resultado de consulta RENIEC
+ */
+function mostrarMensajeReniec(tipo, mensaje) {
+    const resultadoDiv = document.getElementById('reniec-resultado');
+    const mensajeDiv = document.getElementById('reniec-mensaje');
+    
+    resultadoDiv.className = `alert alert-${tipo} alert-dismissible fade show`;
+    mensajeDiv.innerHTML = mensaje;
+    resultadoDiv.style.display = 'block';
+    
+    // Auto-ocultar después de 5 segundos
+    setTimeout(() => {
+        resultadoDiv.classList.remove('show');
+        setTimeout(() => {
+            resultadoDiv.style.display = 'none';
+        }, 300);
+    }, 5000);
+}
+
 
     errorMessages.forEach(function(message) {
         if (message.style.display !== 'none' && message.textContent.trim() !== '') {

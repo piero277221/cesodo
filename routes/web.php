@@ -309,6 +309,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('personas', PersonaController::class);
     Route::post('personas/reporte/pdf', [PersonaController::class, 'generarReportePDF'])->name('personas.reporte.pdf');
 
+    // RENIEC - Consultas de DNI Perú
+    Route::prefix('reniec')->name('reniec.')->group(function () {
+        Route::post('/consultar-dni', [App\Http\Controllers\ReniecController::class, 'consultarDni'])->name('consultar');
+        Route::get('/estadisticas', [App\Http\Controllers\ReniecController::class, 'estadisticas'])->name('estadisticas');
+        Route::get('/consultas-disponibles', [App\Http\Controllers\ReniecController::class, 'consultasDisponibles'])->name('disponibles');
+        Route::get('/historial', [App\Http\Controllers\ReniecController::class, 'historial'])->name('historial');
+    });
+
     // Menús - Sistema de Gestión de Menús
     Route::resource('menus', MenuController::class);
 
