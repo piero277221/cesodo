@@ -710,9 +710,49 @@ function consultarReniec() {
             document.getElementById('apellidos').value = 
                 (data.data.apellido_paterno || '') + ' ' + (data.data.apellido_materno || '');
 
+            // Intentar rellenar sexo si está disponible
+            if (data.data.sexo) {
+                const sexoSelect = document.getElementById('sexo');
+                if (sexoSelect) {
+                    const sexoNormalizado = data.data.sexo.toLowerCase();
+                    if (sexoNormalizado === 'm' || sexoNormalizado === 'masculino' || sexoNormalizado === 'hombre') {
+                        sexoSelect.value = 'M';
+                    } else if (sexoNormalizado === 'f' || sexoNormalizado === 'femenino' || sexoNormalizado === 'mujer') {
+                        sexoSelect.value = 'F';
+                    }
+                }
+            }
+
+            // Intentar rellenar fecha de nacimiento si está disponible
+            if (data.data.fecha_nacimiento) {
+                const fechaNacimientoInput = document.getElementById('fecha_nacimiento');
+                if (fechaNacimientoInput) {
+                    // Convertir formato si es necesario (ej: dd/mm/yyyy a yyyy-mm-dd)
+                    const fecha = data.data.fecha_nacimiento;
+                    if (fecha.includes('/')) {
+                        const partes = fecha.split('/');
+                        if (partes.length === 3) {
+                            fechaNacimientoInput.value = `${partes[2]}-${partes[1]}-${partes[0]}`;
+                        }
+                    } else {
+                        fechaNacimientoInput.value = fecha;
+                    }
+                }
+            }
+
+            // Mensaje de éxito
+            let mensajeExtra = '';
+            if (!data.data.sexo || !data.data.fecha_nacimiento) {
+                const camposFaltantes = [];
+                if (!data.data.sexo) camposFaltantes.push('sexo');
+                if (!data.data.fecha_nacimiento) camposFaltantes.push('fecha de nacimiento');
+                mensajeExtra = `<br><small class="text-warning"><i class="fas fa-info-circle"></i> 
+                    Por favor, completa manualmente: ${camposFaltantes.join(' y ')}</small>`;
+            }
+
             mostrarMensajeReniec('success', 
                 `<strong><i class="fas fa-check-circle"></i> ¡Consulta Exitosa!</strong><br>
-                Se encontró: <strong>${data.data.nombre_completo}</strong>`
+                Se encontró: <strong>${data.data.nombre_completo}</strong>${mensajeExtra}`
             );
 
             // Actualizar contador

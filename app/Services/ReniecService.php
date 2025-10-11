@@ -87,6 +87,11 @@ class ReniecService
                                 ($data['apellido_paterno'] ?? $data['apellidoPaterno'] ?? '') . ' ' .
                                 ($data['apellido_materno'] ?? $data['apellidoMaterno'] ?? '')
                             ),
+                            // Campos adicionales si están disponibles
+                            'sexo' => $data['sexo'] ?? null,
+                            'fecha_nacimiento' => $data['fecha_nacimiento'] ?? $data['fechaNacimiento'] ?? null,
+                            'direccion' => $data['direccion'] ?? $data['direccion_completa'] ?? '',
+                            'ubigeo' => $data['ubigeo_reniec'] ?? $data['ubigeo_sunat'] ?? '',
                         ],
                         'consultas_disponibles' => $consultasDisponibles - 1
                     ];
