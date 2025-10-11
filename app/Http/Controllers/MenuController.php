@@ -163,10 +163,9 @@ class MenuController extends Controller
         ];
 
         // Obtener productos para el formulario
-        $productos = \App\Models\Producto::where('estado', 'activo')
-                                        ->with(['inventario'])
-                                        ->orderBy('nombre')
-                                        ->get();
+        $productos = Producto::with(['inventarios'])
+                             ->orderBy('nombre')
+                             ->get();
 
         // Por ahora inicializamos una colección vacía para condiciones de salud
         $condicionesSalud = collect();
@@ -376,6 +375,11 @@ class MenuController extends Controller
                          ->get()
                          ->groupBy('tipo_plato');
 
+        // Obtener todos los productos para los selects
+        $productos = Producto::with('inventarios')
+                             ->orderBy('nombre')
+                             ->get();
+
         $tiposMenu = [
             'semanal' => 'Menú Semanal',
             'semanal_especial' => 'Menú Semanal Especial'
@@ -395,7 +399,7 @@ class MenuController extends Controller
             'condiciones' // Cargar condiciones del menú
         ]);
 
-        return view('menus.edit', compact('menu', 'recetas', 'tiposMenu', 'tiposComida'));
+        return view('menus.edit', compact('menu', 'recetas', 'productos', 'tiposMenu', 'tiposComida'));
     }
 
     public function update(Request $request, Menu $menu)
