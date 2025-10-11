@@ -325,8 +325,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('{receta}/verificar-disponibilidad', [RecetaController::class, 'verificarDisponibilidad'])->name('recetas.verificar-disponibilidad');
     });
 
-    // Condiciones de Salud
-    Route::resource('condiciones-salud', \App\Http\Controllers\CondicionSaludController::class)->middleware('permission:ver-inventario');
+    // Certificados Médicos
+    Route::prefix('certificados-medicos')->group(function () {
+        Route::get('/', [\App\Http\Controllers\CertificadoMedicoController::class, 'index'])->name('certificados-medicos.index');
+        Route::get('/create', [\App\Http\Controllers\CertificadoMedicoController::class, 'create'])->name('certificados-medicos.create');
+        Route::post('/', [\App\Http\Controllers\CertificadoMedicoController::class, 'store'])->name('certificados-medicos.store');
+        Route::get('/{certificadosMedico}', [\App\Http\Controllers\CertificadoMedicoController::class, 'show'])->name('certificados-medicos.show');
+        Route::get('/{certificadosMedico}/edit', [\App\Http\Controllers\CertificadoMedicoController::class, 'edit'])->name('certificados-medicos.edit');
+        Route::put('/{certificadosMedico}', [\App\Http\Controllers\CertificadoMedicoController::class, 'update'])->name('certificados-medicos.update');
+        Route::delete('/{certificadosMedico}', [\App\Http\Controllers\CertificadoMedicoController::class, 'destroy'])->name('certificados-medicos.destroy');
+        Route::get('/{certificadosMedico}/descargar', [\App\Http\Controllers\CertificadoMedicoController::class, 'descargar'])->name('certificados-medicos.descargar');
+        Route::post('/buscar-persona', [\App\Http\Controllers\CertificadoMedicoController::class, 'buscarPersona'])->name('certificados-medicos.buscar-persona');
+    })->middleware('permission:ver-inventario');
 
     // Reportes
     Route::prefix('reportes')->group(function () {

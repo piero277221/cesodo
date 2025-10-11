@@ -41,7 +41,7 @@
                             <!-- Grupo: Gestión de Personal -->
                             @canany(['ver-trabajadores', 'ver-usuarios'])
                             <div class="nav-dropdown" id="dropdown-personal">
-                                <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*', 'condiciones-salud.*']) ? 'active' : '' }}"
+                                <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*', 'certificados-medicos.*']) ? 'active' : '' }}"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-personal');">
                                     <i class="bi bi-people-fill me-1"></i>{{ __('Personal') }}
                                     <i class="bi bi-chevron-down ms-1"></i>
@@ -59,8 +59,8 @@
                                     </a>
                                     @endcan
                                     @can('ver-inventario')
-                                    <a href="{{ route('condiciones-salud.index') }}" class="nav-dropdown-item {{ request()->routeIs('condiciones-salud.*') ? 'active' : '' }}">
-                                        <i class="bi bi-heart-pulse me-1"></i>{{ __('Condiciones de Salud') }}
+                                    <a href="{{ route('certificados-medicos.index') }}" class="nav-dropdown-item {{ request()->routeIs('certificados-medicos.*') ? 'active' : '' }}">
+                                        <i class="bi bi-file-medical me-1"></i>{{ __('Certificados Médicos') }}
                                     </a>
                                     @endcan
                                     @can('ver-usuarios')
@@ -329,8 +329,8 @@
             </x-responsive-nav-link>
             @endcan
             @can('ver-inventario')
-            <x-responsive-nav-link :href="route('condiciones-salud.index')" :active="request()->routeIs('condiciones-salud.*')">
-                <i class="bi bi-heart-pulse me-2"></i>{{ __('Condiciones de Salud') }}
+            <x-responsive-nav-link :href="route('certificados-medicos.index')" :active="request()->routeIs('certificados-medicos.*')">
+                <i class="bi bi-file-medical me-2"></i>{{ __('Certificados Médicos') }}
             </x-responsive-nav-link>
             @endcan
             @can('ver-usuarios')

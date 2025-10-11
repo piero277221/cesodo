@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ActualizarPreciosKardexCommand::class,
+        Commands\VerificarCertificadosVencimiento::class,
     ];
 
     /**
@@ -21,7 +22,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Verificar certificados médicos próximos a vencer todos los días a las 8:00 AM
+        $schedule->command('certificados:verificar-vencimiento')
+            ->dailyAt('08:00')
+            ->timezone('America/Lima');
     }
 
     /**

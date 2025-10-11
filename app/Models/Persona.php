@@ -60,6 +60,18 @@ class Persona extends Model
         return $this->hasMany(Contrato::class);
     }
 
+    public function certificadosMedicos()
+    {
+        return $this->hasMany(CertificadoMedico::class);
+    }
+
+    public function certificadoMedicoActivo()
+    {
+        return $this->hasOne(CertificadoMedico::class)
+            ->whereDate('fecha_expiracion', '>=', now())
+            ->latest('fecha_expiracion');
+    }
+
     public function contratoActivo()
     {
         return $this->hasOne(Contrato::class)->where('estado', 'activo');
