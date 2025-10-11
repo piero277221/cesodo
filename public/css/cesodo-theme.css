@@ -98,7 +98,7 @@ body {
     background-color: var(--cesodo-gray-50);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* Prevenir scroll horizontal por efectos */
 }
 
 /* === COMPONENTES BASE === */
