@@ -640,7 +640,7 @@ function cargarConsultasDisponibles() {
                 const consultasElement = document.getElementById('consultas-disponibles');
                 if (consultasElement) {
                     consultasElement.textContent = data.consultas_disponibles;
-                    
+
                     // Cambiar color según disponibilidad
                     if (data.consultas_disponibles <= 10) {
                         consultasElement.className = 'text-danger';
@@ -666,11 +666,11 @@ function cargarConsultasDisponibles() {
  */
 function consultarReniec() {
     console.log('consultarReniec llamada'); // Debug
-    
+
     const numeroDocumento = document.getElementById('numero_documento').value;
     const tipoDocumento = document.getElementById('tipo_documento').value;
     const btnConsultar = document.getElementById('btn-consultar-reniec');
-    
+
     console.log('DNI:', numeroDocumento, 'Tipo:', tipoDocumento); // Debug
 
     // Validar tipo de documento
@@ -703,11 +703,11 @@ function consultarReniec() {
     .then(response => response.json())
     .then(data => {
         console.log('Respuesta:', data); // Debug
-        
+
         if (data.success && data.data) {
             // Rellenar campos con los datos obtenidos
             document.getElementById('nombres').value = data.data.nombres || '';
-            document.getElementById('apellidos').value = 
+            document.getElementById('apellidos').value =
                 (data.data.apellido_paterno || '') + ' ' + (data.data.apellido_materno || '');
 
             // Intentar rellenar sexo si está disponible
@@ -746,11 +746,11 @@ function consultarReniec() {
                 const camposFaltantes = [];
                 if (!data.data.sexo) camposFaltantes.push('sexo');
                 if (!data.data.fecha_nacimiento) camposFaltantes.push('fecha de nacimiento');
-                mensajeExtra = `<br><small class="text-warning"><i class="fas fa-info-circle"></i> 
+                mensajeExtra = `<br><small class="text-warning"><i class="fas fa-info-circle"></i>
                     Por favor, completa manualmente: ${camposFaltantes.join(' y ')}</small>`;
             }
 
-            mostrarMensajeReniec('success', 
+            mostrarMensajeReniec('success',
                 `<strong><i class="fas fa-check-circle"></i> ¡Consulta Exitosa!</strong><br>
                 Se encontró: <strong>${data.data.nombre_completo}</strong>${mensajeExtra}`
             );
@@ -761,7 +761,7 @@ function consultarReniec() {
                 consultasElement.textContent = data.consultas_disponibles;
             }
         } else {
-            mostrarMensajeReniec('danger', 
+            mostrarMensajeReniec('danger',
                 `<strong><i class="fas fa-exclamation-triangle"></i> Error</strong><br>
                 ${data.message || 'No se pudo consultar el DNI'}`
             );
@@ -769,7 +769,7 @@ function consultarReniec() {
     })
     .catch(error => {
         console.error('Error:', error);
-        mostrarMensajeReniec('danger', 
+        mostrarMensajeReniec('danger',
             `<strong><i class="fas fa-times-circle"></i> Error de conexión</strong><br>
             No se pudo conectar con el servicio RENIEC. Por favor, intenta nuevamente.`
         );
@@ -778,7 +778,7 @@ function consultarReniec() {
         // Rehabilitar botón
         btnConsultar.disabled = false;
         btnConsultar.innerHTML = '<i class="fas fa-search"></i> RENIEC';
-        
+
         // Recargar contador de consultas
         cargarConsultasDisponibles();
     });
@@ -790,12 +790,12 @@ function consultarReniec() {
 function mostrarMensajeReniec(tipo, mensaje) {
     const resultadoDiv = document.getElementById('reniec-resultado');
     const mensajeDiv = document.getElementById('reniec-mensaje');
-    
+
     if (resultadoDiv && mensajeDiv) {
         resultadoDiv.className = `alert alert-${tipo} alert-dismissible fade show`;
         mensajeDiv.innerHTML = mensaje;
         resultadoDiv.style.display = 'block';
-        
+
         // Auto-ocultar después de 5 segundos
         setTimeout(() => {
             resultadoDiv.classList.remove('show');
@@ -809,7 +809,7 @@ function mostrarMensajeReniec(tipo, mensaje) {
 // Auto-ocultar mensajes de error después de 3 segundos
 document.addEventListener('DOMContentLoaded', function() {
     const errorMessages = document.querySelectorAll('.invalid-feedback');
-    
+
     // Auto-ocultar mensajes de error
     errorMessages.forEach(function(message) {
         if (message.style.display !== 'none' && message.textContent.trim() !== '') {

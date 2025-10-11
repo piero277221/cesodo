@@ -143,6 +143,24 @@ class Menu extends Model
         return $this->hasMany(MenuPlato::class);
     }
 
+    // Relación con items del menú (MenuItem)
+    public function items()
+    {
+        return $this->hasMany(MenuItem::class, 'menu_id');
+    }
+
+    // Relación con condiciones de salud del menú
+    // Nota: Si la tabla menu_condiciones no existe, esta relación retornará vacío
+    public function condiciones()
+    {
+        // Verificar si existe la clase MenuCondicion
+        if (class_exists(\App\Models\MenuCondicion::class)) {
+            return $this->hasMany(\App\Models\MenuCondicion::class, 'menu_id');
+        }
+        // Si no existe, retornar una relación vacía usando un modelo genérico
+        return $this->hasMany(MenuItem::class, 'menu_id')->whereRaw('1 = 0');
+    }
+
     public function platosDelDia($fecha)
     {
         return $this->menuPlatos()

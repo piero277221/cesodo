@@ -7,7 +7,7 @@
  * - La API de apiperu.dev NO devuelve campos de:
  *   • Sexo (género)
  *   • Fecha de nacimiento
- * 
+ *
  * SOLUCIÓN IMPLEMENTADA:
  * 1. Sistema preparado para autocompletar SI la API los proporciona
  * 2. Mensaje inteligente que indica qué campos completar manualmente
@@ -28,7 +28,7 @@ return [
         'apellido_paterno' => $data['apellido_paterno'] ?? '',
         'apellido_materno' => $data['apellido_materno'] ?? '',
         'nombre_completo' => trim(...),
-        
+
         // ⭐ NUEVO: Campos adicionales opcionales
         'sexo' => $data['sexo'] ?? null,
         'fecha_nacimiento' => $data['fecha_nacimiento'] ?? $data['fechaNacimiento'] ?? null,
@@ -45,7 +45,7 @@ return [
 if (data.success && data.data) {
     // Autocompleta nombres (siempre funciona)
     document.getElementById('nombres').value = data.data.nombres || '';
-    document.getElementById('apellidos').value = 
+    document.getElementById('apellidos').value =
         (data.data.apellido_paterno || '') + ' ' + (data.data.apellido_materno || '');
 
     // ⭐ NUEVO: Intenta autocompletar SEXO
@@ -63,7 +63,7 @@ if (data.success && data.data) {
     if (data.data.fecha_nacimiento) {
         const fechaNacimientoInput = document.getElementById('fecha_nacimiento');
         const fecha = data.data.fecha_nacimiento;
-        
+
         // Convierte dd/mm/yyyy → yyyy-mm-dd
         if (fecha.includes('/')) {
             const partes = fecha.split('/');
@@ -79,14 +79,14 @@ if (data.success && data.data) {
         const camposFaltantes = [];
         if (!data.data.sexo) camposFaltantes.push('sexo');
         if (!data.data.fecha_nacimiento) camposFaltantes.push('fecha de nacimiento');
-        
+
         mensajeExtra = `<br><small class="text-warning">
-            <i class="fas fa-info-circle"></i> 
+            <i class="fas fa-info-circle"></i>
             Por favor, completa manualmente: ${camposFaltantes.join(' y ')}
         </small>`;
     }
 
-    mostrarMensajeReniec('success', 
+    mostrarMensajeReniec('success',
         `<strong><i class="fas fa-check-circle"></i> ¡Consulta Exitosa!</strong><br>
         Se encontró: <strong>${data.data.nombre_completo}</strong>${mensajeExtra}`
     );
@@ -109,22 +109,22 @@ if (data.success && data.data) {
 
 /**
  * FLUJO DE USUARIO MEJORADO:
- * 
+ *
  * 1. Usuario ingresa DNI: 43216789
  * 2. Click en botón "RENIEC"
  * 3. Sistema autocompleta:
  *    ✅ Nombres: JACK LENNYN
  *    ✅ Apellidos: ARIAS NOLAZCO
- * 
+ *
  * 4. Sistema muestra mensaje:
  *    ⚠️ "Por favor, completa manualmente: sexo y fecha de nacimiento"
- * 
+ *
  * 5. Usuario completa:
  *    • Selecciona sexo: M / F
  *    • Ingresa fecha: [calendario date picker]
- * 
+ *
  * 6. Guardar → Registro completo ✅
- * 
+ *
  * AHORRO DE TIEMPO: 66% (de 45 seg → 15 seg)
  */
 
@@ -134,13 +134,13 @@ if (data.success && data.data) {
 
 /**
  * El sistema está preparado para:
- * 
+ *
  * ✅ Si en el futuro la API devuelve sexo → se autocompleta
  * ✅ Si en el futuro la API devuelve fecha_nacimiento → se autocompleta
  * ✅ Soporta múltiples formatos de fecha (dd/mm/yyyy, yyyy-mm-dd)
  * ✅ Normaliza valores de sexo (M, F, masculino, femenino, etc.)
  * ✅ Mensaje dinámico según campos disponibles
- * 
+ *
  * NO requiere cambios de código al cambiar de API ⭐
  */
 
@@ -168,13 +168,13 @@ if (data.success && data.data) {
  * - Completar 2 campos manualmente
  * - Ahorro de tiempo: 66%
  * - Costo: $0
- * 
+ *
  * OPCIÓN B (CORTO PLAZO):
  * - Evaluar APIs premium peruanas
  * - Costo estimado: $50-200/mes
  * - Autocompletado 100%
  * - Consultas ilimitadas
- * 
+ *
  * OPCIÓN C (MEDIANO PLAZO):
  * - Solicitar convenio con RENIEC oficial
  * - Incluye foto, huella digital, etc.

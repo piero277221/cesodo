@@ -66,11 +66,11 @@ class ReniecService
             // Procesar respuesta
             if ($response->successful()) {
                 $responseData = $response->json();
-                
+
                 // Verificar si la respuesta tiene los datos
                 if (isset($responseData['success']) && $responseData['success'] === true && isset($responseData['data'])) {
                     $data = $responseData['data'];
-                    
+
                     // Registrar consulta exitosa
                     $this->registrarConsulta($dni, $data, 'exitosa', $response->body());
 
@@ -98,7 +98,7 @@ class ReniecService
                 } else {
                     // Si la API devuelve success=false o no tiene datos
                     $this->registrarConsulta($dni, null, 'fallida', $response->body());
-                    
+
                     return [
                         'success' => false,
                         'message' => $responseData['message'] ?? 'No se encontró información para el DNI proporcionado.',
@@ -120,7 +120,7 @@ class ReniecService
 
         } catch (\Exception $e) {
             Log::error('Error en consulta RENIEC: ' . $e->getMessage());
-            
+
             // Registrar error
             $this->registrarConsulta($dni, null, 'error', $e->getMessage());
 
@@ -201,12 +201,12 @@ class ReniecService
             // Procesar respuesta
             if ($response->successful()) {
                 $responseData = $response->json();
-                
+
                 // La API apiperu.dev devuelve los datos en formato diferente
                 // Verificar si hay datos válidos
                 if (isset($responseData['data'])) {
                     $data = $responseData['data'];
-                    
+
                     // Registrar consulta exitosa
                     $this->registrarConsulta($dni, $data, 'exitosa', $response->body());
 
@@ -229,7 +229,7 @@ class ReniecService
                 } else {
                     // Si no hay campo 'data', intentar leer directamente
                     $data = $responseData;
-                    
+
                     if (isset($data['nombres']) || isset($data['nombre'])) {
                         // Registrar consulta exitosa
                         $this->registrarConsulta($dni, $data, 'exitosa', $response->body());
@@ -252,7 +252,7 @@ class ReniecService
                         ];
                     }
                 }
-                
+
                 // Si llegamos aquí, no se encontraron datos válidos
                 $this->registrarConsulta($dni, null, 'fallida', $response->body());
                 return [

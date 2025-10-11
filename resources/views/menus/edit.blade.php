@@ -259,12 +259,12 @@
 
                         <div class="d-flex justify-content-between">
                             <span>Items del menú:</span>
-                            <span class="fw-bold" id="resumen-items">{{ $menu->items->count() ?? 0 }}</span>
+                            <span class="fw-bold" id="resumen-items">{{ $menu->items ? $menu->items->count() : 0 }}</span>
                         </div>
 
                         <div class="d-flex justify-content-between">
                             <span>Condiciones consideradas:</span>
-                            <span class="fw-bold" id="resumen-condiciones">{{ $menu->condiciones->count() ?? 0 }}</span>
+                            <span class="fw-bold" id="resumen-condiciones">{{ $menu->condiciones ? $menu->condiciones->count() : 0 }}</span>
                         </div>
 
                         <div class="d-flex justify-content-between">
@@ -445,7 +445,7 @@
 
 @push('scripts')
 <script>
-let itemCounter = {!! json_encode($menu->items->count() ?? 0) !!};
+let itemCounter = {!! json_encode($menu->items ? $menu->items->count() : 0) !!};
 
 document.addEventListener('DOMContentLoaded', function() {
     // Eventos para actualizar resumen
