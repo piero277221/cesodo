@@ -345,9 +345,6 @@
                 <span class="clause-number">TERCERA (JORNADA LABORAL):</span>
                 EL TRABAJADOR prestará sus servicios en jornada de
                 <strong>{{ ucwords(str_replace('_', ' ', $contrato->jornada_laboral)) }}</strong>
-                @if($contrato->lugar_trabajo)
-                    , en las instalaciones ubicadas en {{ $contrato->lugar_trabajo }}
-                @endif
                 , cumpliendo con los horarios establecidos por EL EMPLEADOR
                 y las disposiciones legales vigentes.
             </div>

@@ -102,7 +102,7 @@ unset($__errorArgs, $__bag); ?>
 
                             <div class="col-md-4 mb-3">
                                 <label for="numero_contrato" class="form-label">
-                                    <i class="fas fa-hashtag me-1"></i>Número de Contrato 
+                                    <i class="fas fa-hashtag me-1"></i>Número de Contrato
                                     <small class="badge bg-info">AUTO</small>
                                 </label>
                                 <input type="text" class="form-control bg-light <?php $__errorArgs = ['numero_contrato'];
@@ -190,12 +190,12 @@ unset($__errorArgs, $__bag); ?>
                                 </h6>
                             </div>
 
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="salario" class="form-label">
                                     <i class="fas fa-money-bill me-1"></i>Salario <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">S/</span>
                                     <input type="number" class="form-control <?php $__errorArgs = ['salario'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -208,64 +208,6 @@ unset($__errorArgs, $__bag); ?>"
                                            step="0.01" min="0" required>
                                 </div>
                                 <?php $__errorArgs = ['salario'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="bonificaciones" class="form-label">
-                                    <i class="fas fa-gift me-1"></i>Bonificaciones
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control <?php $__errorArgs = ['bonificaciones'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                           id="bonificaciones" name="bonificaciones" value="<?php echo e(old('bonificaciones', 0)); ?>"
-                                           step="0.01" min="0">
-                                </div>
-                                <?php $__errorArgs = ['bonificaciones'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="descuentos" class="form-label">
-                                    <i class="fas fa-minus-circle me-1"></i>Descuentos
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control <?php $__errorArgs = ['descuentos'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                           id="descuentos" name="descuentos" value="<?php echo e(old('descuentos', 0)); ?>"
-                                           step="0.01" min="0">
-                                </div>
-                                <?php $__errorArgs = ['descuentos'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -370,32 +312,6 @@ unset($__errorArgs, $__bag); ?>" id="jornada_laboral" name="jornada_laboral" req
                                     <option value="flexible" <?php echo e(old('jornada_laboral') == 'flexible' ? 'selected' : ''); ?>>Horario Flexible</option>
                                 </select>
                                 <?php $__errorArgs = ['jornada_laboral'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="lugar_trabajo" class="form-label">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Lugar de Trabajo
-                                </label>
-                                <input type="text" class="form-control <?php $__errorArgs = ['lugar_trabajo'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                       id="lugar_trabajo" name="lugar_trabajo" value="<?php echo e(old('lugar_trabajo')); ?>"
-                                       placeholder="Ej: Oficina Central">
-                                <?php $__errorArgs = ['lugar_trabajo'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

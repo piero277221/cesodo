@@ -149,7 +149,6 @@ class ContratoController extends Controller
             'salario' => 'required|numeric|min:0',
             'jornada_laboral' => 'required|string',
             'departamento' => 'nullable|string|max:255',
-            'lugar_trabajo' => 'nullable|string|max:500',
             'clausulas_especiales' => 'nullable|string',
             'observaciones' => 'nullable|string',
             'archivo_contrato' => 'nullable|file|mimes:pdf,doc,docx|max:5120', // 5MB
@@ -303,7 +302,6 @@ class ContratoController extends Controller
             'descuentos' => 'nullable|numeric|min:0',
             'jornada_laboral' => 'required|string',
             'departamento' => 'nullable|string|max:255',
-            'lugar_trabajo' => 'nullable|string|max:255',
             'clausulas_especiales' => 'nullable|string',
             'observaciones' => 'nullable|string',
             'archivo_contrato' => 'nullable|file|mimes:pdf|max:10240',

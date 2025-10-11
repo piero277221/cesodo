@@ -414,12 +414,6 @@
                             <small class="text-muted">Última actualización:</small>
                             <p class="mb-0">{{ $contrato->updated_at->format('d/m/Y H:i:s') }}</p>
                         </div>
-                        @if($contrato->lugar_trabajo)
-                        <div class="col-md-4 mb-2">
-                            <small class="text-muted">Lugar de trabajo:</small>
-                            <p class="mb-0">{{ $contrato->lugar_trabajo }}</p>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>

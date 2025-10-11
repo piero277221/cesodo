@@ -214,19 +214,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="lugar_trabajo" class="form-label">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Lugar de Trabajo
-                                </label>
-                                <input type="text" class="form-control @error('lugar_trabajo') is-invalid @enderror"
-                                       id="lugar_trabajo" name="lugar_trabajo"
-                                       value="{{ old('lugar_trabajo', $contrato->lugar_trabajo) }}"
-                                       placeholder="Ej: Oficina Central">
-                                @error('lugar_trabajo')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
                         </div>
 
                         <!-- Términos y Condiciones -->
