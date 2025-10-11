@@ -79,7 +79,7 @@ class CertificadoMedico extends Model
     public static function proximosAVencer()
     {
         $fechaLimite = Carbon::now()->addDays(30);
-        
+
         return self::whereDate('fecha_expiracion', '<=', $fechaLimite)
             ->whereDate('fecha_expiracion', '>=', Carbon::now())
             ->where('notificacion_enviada', false)

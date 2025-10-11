@@ -74,7 +74,7 @@
                         <strong class="text-muted">Nombre Completo:</strong>
                         <p class="mb-0 fs-5">{{ $certificadosMedico->persona->nombre_completo }}</p>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-6 mb-3">
                             <strong class="text-muted">DNI:</strong>
@@ -162,7 +162,7 @@
                         <strong class="text-muted">Archivo Adjunto:</strong>
                         <p class="mb-0">
                             @if($certificadosMedico->archivo_certificado)
-                                <a href="{{ route('certificados-medicos.descargar', $certificadosMedico) }}" 
+                                <a href="{{ route('certificados-medicos.descargar', $certificadosMedico) }}"
                                    class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-download me-1"></i>
                                     Descargar Certificado
@@ -226,16 +226,16 @@
                 </a>
                 <div class="d-flex gap-2">
                     @if($certificadosMedico->archivo_certificado)
-                        <a href="{{ route('certificados-medicos.descargar', $certificadosMedico) }}" 
+                        <a href="{{ route('certificados-medicos.descargar', $certificadosMedico) }}"
                            class="btn btn-info">
                             <i class="fas fa-download me-1"></i>Descargar Archivo
                         </a>
                     @endif
-                    <a href="{{ route('certificados-medicos.edit', $certificadosMedico) }}" 
+                    <a href="{{ route('certificados-medicos.edit', $certificadosMedico) }}"
                        class="btn btn-warning">
                         <i class="fas fa-edit me-1"></i>Editar
                     </a>
-                    <form method="POST" action="{{ route('certificados-medicos.destroy', $certificadosMedico) }}" 
+                    <form method="POST" action="{{ route('certificados-medicos.destroy', $certificadosMedico) }}"
                           class="d-inline">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-danger"

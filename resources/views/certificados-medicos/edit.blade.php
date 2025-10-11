@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('certificados-medicos.update', $certificadosMedico) }}" 
+            <form method="POST" action="{{ route('certificados-medicos.update', $certificadosMedico) }}"
                   enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -67,7 +67,7 @@
                             <div class="alert alert-success">
                                 <i class="fas fa-file-pdf me-2"></i>
                                 <strong>{{ basename($certificadosMedico->archivo_certificado) }}</strong>
-                                <a href="{{ route('certificados-medicos.descargar', $certificadosMedico) }}" 
+                                <a href="{{ route('certificados-medicos.descargar', $certificadosMedico) }}"
                                    class="btn btn-sm btn-outline-primary ms-2">
                                     <i class="fas fa-download"></i> Descargar
                                 </a>
@@ -82,16 +82,16 @@
                         <label for="archivo_certificado" class="form-label">
                             Nuevo Archivo (opcional)
                         </label>
-                        <input type="file" 
-                               class="form-control @error('archivo_certificado') is-invalid @enderror" 
-                               id="archivo_certificado" 
-                               name="archivo_certificado" 
+                        <input type="file"
+                               class="form-control @error('archivo_certificado') is-invalid @enderror"
+                               id="archivo_certificado"
+                               name="archivo_certificado"
                                accept=".pdf,.jpg,.jpeg,.png">
                         <small class="text-muted">Formatos: PDF, JPG, PNG (máx. 5MB)</small>
                         @error('archivo_certificado')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        
+
                         <!-- Vista previa -->
                         <div id="archivo-preview" class="mt-2 d-none">
                             <div class="alert alert-warning">
@@ -108,10 +108,10 @@
                         <label for="fecha_emision" class="form-label">
                             Fecha de Emisión <span class="text-danger">*</span>
                         </label>
-                        <input type="date" 
-                               class="form-control @error('fecha_emision') is-invalid @enderror" 
-                               id="fecha_emision" 
-                               name="fecha_emision" 
+                        <input type="date"
+                               class="form-control @error('fecha_emision') is-invalid @enderror"
+                               id="fecha_emision"
+                               name="fecha_emision"
                                value="{{ old('fecha_emision', $certificadosMedico->fecha_emision?->format('Y-m-d')) }}"
                                max="{{ date('Y-m-d') }}"
                                required>
@@ -125,10 +125,10 @@
                         <label for="fecha_expiracion" class="form-label">
                             Fecha de Expiración <span class="text-danger">*</span>
                         </label>
-                        <input type="date" 
-                               class="form-control @error('fecha_expiracion') is-invalid @enderror" 
-                               id="fecha_expiracion" 
-                               name="fecha_expiracion" 
+                        <input type="date"
+                               class="form-control @error('fecha_expiracion') is-invalid @enderror"
+                               id="fecha_expiracion"
+                               name="fecha_expiracion"
                                value="{{ old('fecha_expiracion', $certificadosMedico->fecha_expiracion?->format('Y-m-d')) }}"
                                required>
                         @error('fecha_expiracion')
@@ -139,10 +139,10 @@
                     <!-- Observaciones -->
                     <div class="col-12">
                         <label for="observaciones" class="form-label">Observaciones</label>
-                        <textarea class="form-control @error('observaciones') is-invalid @enderror" 
-                                  id="observaciones" 
-                                  name="observaciones" 
-                                  rows="3" 
+                        <textarea class="form-control @error('observaciones') is-invalid @enderror"
+                                  id="observaciones"
+                                  name="observaciones"
+                                  rows="3"
                                   maxlength="1000"
                                   placeholder="Observaciones adicionales sobre el certificado médico">{{ old('observaciones', $certificadosMedico->observaciones) }}</textarea>
                         <small class="text-muted">Opcional - Máximo 1000 caracteres</small>
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     archivoInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         const preview = document.getElementById('archivo-preview');
-        
+
         if (file) {
             const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
             document.getElementById('archivo-nombre').textContent = file.name;

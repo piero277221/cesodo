@@ -89,15 +89,18 @@
                             <span class="text-capitalize">{{ str_replace('_', ' ', $contrato->tipo_contrato) }}</span>
                         </div>
                         @if($contrato->fecha_fin)
+                            @php
+                                $diasRestantes = $contrato->diasRestantes();
+                            @endphp
                             <div class="d-flex justify-content-between mb-1">
                                 <span>Días restantes:</span>
                                 <span class="
-                                    @if($contrato->fecha_fin->diffInDays(now()) <= 30) text-danger
-                                    @elseif($contrato->fecha_fin->diffInDays(now()) <= 90) text-warning
+                                    @if($diasRestantes !== null && $diasRestantes <= 30) text-danger
+                                    @elseif($diasRestantes !== null && $diasRestantes <= 90) text-warning
                                     @else text-success
                                     @endif
                                 ">
-                                    {{ $contrato->fecha_fin->diffInDays(now()) }} días
+                                    {{ $diasRestantes ?? 0 }} días
                                 </span>
                             </div>
                         @endif

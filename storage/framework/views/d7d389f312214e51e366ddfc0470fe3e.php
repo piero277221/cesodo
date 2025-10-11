@@ -117,7 +117,7 @@
                             <!-- Grupo: Gestión de Personal -->
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ver-trabajadores', 'ver-usuarios'])): ?>
                             <div class="nav-dropdown" id="dropdown-personal">
-                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*', 'condiciones-salud.*']) ? 'active' : ''); ?>"
+                                <button type="button" class="nav-dropdown-trigger <?php echo e(request()->routeIs(['trabajadores.*', 'usuarios.*', 'contratos.*', 'personas.*', 'certificados-medicos.*']) ? 'active' : ''); ?>"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-personal');">
                                     <i class="bi bi-people-fill me-1"></i><?php echo e(__('Personal')); ?>
 
@@ -139,8 +139,8 @@
                                     </a>
                                     <?php endif; ?>
                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
-                                    <a href="<?php echo e(route('condiciones-salud.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('condiciones-salud.*') ? 'active' : ''); ?>">
-                                        <i class="bi bi-heart-pulse me-1"></i><?php echo e(__('Condiciones de Salud')); ?>
+                                    <a href="<?php echo e(route('certificados-medicos.index')); ?>" class="nav-dropdown-item <?php echo e(request()->routeIs('certificados-medicos.*') ? 'active' : ''); ?>">
+                                        <i class="bi bi-file-medical me-1"></i><?php echo e(__('Certificados Médicos')); ?>
 
                                     </a>
                                     <?php endif; ?>
@@ -580,15 +580,15 @@
             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ver-inventario')): ?>
             <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('condiciones-salud.index'),'active' => request()->routeIs('condiciones-salud.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('certificados-medicos.index'),'active' => request()->routeIs('certificados-medicos.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('responsive-nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('condiciones-salud.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('condiciones-salud.*'))]); ?>
-                <i class="bi bi-heart-pulse me-2"></i><?php echo e(__('Condiciones de Salud')); ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('certificados-medicos.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('certificados-medicos.*'))]); ?>
+                <i class="bi bi-file-medical me-2"></i><?php echo e(__('Certificados Médicos')); ?>
 
              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

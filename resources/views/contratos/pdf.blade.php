@@ -332,7 +332,7 @@
                     @php
                         $fechaInicio = \Carbon\Carbon::parse($contrato->fecha_inicio);
                         $fechaFin = \Carbon\Carbon::parse($contrato->fecha_fin);
-                        $dias = $fechaInicio->diffInDays($fechaFin);
+                        $dias = (int) floor($fechaInicio->diffInDays($fechaFin, false));
                     @endphp
                     El presente contrato tendrá una duración de
                     {{ $dias }} días,

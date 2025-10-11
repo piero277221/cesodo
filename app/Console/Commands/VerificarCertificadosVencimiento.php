@@ -50,7 +50,7 @@ class VerificarCertificadosVencimiento extends Command
 
             // Aquí puedes implementar el envío de notificaciones
             // Por ejemplo: enviar email, SMS, notificación push, etc.
-            
+
             // Registrar en log
             Log::info('Certificado médico próximo a vencer', [
                 'certificado_id' => $certificado->id,
@@ -75,7 +75,7 @@ class VerificarCertificadosVencimiento extends Command
                     Log::error('Error al enviar email de certificado: ' . $e->getMessage());
                 }
             }
-            
+
             if ($persona->celular) {
                 try {
                     // Enviar SMS usando un servicio como Twilio

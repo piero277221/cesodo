@@ -1,29 +1,29 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">
             <i class="fas fa-file-medical text-danger me-2"></i>
             Nuevo Certificado Médico
         </h2>
-        <a href="{{ route('certificados-medicos.index') }}" class="btn btn-outline-secondary">
+        <a href="<?php echo e(route('certificados-medicos.index')); ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i>
             Volver
         </a>
     </div>
 
-    @if($errors->any())
+    <?php if($errors->any()): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Error:</strong>
             <ul class="mb-0">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="card">
         <div class="card-body">
@@ -33,13 +33,13 @@
                     <span class="badge bg-danger me-2">1</span>
                     Buscar Persona por DNI
                 </h5>
-
+                
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label class="form-label">DNI <span class="text-danger">*</span></label>
                         <div class="input-group">
-                            <input type="text" id="dni_buscar" class="form-control"
-                                   placeholder="Ingrese 8 dígitos" maxlength="8"
+                            <input type="text" id="dni_buscar" class="form-control" 
+                                   placeholder="Ingrese 8 dígitos" maxlength="8" 
                                    pattern="[0-9]{8}" required>
                             <button type="button" id="btn-buscar-persona" class="btn btn-primary">
                                 <i class="fas fa-search me-1"></i>Buscar
@@ -84,10 +84,10 @@
             <hr class="my-4">
 
             <!-- Paso 2: Formulario de Certificado -->
-            <form id="form-certificado" method="POST" action="{{ route('certificados-medicos.store') }}"
+            <form id="form-certificado" method="POST" action="<?php echo e(route('certificados-medicos.store')); ?>" 
                   enctype="multipart/form-data" class="d-none">
-                @csrf
-
+                <?php echo csrf_field(); ?>
+                
                 <input type="hidden" name="persona_id" id="persona_id" required>
                 <input type="hidden" name="numero_documento" id="numero_documento" required>
 
@@ -102,17 +102,31 @@
                         <label for="archivo_certificado" class="form-label">
                             Archivo del Certificado <span class="text-danger">*</span>
                         </label>
-                        <input type="file"
-                               class="form-control @error('archivo_certificado') is-invalid @enderror"
-                               id="archivo_certificado"
-                               name="archivo_certificado"
+                        <input type="file" 
+                               class="form-control <?php $__errorArgs = ['archivo_certificado'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                               id="archivo_certificado" 
+                               name="archivo_certificado" 
                                accept=".pdf,.jpg,.jpeg,.png"
                                required>
                         <small class="text-muted">Formatos: PDF, JPG, PNG (máx. 5MB)</small>
-                        @error('archivo_certificado')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-
+                        <?php $__errorArgs = ['archivo_certificado'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        
                         <!-- Vista previa -->
                         <div id="archivo-preview" class="mt-2 d-none">
                             <div class="alert alert-info">
@@ -128,16 +142,30 @@
                         <label for="fecha_emision" class="form-label">
                             Fecha de Emisión <span class="text-danger">*</span>
                         </label>
-                        <input type="date"
-                               class="form-control @error('fecha_emision') is-invalid @enderror"
-                               id="fecha_emision"
-                               name="fecha_emision"
-                               value="{{ old('fecha_emision') }}"
-                               max="{{ date('Y-m-d') }}"
+                        <input type="date" 
+                               class="form-control <?php $__errorArgs = ['fecha_emision'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                               id="fecha_emision" 
+                               name="fecha_emision" 
+                               value="<?php echo e(old('fecha_emision')); ?>"
+                               max="<?php echo e(date('Y-m-d')); ?>"
                                required>
-                        @error('fecha_emision')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <?php $__errorArgs = ['fecha_emision'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Fecha de Expiración -->
@@ -145,36 +173,64 @@
                         <label for="fecha_expiracion" class="form-label">
                             Fecha de Expiración <span class="text-danger">*</span>
                         </label>
-                        <input type="date"
-                               class="form-control @error('fecha_expiracion') is-invalid @enderror"
-                               id="fecha_expiracion"
-                               name="fecha_expiracion"
-                               value="{{ old('fecha_expiracion') }}"
-                               min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                        <input type="date" 
+                               class="form-control <?php $__errorArgs = ['fecha_expiracion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                               id="fecha_expiracion" 
+                               name="fecha_expiracion" 
+                               value="<?php echo e(old('fecha_expiracion')); ?>"
+                               min="<?php echo e(date('Y-m-d', strtotime('+1 day'))); ?>"
                                required>
-                        @error('fecha_expiracion')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <?php $__errorArgs = ['fecha_expiracion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Observaciones -->
                     <div class="col-12">
                         <label for="observaciones" class="form-label">Observaciones</label>
-                        <textarea class="form-control @error('observaciones') is-invalid @enderror"
-                                  id="observaciones"
-                                  name="observaciones"
-                                  rows="3"
+                        <textarea class="form-control <?php $__errorArgs = ['observaciones'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                  id="observaciones" 
+                                  name="observaciones" 
+                                  rows="3" 
                                   maxlength="1000"
-                                  placeholder="Observaciones adicionales sobre el certificado médico">{{ old('observaciones') }}</textarea>
+                                  placeholder="Observaciones adicionales sobre el certificado médico"><?php echo e(old('observaciones')); ?></textarea>
                         <small class="text-muted">Opcional - Máximo 1000 caracteres</small>
-                        @error('observaciones')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <?php $__errorArgs = ['observaciones'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a href="{{ route('certificados-medicos.index') }}" class="btn btn-secondary">
+                    <a href="<?php echo e(route('certificados-medicos.index')); ?>" class="btn btn-secondary">
                         <i class="fas fa-times me-1"></i>Cancelar
                     </a>
                     <button type="submit" class="btn btn-danger">
@@ -186,7 +242,7 @@
     </div>
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const dniBuscar = document.getElementById('dni_buscar');
@@ -200,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Buscar persona por DNI
     btnBuscarPersona.addEventListener('click', function() {
         const dni = dniBuscar.value.trim();
-
+        
         if (dni.length !== 8 || !/^\d+$/.test(dni)) {
             alert('Por favor, ingrese un DNI válido de 8 dígitos');
             return;
@@ -209,11 +265,11 @@ document.addEventListener('DOMContentLoaded', function() {
         btnBuscarPersona.disabled = true;
         btnBuscarPersona.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Buscando...';
 
-        fetch('{{ route("certificados-medicos.buscar-persona") }}', {
+        fetch('<?php echo e(route("certificados-medicos.buscar-persona")); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
             },
             body: JSON.stringify({ dni: dni })
         })
@@ -224,11 +280,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('persona-nombre').textContent = data.persona.nombre_completo;
                 document.getElementById('persona-dni').textContent = data.persona.numero_documento;
                 document.getElementById('persona-celular').textContent = data.persona.celular || 'No registrado';
-
+                
                 // Llenar campos ocultos
                 document.getElementById('persona_id').value = data.persona.id;
                 document.getElementById('numero_documento').value = data.persona.numero_documento;
-
+                
                 // Mostrar resultado exitoso y formulario
                 personaEncontrada.classList.remove('d-none');
                 personaNoEncontrada.classList.add('d-none');
@@ -273,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
     archivoInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         const preview = document.getElementById('archivo-preview');
-
+        
         if (file) {
             const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
             document.getElementById('archivo-nombre').textContent = file.name;
@@ -297,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
 <style>
 #dni_buscar:focus {
@@ -318,4 +374,6 @@ document.addEventListener('DOMContentLoaded', function() {
     padding: 0.5rem 0.75rem;
 }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/certificados-medicos/create.blade.php ENDPATH**/ ?>

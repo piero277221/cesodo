@@ -1,58 +1,60 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">
             <i class="fas fa-file-medical text-danger me-2"></i>
             Certificados Médicos
         </h2>
-        <a href="{{ route('certificados-medicos.create') }}" class="btn btn-danger">
+        <a href="<?php echo e(route('certificados-medicos.create')); ?>" class="btn btn-danger">
             <i class="fas fa-plus me-1"></i>
             Nuevo Certificado
         </a>
     </div>
 
-    @if(session('success'))
+    <?php if(session('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="fas fa-check-circle me-1"></i>
-            {{ session('success') }}
+            <?php echo e(session('success')); ?>
+
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if(session('error'))
+    <?php if(session('error')): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fas fa-exclamation-circle me-1"></i>
-            {{ session('error') }}
+            <?php echo e(session('error')); ?>
+
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
     <!-- Filtros -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('certificados-medicos.index') }}" class="row g-3">
+            <form method="GET" action="<?php echo e(route('certificados-medicos.index')); ?>" class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Buscar</label>
-                    <input type="text" name="search" class="form-control"
+                    <input type="text" name="search" class="form-control" 
                            placeholder="DNI, nombre o apellido"
-                           value="{{ request('search') }}">
+                           value="<?php echo e(request('search')); ?>">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Estado</label>
                     <select name="estado" class="form-select">
                         <option value="">Todos</option>
-                        <option value="vigente" {{ request('estado') == 'vigente' ? 'selected' : '' }}>Vigentes</option>
-                        <option value="proximo_vencer" {{ request('estado') == 'proximo_vencer' ? 'selected' : '' }}>Próximos a vencer</option>
-                        <option value="vencido" {{ request('estado') == 'vencido' ? 'selected' : '' }}>Vencidos</option>
+                        <option value="vigente" <?php echo e(request('estado') == 'vigente' ? 'selected' : ''); ?>>Vigentes</option>
+                        <option value="proximo_vencer" <?php echo e(request('estado') == 'proximo_vencer' ? 'selected' : ''); ?>>Próximos a vencer</option>
+                        <option value="vencido" <?php echo e(request('estado') == 'vencido' ? 'selected' : ''); ?>>Vencidos</option>
                     </select>
                 </div>
                 <div class="col-md-4 d-flex align-items-end gap-2">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search me-1"></i>Buscar
                     </button>
-                    <a href="{{ route('certificados-medicos.index') }}" class="btn btn-outline-secondary">
+                    <a href="<?php echo e(route('certificados-medicos.index')); ?>" class="btn btn-outline-secondary">
                         <i class="fas fa-times me-1"></i>Limpiar
                     </a>
                 </div>
@@ -63,7 +65,7 @@
     <!-- Lista de Certificados -->
     <div class="card">
         <div class="card-body">
-            @if($certificados->count() > 0)
+            <?php if($certificados->count() > 0): ?>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead class="table-dark">
@@ -78,77 +80,78 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($certificados as $certificado)
-                                <tr class="{{ $certificado->estaVencido() ? 'table-danger' : ($certificado->estaProximoAVencer() ? 'table-warning' : '') }}">
-                                    <td class="fw-bold">{{ $certificado->numero_documento }}</td>
+                            <?php $__currentLoopData = $certificados; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $certificado): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr class="<?php echo e($certificado->estaVencido() ? 'table-danger' : ($certificado->estaProximoAVencer() ? 'table-warning' : '')); ?>">
+                                    <td class="fw-bold"><?php echo e($certificado->numero_documento); ?></td>
                                     <td>
-                                        <div class="fw-bold">{{ $certificado->persona->nombre_completo }}</div>
-                                        @if($certificado->persona->celular)
+                                        <div class="fw-bold"><?php echo e($certificado->persona->nombre_completo); ?></div>
+                                        <?php if($certificado->persona->celular): ?>
                                             <small class="text-muted">
-                                                <i class="fas fa-phone"></i> {{ $certificado->persona->celular }}
+                                                <i class="fas fa-phone"></i> <?php echo e($certificado->persona->celular); ?>
+
                                             </small>
-                                        @endif
+                                        <?php endif; ?>
                                     </td>
-                                    <td>{{ $certificado->fecha_emision ? $certificado->fecha_emision->format('d/m/Y') : '-' }}</td>
+                                    <td><?php echo e($certificado->fecha_emision ? $certificado->fecha_emision->format('d/m/Y') : '-'); ?></td>
                                     <td>
-                                        <div>{{ $certificado->fecha_expiracion ? $certificado->fecha_expiracion->format('d/m/Y') : '-' }}</div>
-                                        @if($certificado->fecha_expiracion)
-                                            @php
+                                        <div><?php echo e($certificado->fecha_expiracion ? $certificado->fecha_expiracion->format('d/m/Y') : '-'); ?></div>
+                                        <?php if($certificado->fecha_expiracion): ?>
+                                            <?php
                                                 $dias = $certificado->diasRestantes();
-                                            @endphp
-                                            @if($dias < 0)
+                                            ?>
+                                            <?php if($dias < 0): ?>
                                                 <small class="text-danger">
-                                                    <i class="fas fa-exclamation-triangle"></i> Vencido hace {{ abs($dias) }} días
+                                                    <i class="fas fa-exclamation-triangle"></i> Vencido hace <?php echo e(abs($dias)); ?> días
                                                 </small>
-                                            @elseif($dias <= 30)
+                                            <?php elseif($dias <= 30): ?>
                                                 <small class="text-warning">
-                                                    <i class="fas fa-clock"></i> Vence en {{ $dias }} días
+                                                    <i class="fas fa-clock"></i> Vence en <?php echo e($dias); ?> días
                                                 </small>
-                                            @else
+                                            <?php else: ?>
                                                 <small class="text-success">
-                                                    <i class="fas fa-check"></i> Vigente ({{ $dias }} días)
+                                                    <i class="fas fa-check"></i> Vigente (<?php echo e($dias); ?> días)
                                                 </small>
-                                            @endif
-                                        @endif
+                                            <?php endif; ?>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
-                                        @if($certificado->estaVencido())
+                                        <?php if($certificado->estaVencido()): ?>
                                             <span class="badge bg-danger">
                                                 <i class="fas fa-times-circle me-1"></i>Vencido
                                             </span>
-                                        @elseif($certificado->estaProximoAVencer())
+                                        <?php elseif($certificado->estaProximoAVencer()): ?>
                                             <span class="badge bg-warning text-dark">
                                                 <i class="fas fa-exclamation-triangle me-1"></i>Por vencer
                                             </span>
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge bg-success">
                                                 <i class="fas fa-check-circle me-1"></i>Vigente
                                             </span>
-                                        @endif
+                                        <?php endif; ?>
                                     </td>
                                     <td>
-                                        @if($certificado->archivo_certificado)
-                                            <a href="{{ route('certificados-medicos.descargar', $certificado) }}"
+                                        <?php if($certificado->archivo_certificado): ?>
+                                            <a href="<?php echo e(route('certificados-medicos.descargar', $certificado)); ?>"
                                                class="btn btn-sm btn-outline-info" title="Descargar archivo">
                                                 <i class="fas fa-download"></i> Descargar
                                             </a>
-                                        @else
+                                        <?php else: ?>
                                             <span class="text-muted">Sin archivo</span>
-                                        @endif
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('certificados-medicos.show', $certificado) }}"
+                                            <a href="<?php echo e(route('certificados-medicos.show', $certificado)); ?>"
                                                class="btn btn-sm btn-outline-primary" title="Ver">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('certificados-medicos.edit', $certificado) }}"
+                                            <a href="<?php echo e(route('certificados-medicos.edit', $certificado)); ?>"
                                                class="btn btn-sm btn-outline-warning" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form method="POST" action="{{ route('certificados-medicos.destroy', $certificado) }}"
+                                            <form method="POST" action="<?php echo e(route('certificados-medicos.destroy', $certificado)); ?>"
                                                   style="display: inline;" class="d-inline">
-                                                @csrf @method('DELETE')
+                                                <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
                                                 <button type="submit" class="btn btn-sm btn-outline-danger"
                                                         title="Eliminar"
                                                         onclick="return confirm('¿Eliminar este certificado médico?')">
@@ -158,24 +161,25 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Paginación -->
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $certificados->links() }}
+                    <?php echo e($certificados->links()); ?>
+
                 </div>
-            @else
+            <?php else: ?>
                 <div class="text-center py-5">
                     <i class="fas fa-file-medical text-muted" style="font-size: 4rem;"></i>
                     <p class="text-muted mt-3">No hay certificados médicos registrados</p>
-                    <a href="{{ route('certificados-medicos.create') }}" class="btn btn-danger">
+                    <a href="<?php echo e(route('certificados-medicos.create')); ?>" class="btn btn-danger">
                         <i class="fas fa-plus me-1"></i>Registrar primer certificado
                     </a>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -185,4 +189,6 @@
     background-color: rgba(0, 0, 0, 0.02);
 }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/certificados-medicos/index.blade.php ENDPATH**/ ?>

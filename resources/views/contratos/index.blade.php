@@ -263,11 +263,14 @@
                                                 <span class="badge bg-{{ $contrato->estado_badge }}">
                                                     {{ $contrato->estado_texto }}
                                                 </span>
-                                                @if($contrato->dias_restantes !== null && $contrato->dias_restantes <= 30)
+                                                @php
+                                                    $diasRestantes = $contrato->diasRestantes();
+                                                @endphp
+                                                @if($diasRestantes !== null && $diasRestantes <= 30)
                                                     <br>
                                                     <small class="text-warning">
                                                         <i class="fas fa-exclamation-triangle"></i>
-                                                        {{ $contrato->dias_restantes }} días restantes
+                                                        {{ $diasRestantes }} días restantes
                                                     </small>
                                                 @endif
                                             </td>

@@ -407,12 +407,15 @@
                     @if($contrato->fecha_fin)
                     <div class="mb-3">
                         <h6 class="text-muted">Días restantes</h6>
+                        @php
+                            $diasRestantes = $contrato->diasRestantes();
+                        @endphp
                         <p class="small mb-0
-                            @if($contrato->fecha_fin->diffInDays(now()) <= 30) text-danger
-                            @elseif($contrato->fecha_fin->diffInDays(now()) <= 90) text-warning
+                            @if($diasRestantes !== null && $diasRestantes <= 30) text-danger
+                            @elseif($diasRestantes !== null && $diasRestantes <= 90) text-warning
                             @else text-success
                             @endif">
-                            {{ $contrato->fecha_fin->diffInDays(now()) }} días
+                            {{ $diasRestantes ?? 0 }} días
                         </p>
                     </div>
                     @endif
