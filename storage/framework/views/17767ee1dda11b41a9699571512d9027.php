@@ -223,6 +223,25 @@ unset($__errorArgs, $__bag); ?>
                                                 Se generará una contraseña temporal basada en las iniciales y DNI del usuario
                                             </div>
                                         </div>
+                                        
+                                        <!-- Campo de contraseña manual -->
+                                        <div class="mb-3" id="password_manual_section" style="display: none;">
+                                            <label class="form-label fw-bold">
+                                                <i class="fas fa-lock text-danger me-2"></i>
+                                                Contraseña Manual
+                                            </label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="password_manual" 
+                                                       name="password_manual" placeholder="Ingrese la contraseña manualmente">
+                                                <button class="btn btn-outline-secondary" type="button" id="togglePasswordManual">
+                                                    <i class="fas fa-eye" id="iconTogglePassword"></i>
+                                                </button>
+                                            </div>
+                                            <div class="form-text">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Mínimo 8 caracteres. Se recomienda usar letras, números y caracteres especiales.
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -345,8 +364,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // Eventos para generar vista previa
     document.getElementById('name').addEventListener('input', generarVistaPrevia);
     document.getElementById('email').addEventListener('input', generarVistaPrevia);
-    document.getElementById('generar_credenciales').addEventListener('change', generarVistaPrevia);
+    document.getElementById('generar_credenciales').addEventListener('change', function() {
+        togglePasswordManual();
+        generarVistaPrevia();
+    });
+
+    // Toggle para mostrar/ocultar contraseña manual
+    const togglePasswordBtn = document.getElementById('togglePasswordManual');
+    if (togglePasswordBtn) {
+        togglePasswordBtn.addEventListener('click', function() {
+            const passwordInput = document.getElementById('password_manual');
+            const icon = document.getElementById('iconTogglePassword');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    }
 });
+
+function togglePasswordManual() {
+    const generarAuto = document.getElementById('generar_credenciales').checked;
+    const passwordManualSection = document.getElementById('password_manual_section');
+    const passwordManualInput = document.getElementById('password_manual');
+    
+    if (generarAuto) {
+        // Ocultar campo manual y limpiar valor
+        passwordManualSection.style.display = 'none';
+        passwordManualInput.value = '';
+        passwordManualInput.removeAttribute('required');
+    } else {
+        // Mostrar campo manual
+        passwordManualSection.style.display = 'block';
+    }
+}
 
 function toggleSections(metodo) {
     const personaSection = document.getElementById('persona_section');

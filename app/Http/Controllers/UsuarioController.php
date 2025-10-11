@@ -48,6 +48,7 @@ class UsuarioController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users,email',
             'generar_credenciales' => 'boolean',
+            'password_manual' => 'nullable|string|min:8',
             'roles' => 'array',
             'roles.*' => 'exists:roles,name',
             'observaciones' => 'nullable|string',
@@ -93,13 +94,23 @@ class UsuarioController extends Controller
                 }
             }
 
-            // Generar contraseña automáticamente si se solicita
-            if ($request->generar_credenciales) {
+            // Gestión de contraseña
+            $passwordMostrar = null;
+
+            if ($request->filled('password_manual')) {
+                // Usar contraseña manual si se proporciona
+                $usuario->password = Hash::make($request->password_manual);
+                $usuario->cambiar_password = false; // No forzar cambio si es manual
+                $passwordMostrar = $request->password_manual;
+            } elseif ($request->generar_credenciales) {
+                // Generar contraseña automáticamente si se solicita
                 $passwordTemporal = $this->generarPasswordTemporal($usuario);
                 $usuario->password = Hash::make($passwordTemporal);
                 $usuario->cambiar_password = true;
+                $passwordMostrar = $passwordTemporal;
             } else {
-                $usuario->password = Hash::make('password123'); // Password por defecto
+                // Password por defecto si no se especifica nada
+                $usuario->password = Hash::make('password123');
                 $usuario->cambiar_password = true;
             }
 
@@ -115,8 +126,8 @@ class UsuarioController extends Controller
             DB::commit();
 
             $mensaje = 'Usuario creado exitosamente.';
-            if ($request->generar_credenciales) {
-                $mensaje .= " Credenciales: {$usuario->email} / {$passwordTemporal}";
+            if ($passwordMostrar) {
+                $mensaje .= " Credenciales: {$usuario->email} / {$passwordMostrar}";
             }
 
             return redirect()->route('usuarios.index')
