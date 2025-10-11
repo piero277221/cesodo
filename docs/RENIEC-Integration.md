@@ -2,7 +2,19 @@
 
 ## 📋 Descripción
 
-Sistema completo de integración con la API de RENIEC (Registro Nacional de Identificación y Estado Civil) de Perú para consultas de DNI.
+Sistema completo de integración con la API de RENIEC (Registro Nacional de Identificación y Estado Civil) de Perú para consultas de DNI **EN PRODUCCIÓN CON API REAL**.
+
+## ✅ Estado: **API REAL ACTIVA**
+
+El sistema está configurado con un token válido de **apiperu.dev** y realiza consultas reales a RENIEC.
+
+### 🔑 API Configurada
+
+- **Proveedor**: apiperu.dev
+- **URL**: `https://apiperu.dev/api/dni`
+- **Token**: Configurado y funcional
+- **Límite**: 100 consultas gratuitas por día
+- **Estado**: ✅ Operativo
 
 ## 🚀 Características Implementadas
 

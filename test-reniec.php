@@ -14,7 +14,7 @@ echo "PRUEBA DE API RENIEC PERÚ\n";
 echo "==============================================\n\n";
 
 // DNI de prueba (ejemplo real de Perú)
-$dniPrueba = '41821256';
+$dniPrueba = '43216789'; // DNI de prueba
 
 echo "Consultando DNI: {$dniPrueba}\n\n";
 

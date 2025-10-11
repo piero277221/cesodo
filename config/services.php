@@ -36,8 +36,8 @@ return [
     ],
 
     'reniec' => [
-        'api_url' => env('RENIEC_API_URL', 'https://dniruc.apisperu.com/api/v1/dni'),
-        'api_token' => env('RENIEC_API_TOKEN', ''),
+        'api_url' => env('RENIEC_API_URL', 'https://apiperu.dev/api/dni'),
+        'api_token' => env('RENIEC_API_TOKEN', '17a346deb75dfbbd59a76f2fd87ab0d8aee01859f4b5fb3080aa6412b60f2ff9'),
         'limite_gratuito' => env('RENIEC_LIMITE_GRATUITO', 100),
     ],
 

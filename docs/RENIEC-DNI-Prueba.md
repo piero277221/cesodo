@@ -1,20 +1,28 @@
-# DNIs de Prueba - Sistema RENIEC
+# Consulta RENIEC - Sistema CESODO
 
-## 📋 Modo Demostración Activo
+## ✅ Estado: API REAL ACTIVA
 
-El sistema actualmente funciona en **MODO DEMOSTRACIÓN** con datos de prueba.
+El sistema está configurado con **API REAL de RENIEC** a través de **apiperu.dev**.
 
-### 🔑 DNIs de Prueba Disponibles
+### 🎯 Ahora Puedes Consultar Cualquier DNI Real
 
-Puedes usar cualquiera de estos DNIs para probar la funcionalidad:
+Ya no es necesario usar DNIs de prueba. El sistema puede consultar **cualquier DNI peruano válido** de 8 dígitos.
 
-| DNI | Nombres | Apellido Paterno | Apellido Materno | Nombre Completo |
-|-----|---------|------------------|------------------|-----------------|
-| `71981207` | JUAN CARLOS | RODRIGUEZ | GARCIA | JUAN CARLOS RODRIGUEZ GARCIA |
-| `41821256` | MARIA ELENA | LOPEZ | FERNANDEZ | MARIA ELENA LOPEZ FERNANDEZ |
-| `12345678` | PEDRO LUIS | MARTINEZ | SANCHEZ | PEDRO LUIS MARTINEZ SANCHEZ |
-| `87654321` | ANA SOFIA | TORRES | RAMIREZ | ANA SOFIA TORRES RAMIREZ |
-| `45678901` | CARLOS ALBERTO | GONZALEZ | DIAZ | CARLOS ALBERTO GONZALEZ DIAZ |
+### 🔍 Ejemplo de Consulta Real
+
+**DNI**: `43216789`  
+**Resultado**:
+- Nombres: JACK LENNYN
+- Apellido Paterno: ARIAS
+- Apellido Materno: NOLAZCO
+- Nombre Completo: JACK LENNYN ARIAS NOLAZCO
+
+### 📊 Límites de API
+
+- **Consultas diarias**: 100 (gratuitas)
+- **Reset**: Diario a las 00:00 hrs
+- **Proveedor**: apiperu.dev
+- **Token**: Configurado en el sistema
 
 ### ✅ Cómo Usar
 

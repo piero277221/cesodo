@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Log;
 class ReniecService
 {
     /**
-     * API gratuita de RENIEC Perú
-     * Usaremos API pública sin autenticación
+     * API de RENIEC Perú - apiperu.dev
+     * Token registrado y funcional
      */
     private $apiUrl;
     private $apiToken;
@@ -18,9 +18,9 @@ class ReniecService
 
     public function __construct()
     {
-        // API gratuita de RENIEC - dniruc.apisperu.com (sin autenticación)
-        $this->apiUrl = config('services.reniec.api_url', 'https://dniruc.apisperu.com/api/v1/dni');
-        $this->apiToken = config('services.reniec.api_token', ''); // No requiere token
+        // API de RENIEC - apiperu.dev con token registrado
+        $this->apiUrl = config('services.reniec.api_url', 'https://apiperu.dev/api/dni');
+        $this->apiToken = config('services.reniec.api_token', '17a346deb75dfbbd59a76f2fd87ab0d8aee01859f4b5fb3080aa6412b60f2ff9');
         $this->limiteGratuito = config('services.reniec.limite_gratuito', 100);
     }
 
@@ -50,43 +50,68 @@ class ReniecService
                 ];
             }
 
-            // ========================================
-            // MODO DEMOSTRACIÓN - Datos de prueba
-            // ========================================
-            // Para usar API real, registra tu token en:
-            // https://apis.net.pe/ o https://apiperu.dev/
-            
-            $datosPrueba = $this->obtenerDatosPrueba($dni);
-            
-            if ($datosPrueba) {
-                // Registrar consulta exitosa
-                $this->registrarConsulta($dni, $datosPrueba, 'exitosa', json_encode($datosPrueba));
+            // Hacer la consulta a la API REAL
+            $response = Http::timeout(15)
+                ->withHeaders([
+                    'Authorization' => 'Bearer ' . $this->apiToken,
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ])
+                ->get($this->apiUrl . '/' . $dni);
+
+            // Log para debug
+            Log::info('RENIEC API Response Status: ' . $response->status());
+            Log::info('RENIEC API Response Body: ' . $response->body());
+
+            // Procesar respuesta
+            if ($response->successful()) {
+                $responseData = $response->json();
+                
+                // Verificar si la respuesta tiene los datos
+                if (isset($responseData['success']) && $responseData['success'] === true && isset($responseData['data'])) {
+                    $data = $responseData['data'];
+                    
+                    // Registrar consulta exitosa
+                    $this->registrarConsulta($dni, $data, 'exitosa', $response->body());
+
+                    return [
+                        'success' => true,
+                        'message' => 'Consulta exitosa en RENIEC',
+                        'data' => [
+                            'dni' => $dni,
+                            'nombres' => $data['nombres'] ?? $data['nombre'] ?? '',
+                            'apellido_paterno' => $data['apellido_paterno'] ?? $data['apellidoPaterno'] ?? '',
+                            'apellido_materno' => $data['apellido_materno'] ?? $data['apellidoMaterno'] ?? '',
+                            'nombre_completo' => trim(
+                                ($data['nombres'] ?? $data['nombre'] ?? '') . ' ' .
+                                ($data['apellido_paterno'] ?? $data['apellidoPaterno'] ?? '') . ' ' .
+                                ($data['apellido_materno'] ?? $data['apellidoMaterno'] ?? '')
+                            ),
+                        ],
+                        'consultas_disponibles' => $consultasDisponibles - 1
+                    ];
+                } else {
+                    // Si la API devuelve success=false o no tiene datos
+                    $this->registrarConsulta($dni, null, 'fallida', $response->body());
+                    
+                    return [
+                        'success' => false,
+                        'message' => $responseData['message'] ?? 'No se encontró información para el DNI proporcionado.',
+                        'data' => null,
+                        'consultas_disponibles' => $consultasDisponibles - 1
+                    ];
+                }
+            } else {
+                // Error de respuesta HTTP
+                $this->registrarConsulta($dni, null, 'fallida', $response->body());
 
                 return [
-                    'success' => true,
-                    'message' => 'Consulta exitosa (MODO DEMOSTRACIÓN)',
-                    'data' => [
-                        'dni' => $dni,
-                        'nombres' => $datosPrueba['nombres'],
-                        'apellido_paterno' => $datosPrueba['apellido_paterno'],
-                        'apellido_materno' => $datosPrueba['apellido_materno'],
-                        'nombre_completo' => $datosPrueba['nombres'] . ' ' . 
-                                           $datosPrueba['apellido_paterno'] . ' ' . 
-                                           $datosPrueba['apellido_materno'],
-                    ],
+                    'success' => false,
+                    'message' => 'Error al consultar RENIEC. Código: ' . $response->status(),
+                    'data' => null,
                     'consultas_disponibles' => $consultasDisponibles - 1
                 ];
             }
-
-            // Si no hay datos de prueba, devolver error
-            $this->registrarConsulta($dni, null, 'fallida', 'DNI no encontrado en base de prueba');
-            
-            return [
-                'success' => false,
-                'message' => 'DNI no encontrado en la base de datos de prueba. Registra un token de API para consultas reales.',
-                'data' => null,
-                'consultas_disponibles' => $consultasDisponibles - 1
-            ];
 
         } catch (\Exception $e) {
             Log::error('Error en consulta RENIEC: ' . $e->getMessage());
