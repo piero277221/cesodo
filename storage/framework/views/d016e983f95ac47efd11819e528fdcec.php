@@ -1,11 +1,9 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid py-4">
     <!-- Encabezado -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0" style="color: var(--cesodo-black); font-weight: 700;">Lista de Menús</h4>
-        <a href="{{ route('menus.create') }}" class="btn btn-danger">
+        <a href="<?php echo e(route('menus.create')); ?>" class="btn btn-danger">
             <i class="fas fa-plus me-2"></i>Nuevo Menú
         </a>
     </div>
@@ -18,7 +16,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="text-uppercase mb-1" style="color: #666; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px;">Menús Totales</p>
-                            <h3 class="mb-0" style="color: var(--cesodo-black); font-weight: 700;">{{ $estadisticas['total_menus'] }}</h3>
+                            <h3 class="mb-0" style="color: var(--cesodo-black); font-weight: 700;"><?php echo e($estadisticas['total_menus']); ?></h3>
                         </div>
                         <div class="d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: var(--cesodo-black); border-radius: 12px;">
                             <i class="fas fa-utensils" style="font-size: 1.5rem; color: white;"></i>
@@ -34,7 +32,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="text-uppercase mb-1" style="color: #666; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px;">En Servicio</p>
-                            <h3 class="mb-0" style="color: var(--cesodo-black); font-weight: 700;">{{ $estadisticas['menus_activos'] }}</h3>
+                            <h3 class="mb-0" style="color: var(--cesodo-black); font-weight: 700;"><?php echo e($estadisticas['menus_activos']); ?></h3>
                         </div>
                         <div class="d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: var(--cesodo-red); border-radius: 12px;">
                             <i class="fas fa-play-circle" style="font-size: 1.5rem; color: white;"></i>
@@ -50,7 +48,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="text-uppercase mb-1" style="color: #666; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px;">Planificados</p>
-                            <h3 class="mb-0" style="color: var(--cesodo-black); font-weight: 700;">{{ $estadisticas['menus_planificados'] }}</h3>
+                            <h3 class="mb-0" style="color: var(--cesodo-black); font-weight: 700;"><?php echo e($estadisticas['menus_planificados']); ?></h3>
                         </div>
                         <div class="d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: #333; border-radius: 12px;">
                             <i class="fas fa-clock" style="font-size: 1.5rem; color: white;"></i>
@@ -65,7 +63,7 @@
     <div class="card border-0 shadow-sm" style="background: white;">
         <!-- Filtros y búsqueda -->
         <div class="card-body p-4">
-            <form action="{{ route('menus.index') }}" method="GET">
+            <form action="<?php echo e(route('menus.index')); ?>" method="GET">
                 <div class="row g-3">
                     <div class="col-md-6 col-lg-3">
                         <label class="form-label" style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem;">Buscar</label>
@@ -74,7 +72,7 @@
                                 <i class="fas fa-search" style="color: #666;"></i>
                             </span>
                             <input type="text" class="form-control" placeholder="Buscar menús..."
-                                   name="search" value="{{ request('search') }}"
+                                   name="search" value="<?php echo e(request('search')); ?>"
                                    style="border-left: none;">
                         </div>
                     </div>
@@ -82,19 +80,19 @@
                         <label class="form-label" style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem;">Estado</label>
                         <select class="form-select" name="estado">
                             <option value="">Todos los estados</option>
-                            <option value="activo" {{ request('estado') == 'activo' ? 'selected' : '' }}>Activos</option>
-                            <option value="planificado" {{ request('estado') == 'planificado' ? 'selected' : '' }}>Planificados</option>
-                            <option value="completado" {{ request('estado') == 'completado' ? 'selected' : '' }}>Completados</option>
-                            <option value="borrador" {{ request('estado') == 'borrador' ? 'selected' : '' }}>Borradores</option>
+                            <option value="activo" <?php echo e(request('estado') == 'activo' ? 'selected' : ''); ?>>Activos</option>
+                            <option value="planificado" <?php echo e(request('estado') == 'planificado' ? 'selected' : ''); ?>>Planificados</option>
+                            <option value="completado" <?php echo e(request('estado') == 'completado' ? 'selected' : ''); ?>>Completados</option>
+                            <option value="borrador" <?php echo e(request('estado') == 'borrador' ? 'selected' : ''); ?>>Borradores</option>
                         </select>
                     </div>
                     <div class="col-md-6 col-lg-2">
                         <label class="form-label" style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem;">Desde</label>
-                        <input type="date" class="form-control" name="fecha_desde" value="{{ request('fecha_desde') }}">
+                        <input type="date" class="form-control" name="fecha_desde" value="<?php echo e(request('fecha_desde')); ?>">
                     </div>
                     <div class="col-md-6 col-lg-2">
                         <label class="form-label" style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem;">Hasta</label>
-                        <input type="date" class="form-control" name="fecha_hasta" value="{{ request('fecha_hasta') }}">
+                        <input type="date" class="form-control" name="fecha_hasta" value="<?php echo e(request('fecha_hasta')); ?>">
                     </div>
                     <div class="col-lg-2">
                         <label class="form-label d-block" style="opacity: 0;">Acciones</label>
@@ -104,18 +102,18 @@
                     </div>
                 </div>
 
-                @if(request()->hasAny(['search', 'estado', 'fecha_desde', 'fecha_hasta']))
+                <?php if(request()->hasAny(['search', 'estado', 'fecha_desde', 'fecha_hasta'])): ?>
                 <div class="mt-3">
-                    <a href="{{ route('menus.index') }}" class="btn btn-sm btn-outline-secondary">
+                    <a href="<?php echo e(route('menus.index')); ?>" class="btn btn-sm btn-outline-secondary">
                         <i class="fas fa-times me-2"></i>Limpiar filtros
                     </a>
                 </div>
-                @endif
+                <?php endif; ?>
             </form>
         </div>
 
         <div class="card-body p-0">
-            @if($menus->isEmpty())
+            <?php if($menus->isEmpty()): ?>
                 <!-- Estado vacío -->
                 <div class="text-center py-5">
                     <div class="mb-4">
@@ -123,25 +121,25 @@
                     </div>
                     <h5 style="color: var(--cesodo-black); font-weight: 600;">No se encontraron menús</h5>
                     <p class="text-muted mb-4">
-                        @if(request()->has('search') || request()->has('estado') || request()->has('fecha_desde') || request()->has('fecha_hasta'))
+                        <?php if(request()->has('search') || request()->has('estado') || request()->has('fecha_desde') || request()->has('fecha_hasta')): ?>
                             No hay resultados para los filtros seleccionados
-                        @else
+                        <?php else: ?>
                             Aún no hay menús registrados en el sistema
-                        @endif
+                        <?php endif; ?>
                     </p>
                     <div>
-                        @if(request()->has('search') || request()->has('estado') || request()->has('fecha_desde') || request()->has('fecha_hasta'))
-                            <a href="{{ route('menus.index') }}" class="btn btn-outline-dark">
+                        <?php if(request()->has('search') || request()->has('estado') || request()->has('fecha_desde') || request()->has('fecha_hasta')): ?>
+                            <a href="<?php echo e(route('menus.index')); ?>" class="btn btn-outline-dark">
                                 <i class="fas fa-times me-2"></i>Limpiar filtros
                             </a>
-                        @else
-                            <a href="{{ route('menus.create') }}" class="btn btn-danger">
+                        <?php else: ?>
+                            <a href="<?php echo e(route('menus.create')); ?>" class="btn btn-danger">
                                 <i class="fas fa-plus me-2"></i>Crear primer menú
                             </a>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
-            @else
+            <?php else: ?>
                 <!-- Tabla de menús -->
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -157,87 +155,95 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($menus as $menu)
+                            <?php $__currentLoopData = $menus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr style="border-bottom: 1px solid #f0f0f0;">
                                 <td class="ps-4 py-3">
                                     <div>
-                                        <h6 class="mb-1" style="color: var(--cesodo-black); font-weight: 600; font-size: 0.9375rem;">{{ $menu->nombre }}</h6>
+                                        <h6 class="mb-1" style="color: var(--cesodo-black); font-weight: 600; font-size: 0.9375rem;"><?php echo e($menu->nombre); ?></h6>
                                         <div class="d-flex align-items-center gap-2">
                                             <span class="badge" style="background: #f5f5f5; color: var(--cesodo-black); font-weight: 500; font-size: 0.75rem;">
-                                                {{ ucfirst($menu->tipo_menu) }}
+                                                <?php echo e(ucfirst($menu->tipo_menu)); ?>
+
                                             </span>
-                                            @if($menu->descripcion)
-                                                <span style="color: #666; font-size: 0.8125rem;">{{ Str::limit($menu->descripcion, 40) }}</span>
-                                            @endif
+                                            <?php if($menu->descripcion): ?>
+                                                <span style="color: #666; font-size: 0.8125rem;"><?php echo e(Str::limit($menu->descripcion, 40)); ?></span>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="py-3">
-                                    @if($menu->estado == 'activo')
+                                    <?php if($menu->estado == 'activo'): ?>
                                         <span class="badge px-3 py-2" style="background: var(--cesodo-red); color: white; font-weight: 500;">En Servicio</span>
-                                    @elseif($menu->estado == 'planificado')
+                                    <?php elseif($menu->estado == 'planificado'): ?>
                                         <span class="badge px-3 py-2" style="background: #333; color: white; font-weight: 500;">Planificado</span>
-                                    @elseif($menu->estado == 'borrador')
+                                    <?php elseif($menu->estado == 'borrador'): ?>
                                         <span class="badge px-3 py-2" style="background: #666; color: white; font-weight: 500;">Borrador</span>
-                                    @elseif($menu->estado == 'completado')
+                                    <?php elseif($menu->estado == 'completado'): ?>
                                         <span class="badge px-3 py-2" style="background: var(--cesodo-black); color: white; font-weight: 500;">Completado</span>
-                                    @else
-                                        <span class="badge px-3 py-2" style="background: #999; color: white; font-weight: 500;">{{ ucfirst($menu->estado) }}</span>
-                                    @endif
+                                    <?php else: ?>
+                                        <span class="badge px-3 py-2" style="background: #999; color: white; font-weight: 500;"><?php echo e(ucfirst($menu->estado)); ?></span>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="py-3">
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="flex-grow-1">
                                             <div class="progress" style="height: 6px; background: #f0f0f0; border-radius: 3px;">
                                                 <div class="progress-bar"
-                                                     style="width: {{ ($menu->platos_disponibles / ($menu->platos_totales ?: 1)) * 100 }}%; background: {{ $menu->platos_disponibles > 0 ? 'var(--cesodo-red)' : '#ccc' }};">
+                                                     style="width: <?php echo e(($menu->platos_disponibles / ($menu->platos_totales ?: 1)) * 100); ?>%; background: <?php echo e($menu->platos_disponibles > 0 ? 'var(--cesodo-red)' : '#ccc'); ?>;">
                                                 </div>
                                             </div>
                                         </div>
                                         <span style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem; white-space: nowrap;">
-                                            {{ $menu->platos_disponibles }}/{{ $menu->platos_totales }}
+                                            <?php echo e($menu->platos_disponibles); ?>/<?php echo e($menu->platos_totales); ?>
+
                                         </span>
                                     </div>
                                 </td>
                                 <td class="py-3">
                                     <div>
                                         <div style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem;">
-                                            {{ $menu->fecha_inicio ? \Carbon\Carbon::parse($menu->fecha_inicio)->format('d/m/Y') : '-' }}
+                                            <?php echo e($menu->fecha_inicio ? \Carbon\Carbon::parse($menu->fecha_inicio)->format('d/m/Y') : '-'); ?>
+
                                         </div>
-                                        @if($menu->fecha_inicio)
+                                        <?php if($menu->fecha_inicio): ?>
                                         <div style="color: #666; font-size: 0.8125rem;">
-                                            {{ \Carbon\Carbon::parse($menu->fecha_inicio)->format('H:i') }}
+                                            <?php echo e(\Carbon\Carbon::parse($menu->fecha_inicio)->format('H:i')); ?>
+
                                         </div>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                                 <td class="py-3">
                                     <div>
                                         <div style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem;">
-                                            {{ $menu->fecha_fin ? \Carbon\Carbon::parse($menu->fecha_fin)->format('d/m/Y') : '-' }}
+                                            <?php echo e($menu->fecha_fin ? \Carbon\Carbon::parse($menu->fecha_fin)->format('d/m/Y') : '-'); ?>
+
                                         </div>
-                                        @if($menu->fecha_fin)
+                                        <?php if($menu->fecha_fin): ?>
                                         <div style="color: #666; font-size: 0.8125rem;">
-                                            {{ \Carbon\Carbon::parse($menu->fecha_fin)->format('H:i') }}
+                                            <?php echo e(\Carbon\Carbon::parse($menu->fecha_fin)->format('H:i')); ?>
+
                                         </div>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                                 <td class="py-3">
                                     <div>
                                         <div style="color: var(--cesodo-black); font-weight: 600; font-size: 0.875rem;">
-                                            S/ {{ number_format($menu->costo_estimado, 2) }}
+                                            S/ <?php echo e(number_format($menu->costo_estimado, 2)); ?>
+
                                         </div>
-                                        @if($menu->costo_total != $menu->costo_estimado)
+                                        <?php if($menu->costo_total != $menu->costo_estimado): ?>
                                             <div style="color: #666; font-size: 0.8125rem;">
-                                                Real: S/ {{ number_format($menu->costo_total, 2) }}
+                                                Real: S/ <?php echo e(number_format($menu->costo_total, 2)); ?>
+
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                                 <td class="text-center py-3 pe-4">
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a href="{{ route('menus.edit', $menu->id) }}"
+                                        <a href="<?php echo e(route('menus.edit', $menu->id)); ?>"
                                            class="btn btn-sm btn-dark px-3"
                                            title="Editar">
                                             <i class="fas fa-edit me-1"></i>Editar
@@ -250,74 +256,74 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><h6 class="dropdown-header">Cambiar a:</h6></li>
-                                                @if($menu->estado !== 'borrador')
+                                                <?php if($menu->estado !== 'borrador'): ?>
                                                 <li>
-                                                    <form action="{{ route('menus.cambiar-estado', $menu->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('PATCH')
+                                                    <form action="<?php echo e(route('menus.cambiar-estado', $menu->id)); ?>" method="POST" class="d-inline">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('PATCH'); ?>
                                                         <input type="hidden" name="estado" value="borrador">
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-file text-secondary me-2"></i>Borrador
                                                         </button>
                                                     </form>
                                                 </li>
-                                                @endif
-                                                @if($menu->estado !== 'planificado')
+                                                <?php endif; ?>
+                                                <?php if($menu->estado !== 'planificado'): ?>
                                                 <li>
-                                                    <form action="{{ route('menus.cambiar-estado', $menu->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('PATCH')
+                                                    <form action="<?php echo e(route('menus.cambiar-estado', $menu->id)); ?>" method="POST" class="d-inline">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('PATCH'); ?>
                                                         <input type="hidden" name="estado" value="planificado">
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-calendar-alt text-info me-2"></i>Planificado
                                                         </button>
                                                     </form>
                                                 </li>
-                                                @endif
-                                                @if($menu->estado !== 'activo')
+                                                <?php endif; ?>
+                                                <?php if($menu->estado !== 'activo'): ?>
                                                 <li>
-                                                    <form action="{{ route('menus.cambiar-estado', $menu->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('PATCH')
+                                                    <form action="<?php echo e(route('menus.cambiar-estado', $menu->id)); ?>" method="POST" class="d-inline">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('PATCH'); ?>
                                                         <input type="hidden" name="estado" value="activo">
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-check-circle text-success me-2"></i>Activo
                                                         </button>
                                                     </form>
                                                 </li>
-                                                @endif
-                                                @if($menu->estado !== 'completado')
+                                                <?php endif; ?>
+                                                <?php if($menu->estado !== 'completado'): ?>
                                                 <li>
-                                                    <form action="{{ route('menus.cambiar-estado', $menu->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('PATCH')
+                                                    <form action="<?php echo e(route('menus.cambiar-estado', $menu->id)); ?>" method="POST" class="d-inline">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('PATCH'); ?>
                                                         <input type="hidden" name="estado" value="completado">
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-flag-checkered text-dark me-2"></i>Completado
                                                         </button>
                                                     </form>
                                                 </li>
-                                                @endif
-                                                @if($menu->estado !== 'cancelado')
+                                                <?php endif; ?>
+                                                <?php if($menu->estado !== 'cancelado'): ?>
                                                 <li>
-                                                    <form action="{{ route('menus.cambiar-estado', $menu->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('PATCH')
+                                                    <form action="<?php echo e(route('menus.cambiar-estado', $menu->id)); ?>" method="POST" class="d-inline">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('PATCH'); ?>
                                                         <input type="hidden" name="estado" value="cancelado">
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-times-circle text-danger me-2"></i>Cancelado
                                                         </button>
                                                     </form>
                                                 </li>
-                                                @endif
+                                                <?php endif; ?>
                                             </ul>
                                         </div>
                                         
                                         <!-- Botón eliminar (solo si no está activo) -->
-                                        @if($menu->estado !== 'activo')
-                                        <form action="{{ route('menus.destroy', $menu->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                        <?php if($menu->estado !== 'activo'): ?>
+                                        <form action="<?php echo e(route('menus.destroy', $menu->id)); ?>" method="POST" class="d-inline">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
                                             <button type="submit"
                                                     class="btn btn-sm btn-outline-danger px-3"
                                                     onclick="return confirm('¿Está seguro que desea eliminar este menú?')"
@@ -325,39 +331,42 @@
                                                 <i class="far fa-trash-alt me-1"></i>Eliminar
                                             </button>
                                         </form>
-                                        @else
+                                        <?php else: ?>
                                         <button type="button"
                                                 class="btn btn-sm btn-outline-secondary px-3"
                                                 disabled
                                                 title="No se puede eliminar un menú activo. Cambia el estado primero.">
                                             <i class="far fa-trash-alt me-1"></i>Eliminar
                                         </button>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Paginación -->
-                @if($menus instanceof \Illuminate\Pagination\LengthAwarePaginator && $menus->hasPages())
+                <?php if($menus instanceof \Illuminate\Pagination\LengthAwarePaginator && $menus->hasPages()): ?>
                     <div class="card-footer bg-white py-3 px-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <div style="color: #666; font-size: 0.875rem;">
-                                Mostrando <span style="font-weight: 600; color: var(--cesodo-black);">{{ $menus->firstItem() ?? 0 }}</span>
-                                a <span style="font-weight: 600; color: var(--cesodo-black);">{{ $menus->lastItem() ?? 0 }}</span>
-                                de <span style="font-weight: 600; color: var(--cesodo-black);">{{ $menus->total() ?? 0 }}</span> menús
+                                Mostrando <span style="font-weight: 600; color: var(--cesodo-black);"><?php echo e($menus->firstItem() ?? 0); ?></span>
+                                a <span style="font-weight: 600; color: var(--cesodo-black);"><?php echo e($menus->lastItem() ?? 0); ?></span>
+                                de <span style="font-weight: 600; color: var(--cesodo-black);"><?php echo e($menus->total() ?? 0); ?></span> menús
                             </div>
                             <div>
-                                {{ $menus->links('vendor.pagination.bootstrap-4') }}
+                                <?php echo e($menus->links('vendor.pagination.bootstrap-4')); ?>
+
                             </div>
                         </div>
                     </div>
-                @endif
-            @endif
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/menus/index.blade.php ENDPATH**/ ?>

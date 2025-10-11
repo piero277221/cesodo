@@ -455,7 +455,7 @@ class MenuController extends Controller
         try {
             // Verificar que el menú no esté activo
             if ($menu->estado === 'activo') {
-                return back()->with('error', 'No se puede eliminar un menú activo');
+                return back()->with('error', 'No se puede eliminar un menú activo. Por favor, cambia el estado del menú primero.');
             }
 
             DB::beginTransaction();
@@ -477,6 +477,28 @@ class MenuController extends Controller
             Log::error('Error al eliminar menú: ' . $e->getMessage());
 
             return back()->with('error', 'Error al eliminar el menú: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Cambiar el estado de un menú
+     */
+    public function cambiarEstado(Request $request, Menu $menu)
+    {
+        try {
+            $request->validate([
+                'estado' => 'required|in:borrador,planificado,activo,completado,cancelado'
+            ]);
+
+            $estadoAnterior = $menu->estado;
+            $menu->estado = $request->estado;
+            $menu->save();
+
+            return back()->with('success', "Estado del menú cambiado de '{$estadoAnterior}' a '{$request->estado}' exitosamente");
+
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estado del menú: ' . $e->getMessage());
+            return back()->with('error', 'Error al cambiar el estado del menú: ' . $e->getMessage());
         }
     }
 

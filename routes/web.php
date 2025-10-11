@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/menus/{menu}/consumir', [MenuController::class, 'consumir'])->name('menus.consumir');
     Route::post('/menus/{menu}/registrar-consumo', [MenuController::class, 'registrarConsumo'])->name('menus.registrar-consumo');
     Route::get('/menus/{menu}/disponibilidad', [MenuController::class, 'checkDisponibilidad'])->name('menus.disponibilidad');
+    Route::patch('/menus/{menu}/cambiar-estado', [MenuController::class, 'cambiarEstado'])->name('menus.cambiar-estado');
 })->middleware(['auth'])->name('debug.trabajadores');
 
 // Ruta para verificar ingredientes de menús
