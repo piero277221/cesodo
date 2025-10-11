@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             CategoriaSeeder::class,
+            CategoriasSeeder::class,  // Categorías de productos
+            ProductosPeruanosSeeder::class,  // Productos e ingredientes peruanos
+            ProveedoresSeeder::class,  // Proveedores
+            ClientesSeeder::class,  // Clientes
+            PersonasSeeder::class,  // Personas
             MenusTableSeeder::class,
             MenuPruebaSeeder::class,
         ]);

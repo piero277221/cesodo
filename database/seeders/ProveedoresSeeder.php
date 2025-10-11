@@ -2,80 +2,35 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Proveedor;
+use Illuminate\Support\Facades\DB;
 
 class ProveedoresSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
         $proveedores = [
-            [
-                'ruc' => '20123456789',
-                'razon_social' => 'Distribuidora Alimentos San Martín S.A.C.',
-                'nombre_comercial' => 'Distribuidora San Martín',
-                'telefono' => '01-234-5678',
-                'email' => 'ventas@sanmartin.com',
-                'direccion' => 'Av. Industrial 123, Lima, Perú',
-                'contacto' => 'Carlos Mendoza',
-                'estado' => 'activo'
-            ],
-            [
-                'ruc' => '20987654321',
-                'razon_social' => 'Comercial La Victoria E.I.R.L.',
-                'nombre_comercial' => 'La Victoria',
-                'telefono' => '01-987-6543',
-                'email' => 'info@lavictoria.pe',
-                'direccion' => 'Jr. Los Proveedores 456, San Isidro, Lima',
-                'contacto' => 'María González',
-                'estado' => 'activo'
-            ],
-            [
-                'ruc' => '20456789123',
-                'razon_social' => 'Importaciones Del Norte S.A.',
-                'nombre_comercial' => 'Del Norte',
-                'telefono' => '074-123-456',
-                'email' => 'compras@delnorte.com',
-                'direccion' => 'Av. Grau 789, Trujillo, La Libertad',
-                'contacto' => 'José Ramírez',
-                'estado' => 'activo'
-            ],
-            [
-                'ruc' => '20789123456',
-                'razon_social' => 'Productos de Limpieza Central S.R.L.',
-                'nombre_comercial' => 'Central Limpieza',
-                'telefono' => '01-555-7890',
-                'email' => 'central@limpieza.pe',
-                'direccion' => 'Av. Argentina 321, Callao, Lima',
-                'contacto' => 'Ana Torres',
-                'estado' => 'activo'
-            ],
-            [
-                'ruc' => '20321654987',
-                'razon_social' => 'Bebidas Premium Distribución S.A.C.',
-                'nombre_comercial' => 'Premium Drinks',
-                'telefono' => '01-777-4444',
-                'email' => 'ventas@premiumdrinks.pe',
-                'direccion' => 'Av. El Sol 147, Miraflores, Lima',
-                'contacto' => 'Roberto Silva',
-                'estado' => 'activo'
-            ],
-            [
-                'ruc' => '20147258369',
-                'razon_social' => 'Suministros Industriales Perú S.A.',
-                'nombre_comercial' => 'SIP',
-                'telefono' => '01-666-3333',
-                'email' => 'contacto@sip.com.pe',
-                'direccion' => 'Av. Colonial 852, San Miguel, Lima',
-                'contacto' => 'Patricia Vega',
-                'estado' => 'inactivo'
-            ]
+            ['ruc' => '20512345671', 'razon_social' => 'Distribuidora de Carnes La Granja SAC', 'nombre_comercial' => 'La Granja', 'telefono' => '014567890', 'email' => 'ventas@lagranja.com.pe', 'direccion' => 'Av. Colonial 1234, Lima', 'contacto' => 'Carlos Méndez', 'estado' => 'activo'],
+            ['ruc' => '20512345672', 'razon_social' => 'Pescados y Mariscos del Pacífico EIRL', 'nombre_comercial' => 'Pacífico Fresco', 'telefono' => '014567891', 'email' => 'pedidos@pacifico.com.pe', 'direccion' => 'Terminal Pesquero Ventanilla, Callao', 'contacto' => 'María Torres', 'estado' => 'activo'],
+            ['ruc' => '20512345673', 'razon_social' => 'Mercado Central de Verduras SAC', 'nombre_comercial' => 'Verde Perú', 'telefono' => '014567892', 'email' => 'ventas@verdeperu.com', 'direccion' => 'Mercado Central, Jr. Ucayali 789, Lima', 'contacto' => 'Juan Quispe', 'estado' => 'activo'],
+            ['ruc' => '20512345674', 'razon_social' => 'Abarrotes Mayoristas Unidos SA', 'nombre_comercial' => 'AMU', 'telefono' => '014567893', 'email' => 'contacto@amu.com.pe', 'direccion' => 'Av. Argentina 456, Callao', 'contacto' => 'Roberto Silva', 'estado' => 'activo'],
+            ['ruc' => '20512345675', 'razon_social' => 'Gloria SA', 'nombre_comercial' => 'Gloria', 'telefono' => '014567894', 'email' => 'ventas@gloria.com.pe', 'direccion' => 'Av. República de Panamá 2461, Lima', 'contacto' => 'Ana Rodríguez', 'estado' => 'activo'],
+            ['ruc' => '20512345676', 'razon_social' => 'Condimentos del Perú SAC', 'nombre_comercial' => 'Condimentos Perú', 'telefono' => '014567895', 'email' => 'ventas@condimentosperu.com', 'direccion' => 'Av. Universitaria 234, Lima', 'contacto' => 'Pedro García', 'estado' => 'activo'],
+            ['ruc' => '20512345677', 'razon_social' => 'Alicorp SAA', 'nombre_comercial' => 'Alicorp', 'telefono' => '014567896', 'email' => 'atencion@alicorp.com.pe', 'direccion' => 'Av. Néstor Gambetta 5150, Callao', 'contacto' => 'Luis Martínez', 'estado' => 'activo'],
+            ['ruc' => '20512345678', 'razon_social' => 'Bebidas del Perú SA', 'nombre_comercial' => 'Arca Continental', 'telefono' => '014567897', 'email' => 'ventas@arcacontinental.com', 'direccion' => 'Av. Industrial 567, Lima', 'contacto' => 'Carmen Flores', 'estado' => 'activo'],
+            ['ruc' => '20512345679', 'razon_social' => 'Cereales y Granos Andinos EIRL', 'nombre_comercial' => 'Granos Andinos', 'telefono' => '014567898', 'email' => 'contacto@granosandinos.com', 'direccion' => 'Av. Los Incas 890, Cusco', 'contacto' => 'José Huamán', 'estado' => 'activo'],
+            ['ruc' => '20512345680', 'razon_social' => 'Distribuidora de Licores Premium SAC', 'nombre_comercial' => 'Licores Premium', 'telefono' => '014567899', 'email' => 'ventas@licorespremium.com', 'direccion' => 'Av. Caminos del Inca 123, Santiago de Surco', 'contacto' => 'Ricardo Pérez', 'estado' => 'activo'],
         ];
 
-        foreach ($proveedores as $proveedorData) {
-            Proveedor::create($proveedorData);
+        foreach ($proveedores as $proveedor) {
+            DB::table('proveedores')->insert(array_merge($proveedor, [
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]));
         }
-
-        $this->command->info('Proveedores de ejemplo creados exitosamente.');
     }
 }
