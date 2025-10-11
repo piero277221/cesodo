@@ -122,7 +122,7 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-2px);
+    /* Efecto de movimiento eliminado */
     box-shadow: var(--shadow-hover);
 }
 
@@ -148,7 +148,7 @@ body {
 }
 
 .btn:hover {
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado para mejor UX */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
@@ -279,7 +279,7 @@ body {
 
 .table tbody tr:hover {
     background-color: #f9fafb;
-    transform: scale(1.005);
+    /* Efecto de escala eliminado */
 }
 
 .table tbody td {
@@ -374,7 +374,7 @@ body {
 .dropdown-item:hover {
     background: #f3f4f6;
     color: #374151;
-    transform: translateX(2px);
+    /* Efecto de movimiento eliminado */
 }
 
 /* Paginación moderna */
@@ -394,7 +394,7 @@ body {
 .page-link:hover {
     background: var(--gray-100);
     color: var(--gray-700);
-    transform: translateY(-1px);
+    /* Efecto de movimiento eliminado */
 }
 
 .page-item.active .page-link {

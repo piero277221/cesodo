@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('titulo')->nullable(); // nombre del plato
             $table->text('descripcion')->nullable();
             $table->timestamps();
-            
+
             // Índices para mejorar búsquedas
             $table->index(['menu_id', 'dia', 'tiempo']);
         });
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->decimal('cantidad', 10, 2)->default(1);
             $table->string('unidad')->default('unidad');
             $table->timestamps();
-            
+
             // Evitar duplicados
             $table->unique(['menu_item_id', 'producto_id']);
         });
@@ -47,7 +47,7 @@ return new class extends Migration
             $table->string('unidad')->default('unidad');
             $table->text('observaciones')->nullable();
             $table->timestamps();
-            
+
             $table->index(['menu_item_id', 'certificado_medico_id']);
         });
     }

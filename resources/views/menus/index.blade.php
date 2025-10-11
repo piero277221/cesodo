@@ -242,7 +242,7 @@
                                            title="Editar">
                                             <i class="fas fa-edit me-1"></i>Editar
                                         </a>
-                                        
+
                                         <!-- Dropdown de estado -->
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Cambiar Estado">
@@ -312,7 +312,7 @@
                                                 @endif
                                             </ul>
                                         </div>
-                                        
+
                                         <!-- Botón eliminar (solo si no está activo) -->
                                         @if($menu->estado !== 'activo')
                                         <form action="{{ route('menus.destroy', $menu->id) }}" method="POST" class="d-inline">
