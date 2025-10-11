@@ -63,7 +63,6 @@
                                 </label>
                                 <select class="form-select @error('tipo_contrato') is-invalid @enderror" id="tipo_contrato" name="tipo_contrato" required>
                                     <option value="">Seleccione un tipo...</option>
-                                    <option value="indefinido" {{ old('tipo_contrato') == 'indefinido' ? 'selected' : '' }}>Indefinido</option>
                                     <option value="temporal" {{ old('tipo_contrato') == 'temporal' ? 'selected' : '' }}>Temporal</option>
                                     <option value="obra_labor" {{ old('tipo_contrato') == 'obra_labor' ? 'selected' : '' }}>Obra o Labor</option>
                                     <option value="aprendizaje" {{ old('tipo_contrato') == 'aprendizaje' ? 'selected' : '' }}>Aprendizaje</option>
@@ -76,14 +75,18 @@
 
                             <div class="col-md-4 mb-3">
                                 <label for="numero_contrato" class="form-label">
-                                    <i class="fas fa-hashtag me-1"></i>Número de Contrato
+                                    <i class="fas fa-hashtag me-1"></i>Número de Contrato 
+                                    <small class="badge bg-info">AUTO</small>
                                 </label>
-                                <input type="text" class="form-control @error('numero_contrato') is-invalid @enderror"
+                                <input type="text" class="form-control bg-light @error('numero_contrato') is-invalid @enderror"
                                        id="numero_contrato" name="numero_contrato" value="{{ old('numero_contrato') }}"
-                                       placeholder="Ej: CON-2024-001">
+                                       placeholder="Se generará automáticamente" readonly>
                                 @error('numero_contrato')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-info-circle"></i> Se asignará automáticamente al guardar
+                                </small>
                             </div>
 
                             <div class="col-md-4 mb-3">

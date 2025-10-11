@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Nuevo Trabajador'); ?>
 
-@section('title', 'Nuevo Trabajador')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
 /* ELIMINAR COMPLETAMENTE TODOS LOS EFECTOS DE BLUR Y TRANSICIONES */
 
@@ -182,22 +180,22 @@ select:active,
                     <i class="fas fa-user-plus text-success me-2"></i>
                     Nuevo Trabajador
                 </h2>
-                <a href="{{ route('trabajadores.index') }}" class="btn btn-secondary">
+                <a href="<?php echo e(route('trabajadores.index')); ?>" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-1"></i>
                     Volver
                 </a>
             </div>
 
-            @if ($errors->any())
+            <?php if($errors->any()): ?>
                 <div class="alert alert-danger">
                     <h6><i class="fas fa-exclamation-triangle me-1"></i> Errores de validación:</h6>
                     <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Alerta informativa sobre el sistema de personas -->
             <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -216,8 +214,8 @@ select:active,
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
-            <form action="{{ route('trabajadores.store') }}" method="POST" id="createTrabajadorForm" onsubmit="validarAntesDeEnviar(event)">
-                @csrf
+            <form action="<?php echo e(route('trabajadores.store')); ?>" method="POST" id="createTrabajadorForm" onsubmit="validarAntesDeEnviar(event)">
+                <?php echo csrf_field(); ?>
 
                 <div class="row">
                     <!-- Información Personal -->
@@ -234,27 +232,55 @@ select:active,
                                     <div class="col-md-6 mb-3">
                                         <label for="nombres" class="form-label">Nombres <span class="text-danger">*</span></label>
                                         <input type="text"
-                                               class="form-control @error('nombres') is-invalid @enderror"
+                                               class="form-control <?php $__errorArgs = ['nombres'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                id="nombres"
                                                name="nombres"
-                                               value="{{ old('nombres') }}"
+                                               value="<?php echo e(old('nombres')); ?>"
                                                required>
-                                        @error('nombres')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['nombres'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label for="apellidos" class="form-label">Apellidos <span class="text-danger">*</span></label>
                                         <input type="text"
-                                               class="form-control @error('apellidos') is-invalid @enderror"
+                                               class="form-control <?php $__errorArgs = ['apellidos'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                id="apellidos"
                                                name="apellidos"
-                                               value="{{ old('apellidos') }}"
+                                               value="<?php echo e(old('apellidos')); ?>"
                                                required>
-                                        @error('apellidos')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['apellidos'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
 
@@ -263,10 +289,17 @@ select:active,
                                         <label for="dni" class="form-label">DNI <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="text"
-                                                   class="form-control @error('dni') is-invalid @enderror"
+                                                   class="form-control <?php $__errorArgs = ['dni'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                    id="dni"
                                                    name="dni"
-                                                   value="{{ old('dni') }}"
+                                                   value="<?php echo e(old('dni')); ?>"
                                                    maxlength="8"
                                                    pattern="[0-9]{8}"
                                                    placeholder="Ingrese DNI"
@@ -276,49 +309,98 @@ select:active,
                                             </button>
                                         </div>
                                         <div id="personaStatus" class="mt-1"></div>
-                                        @error('dni')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['dni'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                         <small class="text-muted">Ingrese el DNI y presione el botón de búsqueda para autocompletar datos</small>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label for="telefono" class="form-label">Teléfono</label>
                                         <input type="tel"
-                                               class="form-control @error('telefono') is-invalid @enderror"
+                                               class="form-control <?php $__errorArgs = ['telefono'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                id="telefono"
                                                name="telefono"
-                                               value="{{ old('telefono') }}">
-                                        @error('telefono')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                               value="<?php echo e(old('telefono')); ?>">
+                                        <?php $__errorArgs = ['telefono'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
 
                                 <!-- Campo oculto para almacenar el ID de la persona -->
-                                <input type="hidden" id="persona_id" name="persona_id" value="{{ old('persona_id') }}">
+                                <input type="hidden" id="persona_id" name="persona_id" value="<?php echo e(old('persona_id')); ?>">
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email"
-                                           class="form-control @error('email') is-invalid @enderror"
+                                           class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                            id="email"
                                            name="email"
-                                           value="{{ old('email') }}">
-                                    @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                           value="<?php echo e(old('email')); ?>">
+                                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="direccion" class="form-label">Dirección</label>
-                                    <textarea class="form-control @error('direccion') is-invalid @enderror"
+                                    <textarea class="form-control <?php $__errorArgs = ['direccion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                               id="direccion"
                                               name="direccion"
-                                              rows="3">{{ old('direccion') }}</textarea>
-                                    @error('direccion')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                              rows="3"><?php echo e(old('direccion')); ?></textarea>
+                                    <?php $__errorArgs = ['direccion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
 
                                 <div class="row">
@@ -326,32 +408,60 @@ select:active,
                                         <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
                                         <div class="input-group">
                                             <input type="date"
-                                                   class="form-control @error('fecha_nacimiento') is-invalid @enderror"
+                                                   class="form-control <?php $__errorArgs = ['fecha_nacimiento'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                    id="fecha_nacimiento"
                                                    name="fecha_nacimiento"
-                                                   value="{{ old('fecha_nacimiento') }}">
+                                                   value="<?php echo e(old('fecha_nacimiento')); ?>">
                                             <span class="input-group-text" id="edadDisplay" style="display: none;">
                                                 <i class="fas fa-birthday-cake me-1"></i>
                                                 <span id="edadTexto"></span>
                                             </span>
                                         </div>
-                                        @error('fecha_nacimiento')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['fecha_nacimiento'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label for="sexo" class="form-label">Sexo</label>
-                                        <select class="form-select @error('sexo') is-invalid @enderror"
+                                        <select class="form-select <?php $__errorArgs = ['sexo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                 id="sexo"
                                                 name="sexo">
                                             <option value="">Seleccionar...</option>
-                                            <option value="Masculino" {{ old('sexo') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
-                                            <option value="Femenino" {{ old('sexo') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
+                                            <option value="Masculino" <?php echo e(old('sexo') == 'Masculino' ? 'selected' : ''); ?>>Masculino</option>
+                                            <option value="Femenino" <?php echo e(old('sexo') == 'Femenino' ? 'selected' : ''); ?>>Femenino</option>
                                         </select>
-                                        @error('sexo')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['sexo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                             </div>
@@ -375,75 +485,131 @@ select:active,
                                 <div class="mb-3">
                                     <label for="codigo" class="form-label">Código <span class="text-danger">*</span></label>
                                     <input type="text"
-                                           class="form-control @error('codigo') is-invalid @enderror readonly-field"
+                                           class="form-control <?php $__errorArgs = ['codigo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> readonly-field"
                                            id="codigo"
                                            name="codigo"
-                                           value="{{ old('codigo') }}"
+                                           value="<?php echo e(old('codigo')); ?>"
                                            required>
-                                    @error('codigo')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['codigo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="area" class="form-label">Área <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('area') is-invalid @enderror readonly-field"
+                                    <select class="form-select <?php $__errorArgs = ['area'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> readonly-field"
                                             id="area"
                                             name="area"
                                             required>
                                         <option value="">Seleccionar área...</option>
-                                        <option value="Administración" {{ old('area') == 'Administración' ? 'selected' : '' }}>Administración</option>
-                                        <option value="Recursos Humanos" {{ old('area') == 'Recursos Humanos' ? 'selected' : '' }}>Recursos Humanos</option>
-                                        <option value="Finanzas" {{ old('area') == 'Finanzas' ? 'selected' : '' }}>Finanzas</option>
-                                        <option value="Operaciones" {{ old('area') == 'Operaciones' ? 'selected' : '' }}>Operaciones</option>
-                                        <option value="Ventas" {{ old('area') == 'Ventas' ? 'selected' : '' }}>Ventas</option>
-                                        <option value="Marketing" {{ old('area') == 'Marketing' ? 'selected' : '' }}>Marketing</option>
-                                        <option value="Tecnología" {{ old('area') == 'Tecnología' ? 'selected' : '' }}>Tecnología</option>
-                                        <option value="Logística" {{ old('area') == 'Logística' ? 'selected' : '' }}>Logística</option>
-                                        <option value="Calidad" {{ old('area') == 'Calidad' ? 'selected' : '' }}>Calidad</option>
-                                        <option value="Seguridad" {{ old('area') == 'Seguridad' ? 'selected' : '' }}>Seguridad</option>
+                                        <option value="Administración" <?php echo e(old('area') == 'Administración' ? 'selected' : ''); ?>>Administración</option>
+                                        <option value="Recursos Humanos" <?php echo e(old('area') == 'Recursos Humanos' ? 'selected' : ''); ?>>Recursos Humanos</option>
+                                        <option value="Finanzas" <?php echo e(old('area') == 'Finanzas' ? 'selected' : ''); ?>>Finanzas</option>
+                                        <option value="Operaciones" <?php echo e(old('area') == 'Operaciones' ? 'selected' : ''); ?>>Operaciones</option>
+                                        <option value="Ventas" <?php echo e(old('area') == 'Ventas' ? 'selected' : ''); ?>>Ventas</option>
+                                        <option value="Marketing" <?php echo e(old('area') == 'Marketing' ? 'selected' : ''); ?>>Marketing</option>
+                                        <option value="Tecnología" <?php echo e(old('area') == 'Tecnología' ? 'selected' : ''); ?>>Tecnología</option>
+                                        <option value="Logística" <?php echo e(old('area') == 'Logística' ? 'selected' : ''); ?>>Logística</option>
+                                        <option value="Calidad" <?php echo e(old('area') == 'Calidad' ? 'selected' : ''); ?>>Calidad</option>
+                                        <option value="Seguridad" <?php echo e(old('area') == 'Seguridad' ? 'selected' : ''); ?>>Seguridad</option>
                                     </select>
-                                    @error('area')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['area'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="cargo" class="form-label">Cargo <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('cargo') is-invalid @enderror readonly-field"
+                                    <select class="form-select <?php $__errorArgs = ['cargo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> readonly-field"
                                             id="cargo"
                                             name="cargo"
                                             required>
                                         <option value="">Seleccionar cargo...</option>
-                                        <option value="Gerente" {{ old('cargo') == 'Gerente' ? 'selected' : '' }}>Gerente</option>
-                                        <option value="Jefe de Área" {{ old('cargo') == 'Jefe de Área' ? 'selected' : '' }}>Jefe de Área</option>
-                                        <option value="Supervisor" {{ old('cargo') == 'Supervisor' ? 'selected' : '' }}>Supervisor</option>
-                                        <option value="Analista" {{ old('cargo') == 'Analista' ? 'selected' : '' }}>Analista</option>
-                                        <option value="Asistente" {{ old('cargo') == 'Asistente' ? 'selected' : '' }}>Asistente</option>
-                                        <option value="Operario" {{ old('cargo') == 'Operario' ? 'selected' : '' }}>Operario</option>
-                                        <option value="Técnico" {{ old('cargo') == 'Técnico' ? 'selected' : '' }}>Técnico</option>
-                                        <option value="Especialista" {{ old('cargo') == 'Especialista' ? 'selected' : '' }}>Especialista</option>
-                                        <option value="Coordinador" {{ old('cargo') == 'Coordinador' ? 'selected' : '' }}>Coordinador</option>
-                                        <option value="Auxiliar" {{ old('cargo') == 'Auxiliar' ? 'selected' : '' }}>Auxiliar</option>
+                                        <option value="Gerente" <?php echo e(old('cargo') == 'Gerente' ? 'selected' : ''); ?>>Gerente</option>
+                                        <option value="Jefe de Área" <?php echo e(old('cargo') == 'Jefe de Área' ? 'selected' : ''); ?>>Jefe de Área</option>
+                                        <option value="Supervisor" <?php echo e(old('cargo') == 'Supervisor' ? 'selected' : ''); ?>>Supervisor</option>
+                                        <option value="Analista" <?php echo e(old('cargo') == 'Analista' ? 'selected' : ''); ?>>Analista</option>
+                                        <option value="Asistente" <?php echo e(old('cargo') == 'Asistente' ? 'selected' : ''); ?>>Asistente</option>
+                                        <option value="Operario" <?php echo e(old('cargo') == 'Operario' ? 'selected' : ''); ?>>Operario</option>
+                                        <option value="Técnico" <?php echo e(old('cargo') == 'Técnico' ? 'selected' : ''); ?>>Técnico</option>
+                                        <option value="Especialista" <?php echo e(old('cargo') == 'Especialista' ? 'selected' : ''); ?>>Especialista</option>
+                                        <option value="Coordinador" <?php echo e(old('cargo') == 'Coordinador' ? 'selected' : ''); ?>>Coordinador</option>
+                                        <option value="Auxiliar" <?php echo e(old('cargo') == 'Auxiliar' ? 'selected' : ''); ?>>Auxiliar</option>
                                     </select>
-                                    @error('cargo')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['cargo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="fecha_ingreso" class="form-label">Fecha de Ingreso <span class="text-danger">*</span></label>
                                         <input type="date"
-                                               class="form-control @error('fecha_ingreso') is-invalid @enderror readonly-field"
+                                               class="form-control <?php $__errorArgs = ['fecha_ingreso'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> readonly-field"
                                                id="fecha_ingreso"
                                                name="fecha_ingreso"
-                                               value="{{ old('fecha_ingreso', date('Y-m-d')) }}"
+                                               value="<?php echo e(old('fecha_ingreso', date('Y-m-d'))); ?>"
                                                readonly
                                                required>
-                                        @error('fecha_ingreso')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['fecha_ingreso'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
@@ -451,17 +617,31 @@ select:active,
                                         <div class="input-group">
                                             <span class="input-group-text">S/</span>
                                             <input type="number"
-                                                   class="form-control @error('salario') is-invalid @enderror readonly-field"
+                                                   class="form-control <?php $__errorArgs = ['salario'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> readonly-field"
                                                    id="salario"
                                                    name="salario"
-                                                   value="{{ old('salario') }}"
+                                                   value="<?php echo e(old('salario')); ?>"
                                                    step="0.01"
                                                    min="0"
                                                    readonly>
                                         </div>
-                                        @error('salario')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['salario'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
 
@@ -472,30 +652,58 @@ select:active,
                                             <i class="fas fa-edit"></i> EDITABLE
                                         </small>
                                     </label>
-                                    <select class="form-select @error('estado') is-invalid @enderror"
+                                    <select class="form-select <?php $__errorArgs = ['estado'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                             id="estado"
                                             name="estado"
                                             required>
-                                        <option value="Activo" {{ old('estado', 'Activo') == 'Activo' ? 'selected' : '' }}>Activo</option>
-                                        <option value="Inactivo" {{ old('estado') == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
-                                        <option value="Suspendido" {{ old('estado') == 'Suspendido' ? 'selected' : '' }}>Suspendido</option>
-                                        <option value="Vacaciones" {{ old('estado') == 'Vacaciones' ? 'selected' : '' }}>Vacaciones</option>
+                                        <option value="Activo" <?php echo e(old('estado', 'Activo') == 'Activo' ? 'selected' : ''); ?>>Activo</option>
+                                        <option value="Inactivo" <?php echo e(old('estado') == 'Inactivo' ? 'selected' : ''); ?>>Inactivo</option>
+                                        <option value="Suspendido" <?php echo e(old('estado') == 'Suspendido' ? 'selected' : ''); ?>>Suspendido</option>
+                                        <option value="Vacaciones" <?php echo e(old('estado') == 'Vacaciones' ? 'selected' : ''); ?>>Vacaciones</option>
                                     </select>
-                                    @error('estado')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['estado'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="observaciones" class="form-label">Observaciones</label>
-                                    <textarea class="form-control @error('observaciones') is-invalid @enderror"
+                                    <textarea class="form-control <?php $__errorArgs = ['observaciones'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                               id="observaciones"
                                               name="observaciones"
                                               rows="4"
-                                              placeholder="Información adicional...">{{ old('observaciones') }}</textarea>
-                                    @error('observaciones')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                              placeholder="Información adicional..."><?php echo e(old('observaciones')); ?></textarea>
+                                    <?php $__errorArgs = ['observaciones'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
@@ -546,7 +754,7 @@ select:active,
                                     <i class="fas fa-save me-2"></i>
                                     Guardar Trabajador
                                 </button>
-                                <a href="{{ route('trabajadores.index') }}" class="btn btn-secondary btn-lg">
+                                <a href="<?php echo e(route('trabajadores.index')); ?>" class="btn btn-secondary btn-lg">
                                     <i class="fas fa-times me-2"></i>
                                     Cancelar
                                 </a>
@@ -562,8 +770,8 @@ select:active,
 <script>
 // Definir las URLs base para JavaScript
 window.AppConfig = {
-    baseUrl: '{{ url('/') }}',
-    apiUrl: '{{ url('/api') }}'
+    baseUrl: '<?php echo e(url('/')); ?>',
+    apiUrl: '<?php echo e(url('/api')); ?>'
 };
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -606,7 +814,7 @@ document.addEventListener('DOMContentLoaded', function() {
             buscarPersonaBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             personaStatus.innerHTML = '<small class="text-info"><i class="fas fa-search"></i> Buscando persona...</small>';
 
-            const url = `{{ route('trabajadores.buscar-persona-documento') }}?documento=${documento}`;
+            const url = `<?php echo e(route('trabajadores.buscar-persona-documento')); ?>?documento=${documento}`;
             console.log('URL de búsqueda:', url);
 
             const response = await fetch(url, {
@@ -761,7 +969,7 @@ function llenarCamposPersona(persona) {
     try {
         console.log('=== LLENANDO CAMPOS PERSONA ===');
         console.log('Datos de la persona:', persona);
-
+        
         document.getElementById('nombres').value = persona.nombres || '';
         document.getElementById('apellidos').value = persona.apellidos || '';
         document.getElementById('telefono').value = persona.celular || '';
@@ -787,7 +995,7 @@ function llenarCamposPersona(persona) {
             console.log('Sexo recibido de la BD:', persona.sexo);
             const sexoSelect = document.getElementById('sexo');
             let sexoMapeado = '';
-
+            
             // Convertir de formato BD a formato del select
             if (persona.sexo === 'M' || persona.sexo === 'Masculino') {
                 sexoMapeado = 'Masculino';
@@ -796,7 +1004,7 @@ function llenarCamposPersona(persona) {
             } else {
                 sexoMapeado = persona.sexo; // Por si viene en otro formato
             }
-
+            
             console.log('Sexo mapeado para el select:', sexoMapeado);
             sexoSelect.value = sexoMapeado;
             console.log('Valor del select después de asignar:', sexoSelect.value);
@@ -812,7 +1020,7 @@ function llenarCamposPersona(persona) {
                 elemento.setAttribute('title', 'Campo cargado automáticamente desde el registro de la persona');
             }
         });
-
+        
         // Para el select de sexo, usamos disabled en lugar de readOnly
         const sexoSelect = document.getElementById('sexo');
         if (sexoSelect && persona.sexo) {
@@ -831,7 +1039,7 @@ function llenarCamposPersona(persona) {
             hiddenSexo.value = sexoSelect.value;
             sexoSelect.removeAttribute('name'); // Quitar name del select para que no se envíe
         }
-
+        
         console.log('=== FIN LLENADO CAMPOS PERSONA ===');
     } catch (error) {
         console.error('Error al llenar campos:', error);
@@ -1206,13 +1414,13 @@ function mostrarInformacionContrato(contrato) {
 
 // Función para ver contrato
 function verContrato(contratoId) {
-    const url = `{{ url('contratos') }}/${contratoId}`;
+    const url = `<?php echo e(url('contratos')); ?>/${contratoId}`;
     window.open(url, '_blank');
 }
 
 // Función para descargar contrato en PDF
 function descargarContrato(contratoId) {
-    const url = `{{ route('contratos.pdf', ['contrato' => '__ID__']) }}`.replace('__ID__', contratoId);
+    const url = `<?php echo e(route('contratos.pdf', ['contrato' => '__ID__'])); ?>`.replace('__ID__', contratoId);
     window.open(url, '_blank');
 }
 
@@ -1227,7 +1435,7 @@ function limpiarCampos() {
             elemento.disabled = false;
             elemento.classList.remove('bg-light');
             elemento.removeAttribute('title');
-
+            
             // Si es el select de sexo, restaurar el atributo name
             if (campo === 'sexo' && elemento.tagName === 'SELECT') {
                 elemento.name = 'sexo';
@@ -1322,4 +1530,6 @@ function validarAntesDeEnviar(event) {
 </script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/trabajadores/create.blade.php ENDPATH**/ ?>

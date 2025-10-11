@@ -141,7 +141,8 @@ class ContratoController extends Controller
     {
         $request->validate([
             'persona_id' => 'required|exists:personas,id',
-            'tipo_contrato' => 'required|string',
+            'tipo_contrato' => 'required|string|in:temporal,obra_labor,aprendizaje,prestacion_servicios',
+            'numero_contrato' => 'nullable|string|unique:contratos,numero_contrato',
             'cargo' => 'required|string|max:255',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'nullable|date|after:fecha_inicio',
@@ -179,10 +180,8 @@ class ContratoController extends Controller
             $contratoData['moneda'] = $contratoData['moneda'] ?? 'PEN';
             $contratoData['tipo_pago'] = $contratoData['tipo_pago'] ?? 'mensual';
 
-            // Generate contract number if not provided
-            if (empty($contratoData['numero_contrato'])) {
-                $contratoData['numero_contrato'] = $this->generarNumeroContratoUnico();
-            }
+            // SIEMPRE generar número de contrato automáticamente (ignorar cualquier valor enviado)
+            $contratoData['numero_contrato'] = $this->generarNumeroContratoUnico();
 
             $contrato = new Contrato($contratoData);
             $contrato->creado_por = Auth::id();
@@ -548,35 +547,49 @@ class ContratoController extends Controller
 
     /**
      * Genera un número de contrato único
+     * Utiliza bloqueo de tabla para evitar duplicados en operaciones concurrentes
      */
     private function generarNumeroContratoUnico()
     {
         $año = date('Y');
-        $contador = 1;
+        $intentos = 0;
+        $maxIntentos = 10;
 
-        // Buscar el último número de contrato del año actual
-        $ultimoContrato = Contrato::where('numero_contrato', 'like', "CON-{$año}-%")
-            ->orderBy('numero_contrato', 'desc')
-            ->first();
-
-        if ($ultimoContrato) {
-            // Extraer el número del último contrato
-            $partes = explode('-', $ultimoContrato->numero_contrato);
-            if (count($partes) >= 3) {
-                $ultimoNumero = intval(end($partes));
-                $contador = $ultimoNumero + 1;
-            }
-        }
-
-        // Generar número y verificar que no exista
         do {
-            $numeroContrato = 'CON-' . $año . '-' . str_pad($contador, 5, '0', STR_PAD_LEFT);
-            $existe = Contrato::where('numero_contrato', $numeroContrato)->exists();
-            if ($existe) {
-                $contador++;
-            }
-        } while ($existe);
+            $intentos++;
+            
+            // Buscar el último número de contrato del año actual con bloqueo
+            $ultimoContrato = Contrato::where('numero_contrato', 'like', "CON-{$año}-%")
+                ->lockForUpdate()
+                ->orderBy('numero_contrato', 'desc')
+                ->first();
 
-        return $numeroContrato;
+            $contador = 1;
+            if ($ultimoContrato) {
+                // Extraer el número del último contrato
+                $partes = explode('-', $ultimoContrato->numero_contrato);
+                if (count($partes) >= 3) {
+                    $ultimoNumero = intval(end($partes));
+                    $contador = $ultimoNumero + 1;
+                }
+            }
+
+            // Generar número con formato: CON-YYYY-00001
+            $numeroContrato = 'CON-' . $año . '-' . str_pad($contador, 5, '0', STR_PAD_LEFT);
+            
+            // Verificar que no exista (doble validación)
+            $existe = Contrato::where('numero_contrato', $numeroContrato)->exists();
+            
+            if (!$existe) {
+                return $numeroContrato;
+            }
+            
+            // Si existe, incrementar y reintentar
+            $contador++;
+            
+        } while ($intentos < $maxIntentos);
+
+        // Si después de 10 intentos no se pudo generar, lanzar excepción
+        throw new \Exception('No se pudo generar un número de contrato único después de ' . $maxIntentos . ' intentos.');
     }
 }
