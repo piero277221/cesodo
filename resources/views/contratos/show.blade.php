@@ -91,16 +91,17 @@
                         @if($contrato->fecha_fin)
                             @php
                                 $diasRestantes = $contrato->diasRestantes();
+                                $tiempoTexto = $contrato->tiempoRestanteTexto();
                             @endphp
                             <div class="d-flex justify-content-between mb-1">
-                                <span>Días restantes:</span>
+                                <span>Tiempo restante:</span>
                                 <span class="
                                     @if($diasRestantes !== null && $diasRestantes <= 30) text-danger
                                     @elseif($diasRestantes !== null && $diasRestantes <= 90) text-warning
                                     @else text-success
                                     @endif
                                 ">
-                                    {{ $diasRestantes ?? 0 }} días
+                                    {{ $tiempoTexto }}
                                 </span>
                             </div>
                         @endif

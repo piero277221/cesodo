@@ -95,18 +95,19 @@
                                         @if($certificado->fecha_expiracion)
                                             @php
                                                 $dias = $certificado->diasRestantes();
+                                                $tiempoTexto = $certificado->tiempoRestanteTexto();
                                             @endphp
                                             @if($dias < 0)
                                                 <small class="text-danger">
-                                                    <i class="fas fa-exclamation-triangle"></i> Vencido hace {{ abs($dias) }} días
+                                                    <i class="fas fa-exclamation-triangle"></i> Vencido hace {{ $tiempoTexto }}
                                                 </small>
                                             @elseif($dias <= 30)
                                                 <small class="text-warning">
-                                                    <i class="fas fa-clock"></i> Vence en {{ $dias }} días
+                                                    <i class="fas fa-clock"></i> Vence en {{ $tiempoTexto }}
                                                 </small>
                                             @else
                                                 <small class="text-success">
-                                                    <i class="fas fa-check"></i> Vigente ({{ $dias }} días)
+                                                    <i class="fas fa-check"></i> Vigente ({{ $tiempoTexto }})
                                                 </small>
                                             @endif
                                         @endif

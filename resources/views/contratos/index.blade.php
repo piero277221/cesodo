@@ -265,12 +265,13 @@
                                                 </span>
                                                 @php
                                                     $diasRestantes = $contrato->diasRestantes();
+                                                    $tiempoTexto = $contrato->tiempoRestanteTexto();
                                                 @endphp
                                                 @if($diasRestantes !== null && $diasRestantes <= 30)
                                                     <br>
                                                     <small class="text-warning">
                                                         <i class="fas fa-exclamation-triangle"></i>
-                                                        {{ $diasRestantes }} días restantes
+                                                        {{ $tiempoTexto }} restantes
                                                     </small>
                                                 @endif
                                             </td>

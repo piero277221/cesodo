@@ -406,16 +406,17 @@
 
                     @if($contrato->fecha_fin)
                     <div class="mb-3">
-                        <h6 class="text-muted">Días restantes</h6>
+                        <h6 class="text-muted">Tiempo restante</h6>
                         @php
                             $diasRestantes = $contrato->diasRestantes();
+                            $tiempoTexto = $contrato->tiempoRestanteTexto();
                         @endphp
                         <p class="small mb-0
                             @if($diasRestantes !== null && $diasRestantes <= 30) text-danger
                             @elseif($diasRestantes !== null && $diasRestantes <= 90) text-warning
                             @else text-success
                             @endif">
-                            {{ $diasRestantes ?? 0 }} días
+                            {{ $tiempoTexto }}
                         </p>
                     </div>
                     @endif

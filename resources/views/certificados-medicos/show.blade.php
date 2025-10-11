@@ -20,6 +20,9 @@
     <!-- Estado del Certificado -->
     <div class="row mb-4">
         <div class="col-12">
+            @php
+                $tiempoTexto = $certificadosMedico->tiempoRestanteTexto();
+            @endphp
             @if($certificadosMedico->estaVencido())
                 <div class="alert alert-danger border-start border-danger border-4">
                     <div class="d-flex align-items-center">
@@ -27,7 +30,7 @@
                         <div>
                             <h5 class="mb-1">Certificado Vencido</h5>
                             <p class="mb-0">
-                                Este certificado venció hace <strong>{{ abs($certificadosMedico->diasRestantes()) }} días</strong>.
+                                Este certificado venció hace <strong>{{ $tiempoTexto }}</strong>.
                                 Por favor, solicite uno nuevo.
                             </p>
                         </div>
@@ -40,7 +43,7 @@
                         <div>
                             <h5 class="mb-1">Certificado Próximo a Vencer</h5>
                             <p class="mb-0">
-                                Este certificado vence en <strong>{{ $certificadosMedico->diasRestantes() }} días</strong>.
+                                Este certificado vence en <strong>{{ $tiempoTexto }}</strong>.
                                 Se recomienda renovarlo pronto.
                             </p>
                         </div>
@@ -53,7 +56,7 @@
                         <div>
                             <h5 class="mb-1">Certificado Vigente</h5>
                             <p class="mb-0">
-                                Este certificado es válido por <strong>{{ $certificadosMedico->diasRestantes() }} días más</strong>.
+                                Este certificado es válido por <strong>{{ $tiempoTexto }} más</strong>.
                             </p>
                         </div>
                     </div>

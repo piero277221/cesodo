@@ -133,6 +133,39 @@ class Contrato extends Model
         return $dias > 0 ? (int)floor($dias) : 0;
     }
 
+    public function horasRestantes(): ?int
+    {
+        if (!$this->fecha_fin) {
+            return null; // Contrato indefinido
+        }
+
+        $horas = now()->diffInHours(Carbon::parse($this->fecha_fin), false);
+        return (int)floor($horas);
+    }
+
+    public function tiempoRestanteTexto(): string
+    {
+        if (!$this->fecha_fin) {
+            return 'Indefinido';
+        }
+
+        $dias = $this->diasRestantes();
+        
+        if ($dias === null) {
+            return 'Indefinido';
+        }
+
+        if ($dias == 0) {
+            $horas = $this->horasRestantes();
+            if ($horas <= 0) {
+                return 'Menos de 1 hora';
+            }
+            return $horas . ' ' . ($horas == 1 ? 'hora' : 'horas');
+        }
+        
+        return $dias . ' ' . ($dias == 1 ? 'día' : 'días');
+    }
+
     public function estaProximoAVencer(): bool
     {
         $diasRestantes = $this->diasRestantes();

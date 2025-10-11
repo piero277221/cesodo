@@ -75,6 +75,50 @@ class CertificadoMedico extends Model
     }
 
     /**
+     * Obtener horas restantes hasta la expiración
+     */
+    public function horasRestantes()
+    {
+        if (!$this->fecha_expiracion) {
+            return null;
+        }
+
+        $horas = Carbon::now()->diffInHours($this->fecha_expiracion, false);
+        return (int) floor($horas);
+    }
+
+    /**
+     * Obtener texto formateado de tiempo restante
+     */
+    public function tiempoRestanteTexto()
+    {
+        if (!$this->fecha_expiracion) {
+            return 'Sin fecha de expiración';
+        }
+
+        $dias = $this->diasRestantes();
+        
+        if ($dias < 0) {
+            $diasVencido = abs($dias);
+            if ($diasVencido == 0) {
+                $horasVencido = abs($this->horasRestantes());
+                return $horasVencido . ' ' . ($horasVencido == 1 ? 'hora' : 'horas');
+            }
+            return $diasVencido . ' ' . ($diasVencido == 1 ? 'día' : 'días');
+        }
+        
+        if ($dias == 0) {
+            $horas = $this->horasRestantes();
+            if ($horas <= 0) {
+                return 'Menos de 1 hora';
+            }
+            return $horas . ' ' . ($horas == 1 ? 'hora' : 'horas');
+        }
+        
+        return $dias . ' ' . ($dias == 1 ? 'día' : 'días');
+    }
+
+    /**
      * Obtener certificados próximos a vencer
      */
     public static function proximosAVencer()
