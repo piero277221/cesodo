@@ -42,7 +42,7 @@ class ReniecConsulta extends Model
         $usadas = self::where('tipo_consulta', 'gratuita')
             ->whereDate('created_at', today())
             ->count();
-        
+
         return max(0, $limite - $usadas);
     }
 

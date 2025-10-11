@@ -1,6 +1,8 @@
-<?php $__env->startSection('title', 'Gestión de Clientes'); ?>
+@extends('layouts.app')
 
-<?php $__env->startSection('content'); ?>
+@section('title', 'Gestión de Clientes')
+
+@section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
     <!-- Header mejorado -->
     <div class="bg-white shadow-sm border-b border-gray-200">
@@ -21,7 +23,7 @@
                             <button onclick="exportClientes()" class="btn btn-outline-secondary">
                                 <i class="bi bi-download me-2"></i>Exportar
                             </button>
-                            <a href="<?php echo e(route('clientes.create')); ?>" class="btn btn-primary btn-modern">
+                            <a href="{{ route('clientes.create') }}" class="btn btn-primary btn-modern">
                                 <i class="bi bi-plus-circle me-2"></i>Nuevo Cliente
                             </a>
                         </div>
@@ -41,7 +43,7 @@
                             <div class="col-8">
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Clientes</p>
-                                    <h5 class="font-weight-bolder"><?php echo e($clientes->total() ?? 0); ?></h5>
+                                    <h5 class="font-weight-bolder">{{ $clientes->total() ?? 0 }}</h5>
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -60,7 +62,7 @@
                             <div class="col-8">
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Activos</p>
-                                    <h5 class="font-weight-bolder text-success"><?php echo e($clientes->where('estado', 'activo')->count() ?? 0); ?></h5>
+                                    <h5 class="font-weight-bolder text-success">{{ $clientes->where('estado', 'activo')->count() ?? 0 }}</h5>
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -79,7 +81,7 @@
                             <div class="col-8">
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Nuevos (Este mes)</p>
-                                    <h5 class="font-weight-bolder text-info"><?php echo e($clientes->where('created_at', '>=', now()->startOfMonth())->count() ?? 0); ?></h5>
+                                    <h5 class="font-weight-bolder text-info">{{ $clientes->where('created_at', '>=', now()->startOfMonth())->count() ?? 0 }}</h5>
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -98,7 +100,7 @@
                             <div class="col-8">
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Ventas del mes</p>
-                                    <h5 class="font-weight-bolder text-warning">$<?php echo e(number_format(0, 0, ',', '.')); ?></h5>
+                                    <h5 class="font-weight-bolder text-warning">${{ number_format(0, 0, ',', '.') }}</h5>
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -118,7 +120,7 @@
             <div class="card-header border-0 pb-0">
                 <div class="row">
                     <div class="col-12">
-                        <form method="GET" action="<?php echo e(route('clientes.index')); ?>" class="filter-form">
+                        <form method="GET" action="{{ route('clientes.index') }}" class="filter-form">
                             <div class="row g-3 align-items-end">
                                 <div class="col-md-4">
                                     <label class="form-label text-sm font-weight-bold">Buscar Cliente</label>
@@ -126,32 +128,32 @@
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                                         <input type="text" name="search" class="form-control"
                                                placeholder="Nombre, email, teléfono o RUT..."
-                                               value="<?php echo e(request('search')); ?>">
+                                               value="{{ request('search') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label text-sm font-weight-bold">Tipo</label>
                                     <select name="tipo" class="form-select">
                                         <option value="">Todos los tipos</option>
-                                        <option value="natural" <?php echo e(request('tipo') == 'natural' ? 'selected' : ''); ?>>Persona Natural</option>
-                                        <option value="juridica" <?php echo e(request('tipo') == 'juridica' ? 'selected' : ''); ?>>Persona Jurídica</option>
+                                        <option value="natural" {{ request('tipo') == 'natural' ? 'selected' : '' }}>Persona Natural</option>
+                                        <option value="juridica" {{ request('tipo') == 'juridica' ? 'selected' : '' }}>Persona Jurídica</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label text-sm font-weight-bold">Estado</label>
                                     <select name="estado" class="form-select">
                                         <option value="">Todos los estados</option>
-                                        <option value="activo" <?php echo e(request('estado') == 'activo' ? 'selected' : ''); ?>>Activo</option>
-                                        <option value="inactivo" <?php echo e(request('estado') == 'inactivo' ? 'selected' : ''); ?>>Inactivo</option>
-                                        <option value="suspendido" <?php echo e(request('estado') == 'suspendido' ? 'selected' : ''); ?>>Suspendido</option>
+                                        <option value="activo" {{ request('estado') == 'activo' ? 'selected' : '' }}>Activo</option>
+                                        <option value="inactivo" {{ request('estado') == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
+                                        <option value="suspendido" {{ request('estado') == 'suspendido' ? 'selected' : '' }}>Suspendido</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label text-sm font-weight-bold">Ordenar por</label>
                                     <select name="sort" class="form-select">
-                                        <option value="nombre" <?php echo e(request('sort') == 'nombre' ? 'selected' : ''); ?>>Nombre</option>
-                                        <option value="created_at" <?php echo e(request('sort') == 'created_at' ? 'selected' : ''); ?>>Fecha registro</option>
-                                        <option value="estado" <?php echo e(request('sort') == 'estado' ? 'selected' : ''); ?>>Estado</option>
+                                        <option value="nombre" {{ request('sort') == 'nombre' ? 'selected' : '' }}>Nombre</option>
+                                        <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Fecha registro</option>
+                                        <option value="estado" {{ request('sort') == 'estado' ? 'selected' : '' }}>Estado</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -159,7 +161,7 @@
                                         <button type="submit" class="btn btn-primary btn-modern">
                                             <i class="bi bi-search me-1"></i> Buscar
                                         </button>
-                                        <a href="<?php echo e(route('clientes.index')); ?>" class="btn btn-outline-secondary">
+                                        <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary">
                                             <i class="bi bi-arrow-clockwise"></i>
                                         </a>
                                     </div>
@@ -185,59 +187,53 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $__empty_1 = true; $__currentLoopData = $clientes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cliente): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            @forelse($clientes as $cliente)
                             <tr>
                                 <td>
                                     <div class="d-flex px-2 py-1 align-items-center">
                                         <div class="avatar-modern me-3">
-                                            <?php echo e(strtoupper(substr($cliente->nombre, 0, 2))); ?>
-
+                                            {{ strtoupper(substr($cliente->nombre, 0, 2)) }}
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <h6 class="mb-0 text-sm font-weight-bold"><?php echo e($cliente->nombre); ?></h6>
-                                            <?php if($cliente->rut): ?>
+                                            <h6 class="mb-0 text-sm font-weight-bold">{{ $cliente->nombre }}</h6>
+                                            @if($cliente->rut)
                                                 <p class="text-xs text-secondary mb-0">
-                                                    <i class="bi bi-person-vcard me-1"></i><?php echo e($cliente->rut); ?>
-
+                                                    <i class="bi bi-person-vcard me-1"></i>{{ $cliente->rut }}
                                                 </p>
-                                            <?php endif; ?>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <?php if($cliente->email): ?>
+                                        @if($cliente->email)
                                             <p class="text-sm mb-0">
-                                                <i class="bi bi-envelope me-1 text-primary"></i><?php echo e($cliente->email); ?>
-
+                                                <i class="bi bi-envelope me-1 text-primary"></i>{{ $cliente->email }}
                                             </p>
-                                        <?php endif; ?>
-                                        <?php if($cliente->telefono): ?>
+                                        @endif
+                                        @if($cliente->telefono)
                                             <p class="text-xs text-secondary mb-0">
-                                                <i class="bi bi-telephone me-1"></i><?php echo e($cliente->telefono); ?>
-
+                                                <i class="bi bi-telephone me-1"></i>{{ $cliente->telefono }}
                                             </p>
-                                        <?php endif; ?>
+                                        @endif
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge badge-modern <?php echo e($cliente->tipo == 'natural' ? 'bg-info' : 'bg-warning'); ?>">
-                                        <i class="bi bi-<?php echo e($cliente->tipo == 'natural' ? 'person' : 'building'); ?> me-1"></i>
-                                        <?php echo e($cliente->tipo == 'natural' ? 'Natural' : 'Jurídica'); ?>
-
+                                    <span class="badge badge-modern {{ $cliente->tipo == 'natural' ? 'bg-info' : 'bg-warning' }}">
+                                        <i class="bi bi-{{ $cliente->tipo == 'natural' ? 'person' : 'building' }} me-1"></i>
+                                        {{ $cliente->tipo == 'natural' ? 'Natural' : 'Jurídica' }}
                                     </span>
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column">
-                                        <span class="text-sm font-weight-bold">$<?php echo e(number_format(0, 0, ',', '.')); ?></span>
+                                        <span class="text-sm font-weight-bold">${{ number_format(0, 0, ',', '.') }}</span>
                                         <span class="text-xs text-secondary">0 ventas</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge badge-modern badge-<?php echo e($cliente->estado); ?>">
-                                        <i class="bi bi-<?php echo e($cliente->estado == 'activo' ? 'check-circle' : ($cliente->estado == 'inactivo' ? 'x-circle' : 'pause-circle')); ?> me-1"></i>
-                                        <?php echo e(ucfirst($cliente->estado)); ?>
-
+                                    <span class="badge badge-modern badge-{{ $cliente->estado }}">
+                                        <i class="bi bi-{{ $cliente->estado == 'activo' ? 'check-circle' : ($cliente->estado == 'inactivo' ? 'x-circle' : 'pause-circle') }} me-1"></i>
+                                        {{ ucfirst($cliente->estado) }}
                                     </span>
                                 </td>
                                 <td>
@@ -249,8 +245,8 @@
 
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <form id="deleteForm" method="POST" style="display: inline;">
-                    <?php echo csrf_field(); ?>
-                    <?php echo method_field('DELETE'); ?>
+                    @csrf
+                    @method('DELETE')
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-trash me-2"></i>Eliminar
                     </button>
@@ -261,47 +257,45 @@
 </div>
                                         <div class="d-flex flex-column justify-content-center">
                                             <h6 class="mb-0 text-sm">
-                                                <?php echo e($cliente->ventas->first()->total_ventas ?? 0); ?> ventas
+                                                {{ $cliente->ventas->first()->total_ventas ?? 0 }} ventas
                                             </h6>
                                             <p class="text-xs text-secondary mb-0">
-                                                Total: $<?php echo e(number_format($cliente->ventas->first()->total_comprado ?? 0, 0, ',', '.')); ?>
-
+                                                Total: ${{ number_format($cliente->ventas->first()->total_comprado ?? 0, 0, ',', '.') }}
                                             </p>
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="badge badge-sm bg-gradient-<?php echo e($cliente->estado == 'activo' ? 'success' : ($cliente->estado == 'suspendido' ? 'danger' : 'secondary')); ?>">
-                                            <?php echo e(ucfirst($cliente->estado)); ?>
-
+                                        <span class="badge badge-sm bg-gradient-{{ $cliente->estado == 'activo' ? 'success' : ($cliente->estado == 'suspendido' ? 'danger' : 'secondary') }}">
+                                            {{ ucfirst($cliente->estado) }}
                                         </span>
                                     </td>
                                     <td class="align-middle">
                                         <div class="dropdown">
-                                            <button class="btn btn-link text-secondary mb-0" type="button" id="dropdownMenuButton<?php echo e($cliente->id); ?>" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-link text-secondary mb-0" type="button" id="dropdownMenuButton{{ $cliente->id }}" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="fa fa-ellipsis-v text-xs"></i>
                                             </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?php echo e($cliente->id); ?>">
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $cliente->id }}">
                                                 <li>
-                                                    <a class="dropdown-item" href="<?php echo e(route('clientes.show', $cliente)); ?>">
+                                                    <a class="dropdown-item" href="{{ route('clientes.show', $cliente) }}">
                                                         <i class="fas fa-eye me-2"></i>Ver Detalles
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="<?php echo e(route('clientes.edit', $cliente)); ?>">
+                                                    <a class="dropdown-item" href="{{ route('clientes.edit', $cliente) }}">
                                                         <i class="fas fa-edit me-2"></i>Editar
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="<?php echo e(route('clientes.estado-cuenta', $cliente)); ?>">
+                                                    <a class="dropdown-item" href="{{ route('clientes.estado-cuenta', $cliente) }}">
                                                         <i class="fas fa-file-invoice-dollar me-2"></i>Estado de Cuenta
                                                     </a>
                                                 </li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li>
-                                                    <form action="<?php echo e(route('clientes.destroy', $cliente)); ?>" method="POST"
+                                                    <form action="{{ route('clientes.destroy', $cliente) }}" method="POST"
                                                           onsubmit="return confirm('¿Estás seguro de eliminar este cliente?')">
-                                                        <?php echo csrf_field(); ?>
-                                                        <?php echo method_field('DELETE'); ?>
+                                                        @csrf
+                                                        @method('DELETE')
                                                         <button type="submit" class="dropdown-item text-danger">
                                                             <i class="fas fa-trash me-2"></i>Eliminar
                                                         </button>
@@ -311,39 +305,38 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                @empty
                                 <tr>
                                     <td colspan="6" class="text-center py-4">
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="fas fa-users fa-3x text-secondary mb-3"></i>
                                             <h5 class="text-secondary">No hay clientes registrados</h5>
                                             <p class="text-sm text-secondary">Comienza agregando tu primer cliente</p>
-                                            <a href="<?php echo e(route('clientes.create')); ?>" class="btn bg-gradient-primary">
+                                            <a href="{{ route('clientes.create') }}" class="btn bg-gradient-primary">
                                                 <i class="fas fa-plus me-2"></i>Agregar Cliente
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
-                                <?php endif; ?>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Paginación -->
-                    <?php if($clientes->hasPages()): ?>
+                    @if($clientes->hasPages())
                     <div class="d-flex justify-content-center mt-4">
-                        <?php echo e($clientes->appends(request()->query())->links()); ?>
-
+                        {{ $clientes->appends(request()->query())->links() }}
                     </div>
-                    <?php endif; ?>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php $__env->stopSection(); ?>
+@endsection
 
-<?php $__env->startPush('css'); ?>
+@push('css')
 <style>
 /* Estilos modernos para clientes */
 .bg-gradient-to-br {
@@ -561,9 +554,9 @@
     }
 }
 </style>
-<?php $__env->stopPush(); ?>
+@endpush
 
-<?php $__env->startPush('js'); ?>
+@push('js')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Auto-submit en cambio de filtros
@@ -578,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.exportClientes = function() {
         const searchParams = new URLSearchParams(window.location.search);
         searchParams.set('export', 'excel');
-        window.location.href = `<?php echo e(route('clientes.index')); ?>?${searchParams.toString()}`;
+        window.location.href = `{{ route('clientes.index') }}?${searchParams.toString()}`;
     };
 
     // Función para confirmar eliminación
@@ -596,6 +589,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/clientes/index.blade.php ENDPATH**/ ?>
+@endpush

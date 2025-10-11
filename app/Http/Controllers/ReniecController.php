@@ -38,7 +38,7 @@ class ReniecController extends Controller
     public function estadisticas()
     {
         $estadisticas = $this->reniecService->obtenerEstadisticas();
-        
+
         return response()->json([
             'success' => true,
             'data' => $estadisticas
@@ -51,7 +51,7 @@ class ReniecController extends Controller
     public function consultasDisponibles()
     {
         $disponibles = $this->reniecService->consultasDisponiblesHoy();
-        
+
         return response()->json([
             'success' => true,
             'consultas_disponibles' => $disponibles,

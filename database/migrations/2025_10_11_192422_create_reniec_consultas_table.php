@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('ip_consulta')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
-            
+
             // Índices
             $table->index('dni');
             $table->index('tipo_consulta');
