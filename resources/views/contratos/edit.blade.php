@@ -139,50 +139,18 @@
                                 </h6>
                             </div>
 
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="salario" class="form-label">
                                     <i class="fas fa-money-bill me-1"></i>Salario <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">S/</span>
                                     <input type="number" class="form-control @error('salario') is-invalid @enderror"
                                            id="salario" name="salario"
                                            value="{{ old('salario', $contrato->salario) }}"
                                            step="0.01" min="0" required>
                                 </div>
                                 @error('salario')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="bonificaciones" class="form-label">
-                                    <i class="fas fa-gift me-1"></i>Bonificaciones
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control @error('bonificaciones') is-invalid @enderror"
-                                           id="bonificaciones" name="bonificaciones"
-                                           value="{{ old('bonificaciones', $contrato->bonificaciones) }}"
-                                           step="0.01" min="0">
-                                </div>
-                                @error('bonificaciones')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="descuentos" class="form-label">
-                                    <i class="fas fa-minus-circle me-1"></i>Descuentos
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control @error('descuentos') is-invalid @enderror"
-                                           id="descuentos" name="descuentos"
-                                           value="{{ old('descuentos', $contrato->descuentos) }}"
-                                           step="0.01" min="0">
-                                </div>
-                                @error('descuentos')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

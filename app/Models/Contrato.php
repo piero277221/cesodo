@@ -128,8 +128,9 @@ class Contrato extends Model
             return null; // Contrato indefinido
         }
 
+        // Calcular días completos (redondeado hacia abajo)
         $dias = now()->diffInDays(Carbon::parse($this->fecha_fin), false);
-        return $dias > 0 ? $dias : 0;
+        return $dias > 0 ? (int)floor($dias) : 0;
     }
 
     public function estaProximoAVencer(): bool

@@ -75,7 +75,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label for="numero_contrato" class="form-label">
-                                    <i class="fas fa-hashtag me-1"></i>Número de Contrato 
+                                    <i class="fas fa-hashtag me-1"></i>Número de Contrato
                                     <small class="badge bg-info">AUTO</small>
                                 </label>
                                 <input type="text" class="form-control bg-light @error('numero_contrato') is-invalid @enderror"
@@ -121,47 +121,17 @@
                                 </h6>
                             </div>
 
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="salario" class="form-label">
                                     <i class="fas fa-money-bill me-1"></i>Salario <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">S/</span>
                                     <input type="number" class="form-control @error('salario') is-invalid @enderror"
                                            id="salario" name="salario" value="{{ old('salario') }}"
                                            step="0.01" min="0" required>
                                 </div>
                                 @error('salario')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="bonificaciones" class="form-label">
-                                    <i class="fas fa-gift me-1"></i>Bonificaciones
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control @error('bonificaciones') is-invalid @enderror"
-                                           id="bonificaciones" name="bonificaciones" value="{{ old('bonificaciones', 0) }}"
-                                           step="0.01" min="0">
-                                </div>
-                                @error('bonificaciones')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="descuentos" class="form-label">
-                                    <i class="fas fa-minus-circle me-1"></i>Descuentos
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control @error('descuentos') is-invalid @enderror"
-                                           id="descuentos" name="descuentos" value="{{ old('descuentos', 0) }}"
-                                           step="0.01" min="0">
-                                </div>
-                                @error('descuentos')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -231,11 +201,18 @@
                                     <i class="fas fa-map-marker-alt me-1"></i>Lugar de Trabajo
                                 </label>
                                 <input type="text" class="form-control @error('lugar_trabajo') is-invalid @enderror"
-                                       id="lugar_trabajo" name="lugar_trabajo" value="{{ old('lugar_trabajo') }}"
-                                       placeholder="Ej: Oficina Central">
+                                       id="lugar_trabajo_display" 
+                                       placeholder="Seleccione departamento, provincia y distrito"
+                                       readonly>
+                                <input type="hidden" id="lugar_trabajo" name="lugar_trabajo" value="{{ old('lugar_trabajo') }}">
                                 @error('lugar_trabajo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ubicacionModal">
+                                        <i class="fas fa-map-marked-alt me-1"></i>Seleccionar Ubicación
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -458,6 +435,220 @@ document.addEventListener('DOMContentLoaded', function() {
 
     documentosInput.addEventListener('change', function() {
         validarArchivo(this);
+    });
+});
+</script>
+
+<!-- Modal de Selección de Ubicación -->
+<div class="modal fade" id="ubicacionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-map-marked-alt me-2"></i>Seleccionar Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Departamento</label>
+                        <select class="form-select" id="departamento_select">
+                            <option value="">Seleccione...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Provincia</label>
+                        <select class="form-select" id="provincia_select" disabled>
+                            <option value="">Seleccione departamento primero</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Distrito</label>
+                        <select class="form-select" id="distrito_select" disabled>
+                            <option value="">Seleccione provincia primero</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmarUbicacion">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Datos de ubicaciones del Perú (simplificado - principales departamentos)
+const ubicacionesPeru = {
+    "Amazonas": {
+        "Chachapoyas": ["Chachapoyas", "Asunción", "Balsas", "Cheto", "Chiliquín"],
+        "Bagua": ["Bagua", "Aramango", "Copallin", "El Parco", "Imaza"]
+    },
+    "Áncash": {
+        "Huaraz": ["Huaraz", "Cochabamba", "Colcabamba", "Huanchay", "Independencia"],
+        "Casma": ["Casma", "Buena Vista Alta", "Comandante Noel", "Yautan"]
+    },
+    "Apurímac": {
+        "Abancay": ["Abancay", "Chacoche", "Circa", "Curahuasi", "Huanipaca"],
+        "Andahuaylas": ["Andahuaylas", "Andarapa", "Chiara", "Huancarama"]
+    },
+    "Arequipa": {
+        "Arequipa": ["Arequipa", "Alto Selva Alegre", "Cayma", "Cerro Colorado", "Characato", "Miraflores", "Paucarpata", "Sachaca", "Yanahuara"],
+        "Camaná": ["Camaná", "José María Quimper", "Mariano Nicolás Valcárcel", "Mariscal Cáceres"]
+    },
+    "Ayacucho": {
+        "Huamanga": ["Ayacucho", "Acocro", "Acos Vinchos", "Carmen Alto", "Chiara"],
+        "Huanta": ["Huanta", "Ayahuanco", "Huamanguilla", "Iguain", "Luricocha"]
+    },
+    "Cajamarca": {
+        "Cajamarca": ["Cajamarca", "Asunción", "Chetilla", "Cospan", "Encañada", "Jesús", "Los Baños del Inca"],
+        "Jaén": ["Jaén", "Bellavista", "Chontali", "Colasay", "Huabal"]
+    },
+    "Callao": {
+        "Callao": ["Callao", "Bellavista", "Carmen de la Legua Reynoso", "La Perla", "La Punta", "Ventanilla"]
+    },
+    "Cusco": {
+        "Cusco": ["Cusco", "Ccorca", "Poroy", "San Jerónimo", "San Sebastián", "Santiago", "Saylla", "Wanchaq"],
+        "Urubamba": ["Urubamba", "Chinchero", "Huayllabamba", "Machupicchu", "Maras", "Ollantaytambo"]
+    },
+    "Huancavelica": {
+        "Huancavelica": ["Huancavelica", "Acobambilla", "Acoria", "Conayca", "Cuenca"],
+        "Tayacaja": ["Pampas", "Acostambo", "Acraquia", "Ahuaycha"]
+    },
+    "Huánuco": {
+        "Huánuco": ["Huánuco", "Amarilis", "Chinchao", "Churubamba", "Margos", "Pillco Marca"],
+        "Leoncio Prado": ["Rupa Rupa", "Daniel Alomía Robles", "Hermilio Valdizán", "José Crespo y Castillo"]
+    },
+    "Ica": {
+        "Ica": ["Ica", "La Tinguiña", "Los Aquijes", "Ocucaje", "Pachacutec", "Parcona", "Pueblo Nuevo"],
+        "Chincha": ["Chincha Alta", "Alto Larán", "Chavín", "Chincha Baja", "El Carmen"]
+    },
+    "Junín": {
+        "Huancayo": ["Huancayo", "Carhuacallanga", "Chacapampa", "Chicche", "Chilca", "El Tambo", "Hualhuas"],
+        "Tarma": ["Tarma", "Acobamba", "Huaricolca", "Huasahuasi", "La Unión"]
+    },
+    "La Libertad": {
+        "Trujillo": ["Trujillo", "El Porvenir", "Florencia de Mora", "Huanchaco", "La Esperanza", "Laredo", "Moche", "Salaverry", "Víctor Larco Herrera"],
+        "Ascope": ["Ascope", "Chicama", "Chocope", "Magdalena de Cao", "Paiján"]
+    },
+    "Lambayeque": {
+        "Chiclayo": ["Chiclayo", "Cayaltí", "Chongoyape", "Eten", "José Leonardo Ortiz", "La Victoria", "Lagunas", "Monsefú", "Pátapo", "Picsi", "Pimentel", "Pomalca", "Pucalá", "Reque", "Santa Rosa"],
+        "Lambayeque": ["Lambayeque", "Chóchope", "Illimo", "Jayanca", "Mórrope", "Motupe"]
+    },
+    "Lima": {
+        "Lima": ["Lima", "Ancón", "Ate", "Barranco", "Breña", "Carabayllo", "Chaclacayo", "Chorrillos", "Cieneguilla", "Comas", "El Agustino", "Independencia", "Jesús María", "La Molina", "La Victoria", "Lince", "Los Olivos", "Lurigancho", "Lurín", "Magdalena del Mar", "Miraflores", "Pachacámac", "Pucusana", "Pueblo Libre", "Puente Piedra", "Punta Hermosa", "Punta Negra", "Rímac", "San Bartolo", "San Borja", "San Isidro", "San Juan de Lurigancho", "San Juan de Miraflores", "San Luis", "San Martín de Porres", "San Miguel", "Santa Anita", "Santa María del Mar", "Santa Rosa", "Santiago de Surco", "Surquillo", "Villa El Salvador", "Villa María del Triunfo"],
+        "Huaral": ["Huaral", "Atavillos Alto", "Atavillos Bajo", "Aucallama", "Chancay", "Ihuarí"]
+    },
+    "Loreto": {
+        "Maynas": ["Iquitos", "Alto Nanay", "Fernando Lores", "Indiana", "Las Amazonas", "Mazan", "Napo", "Punchana", "Torres Causana"],
+        "Requena": ["Requena", "Alto Tapiche", "Capelo", "Emilio San Martín", "Maquia"]
+    },
+    "Madre de Dios": {
+        "Tambopata": ["Tambopata", "Inambari", "Las Piedras", "Laberinto"],
+        "Manu": ["Manu", "Fitzcarrald", "Madre de Dios", "Huepetuhe"]
+    },
+    "Moquegua": {
+        "Mariscal Nieto": ["Moquegua", "Carumas", "Cuchumbaya", "Samegua", "San Cristóbal", "Torata"],
+        "Ilo": ["Ilo", "El Algarrobal", "Pacocha"]
+    },
+    "Pasco": {
+        "Pasco": ["Chaupimarca", "Huachón", "Huariaca", "Huayllay", "Ninacaca"],
+        "Daniel Alcides Carrión": ["Yanahuanca", "Chacayán", "Goyllarisquizga", "Paucar"]
+    },
+    "Piura": {
+        "Piura": ["Piura", "Castilla", "Catacaos", "Cura Mori", "El Tallán", "La Arena", "La Unión", "Las Lomas", "Tambo Grande"],
+        "Sullana": ["Sullana", "Bellavista", "Ignacio Escudero", "Lancones", "Marcavelica", "Miguel Checa"]
+    },
+    "Puno": {
+        "Puno": ["Puno", "Acora", "Amantaní", "Atuncolla", "Capachica", "Chucuito", "Coata", "Huata", "Mañazo", "Paucarcolla", "Pichacani", "Platería", "San Antonio", "Tiquillaca", "Vilque"],
+        "Juliaca": ["Juliaca"]
+    },
+    "San Martín": {
+        "Moyobamba": ["Moyobamba", "Calzada", "Habana", "Jepelacio", "Soritor", "Yantalo"],
+        "Rioja": ["Rioja", "Awajún", "Elías Soplin Vargas", "Nueva Cajamarca", "Pardo Miguel"]
+    },
+    "Tacna": {
+        "Tacna": ["Tacna", "Alto de la Alianza", "Calana", "Ciudad Nueva", "Inclán", "Pachia", "Palca", "Pocollay"],
+        "Tarata": ["Tarata", "Estique", "Estique Pampa", "Sitajara", "Susapaya", "Tarucachi"]
+    },
+    "Tumbes": {
+        "Tumbes": ["Tumbes", "Corrales", "La Cruz", "Pampas de Hospital", "San Jacinto", "San Juan de la Virgen"],
+        "Zarumilla": ["Zarumilla", "Aguas Verdes", "Matapalo", "Papayal"]
+    },
+    "Ucayali": {
+        "Coronel Portillo": ["Callería", "Campoverde", "Iparia", "Masisea", "Yarinacocha"],
+        "Atalaya": ["Raymondi", "Sepahua", "Tahuania", "Yurua"]
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const depSelect = document.getElementById('departamento_select');
+    const provSelect = document.getElementById('provincia_select');
+    const distSelect = document.getElementById('distrito_select');
+    const confirmarBtn = document.getElementById('confirmarUbicacion');
+
+    // Cargar departamentos
+    Object.keys(ubicacionesPeru).sort().forEach(dep => {
+        const option = document.createElement('option');
+        option.value = dep;
+        option.textContent = dep;
+        depSelect.appendChild(option);
+    });
+
+    // Evento departamento
+    depSelect.addEventListener('change', function() {
+        provSelect.innerHTML = '<option value="">Seleccione...</option>';
+        distSelect.innerHTML = '<option value="">Seleccione provincia primero</option>';
+        distSelect.disabled = true;
+        
+        if (this.value) {
+            provSelect.disabled = false;
+            Object.keys(ubicacionesPeru[this.value]).sort().forEach(prov => {
+                const option = document.createElement('option');
+                option.value = prov;
+                option.textContent = prov;
+                provSelect.appendChild(option);
+            });
+        } else {
+            provSelect.disabled = true;
+        }
+    });
+
+    // Evento provincia
+    provSelect.addEventListener('change', function() {
+        distSelect.innerHTML = '<option value="">Seleccione...</option>';
+        
+        if (this.value && depSelect.value) {
+            distSelect.disabled = false;
+            ubicacionesPeru[depSelect.value][this.value].sort().forEach(dist => {
+                const option = document.createElement('option');
+                option.value = dist;
+                option.textContent = dist;
+                distSelect.appendChild(option);
+            });
+        } else {
+            distSelect.disabled = true;
+        }
+    });
+
+    // Confirmar selección
+    confirmarBtn.addEventListener('click', function() {
+        const dep = depSelect.value;
+        const prov = provSelect.value;
+        const dist = distSelect.value;
+
+        if (!dep || !prov || !dist) {
+            alert('Por favor seleccione departamento, provincia y distrito');
+            return;
+        }
+
+        const ubicacion = `${dist}, ${prov}, ${dep}`;
+        document.getElementById('lugar_trabajo').value = ubicacion;
+        document.getElementById('lugar_trabajo_display').value = ubicacion;
+
+        // Cerrar modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('ubicacionModal'));
+        modal.hide();
     });
 });
 </script>

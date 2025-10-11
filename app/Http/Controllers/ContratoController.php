@@ -147,11 +147,9 @@ class ContratoController extends Controller
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'nullable|date|after:fecha_inicio',
             'salario' => 'required|numeric|min:0',
-            'bonificaciones' => 'nullable|numeric|min:0',
-            'descuentos' => 'nullable|numeric|min:0',
             'jornada_laboral' => 'required|string',
             'departamento' => 'nullable|string|max:255',
-            'lugar_trabajo' => 'nullable|string|max:255',
+            'lugar_trabajo' => 'nullable|string|max:500',
             'clausulas_especiales' => 'nullable|string',
             'observaciones' => 'nullable|string',
             'archivo_contrato' => 'nullable|file|mimes:pdf,doc,docx|max:5120', // 5MB
@@ -557,7 +555,7 @@ class ContratoController extends Controller
 
         do {
             $intentos++;
-            
+
             // Buscar el último número de contrato del año actual con bloqueo
             $ultimoContrato = Contrato::where('numero_contrato', 'like', "CON-{$año}-%")
                 ->lockForUpdate()
@@ -576,17 +574,17 @@ class ContratoController extends Controller
 
             // Generar número con formato: CON-YYYY-00001
             $numeroContrato = 'CON-' . $año . '-' . str_pad($contador, 5, '0', STR_PAD_LEFT);
-            
+
             // Verificar que no exista (doble validación)
             $existe = Contrato::where('numero_contrato', $numeroContrato)->exists();
-            
+
             if (!$existe) {
                 return $numeroContrato;
             }
-            
+
             // Si existe, incrementar y reintentar
             $contador++;
-            
+
         } while ($intentos < $maxIntentos);
 
         // Si después de 10 intentos no se pudo generar, lanzar excepción
