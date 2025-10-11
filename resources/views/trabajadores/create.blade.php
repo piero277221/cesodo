@@ -759,6 +759,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // Función para llenar campos de la persona
 function llenarCamposPersona(persona) {
     try {
+        console.log('=== LLENANDO CAMPOS PERSONA ===');
+        console.log('Datos de la persona:', persona);
+        
         document.getElementById('nombres').value = persona.nombres || '';
         document.getElementById('apellidos').value = persona.apellidos || '';
         document.getElementById('telefono').value = persona.celular || '';
@@ -779,12 +782,28 @@ function llenarCamposPersona(persona) {
 
         document.getElementById('persona_id').value = persona.id;
 
+        // Mapear el sexo de la base de datos (M, F, O) al formato del select (Masculino, Femenino)
         if (persona.sexo) {
-            document.getElementById('sexo').value = persona.sexo;
+            console.log('Sexo recibido de la BD:', persona.sexo);
+            const sexoSelect = document.getElementById('sexo');
+            let sexoMapeado = '';
+            
+            // Convertir de formato BD a formato del select
+            if (persona.sexo === 'M' || persona.sexo === 'Masculino') {
+                sexoMapeado = 'Masculino';
+            } else if (persona.sexo === 'F' || persona.sexo === 'Femenino') {
+                sexoMapeado = 'Femenino';
+            } else {
+                sexoMapeado = persona.sexo; // Por si viene en otro formato
+            }
+            
+            console.log('Sexo mapeado para el select:', sexoMapeado);
+            sexoSelect.value = sexoMapeado;
+            console.log('Valor del select después de asignar:', sexoSelect.value);
         }
 
         // Deshabilitar campos que vienen de la persona
-        const camposPersona = ['nombres', 'apellidos', 'telefono', 'email', 'direccion', 'fecha_nacimiento', 'sexo'];
+        const camposPersona = ['nombres', 'apellidos', 'telefono', 'email', 'direccion', 'fecha_nacimiento'];
         camposPersona.forEach(campo => {
             const elemento = document.getElementById(campo);
             if (elemento) {
@@ -793,6 +812,27 @@ function llenarCamposPersona(persona) {
                 elemento.setAttribute('title', 'Campo cargado automáticamente desde el registro de la persona');
             }
         });
+        
+        // Para el select de sexo, usamos disabled en lugar de readOnly
+        const sexoSelect = document.getElementById('sexo');
+        if (sexoSelect && persona.sexo) {
+            sexoSelect.disabled = true;
+            sexoSelect.classList.add('bg-light');
+            sexoSelect.setAttribute('title', 'Campo cargado automáticamente desde el registro de la persona');
+            // Crear un campo hidden para enviar el valor
+            let hiddenSexo = document.getElementById('sexo_hidden');
+            if (!hiddenSexo) {
+                hiddenSexo = document.createElement('input');
+                hiddenSexo.type = 'hidden';
+                hiddenSexo.id = 'sexo_hidden';
+                hiddenSexo.name = 'sexo';
+                sexoSelect.parentNode.appendChild(hiddenSexo);
+            }
+            hiddenSexo.value = sexoSelect.value;
+            sexoSelect.removeAttribute('name'); // Quitar name del select para que no se envíe
+        }
+        
+        console.log('=== FIN LLENADO CAMPOS PERSONA ===');
     } catch (error) {
         console.error('Error al llenar campos:', error);
         throw error; // Re-lanzar para que sea capturado por el catch principal
@@ -1184,8 +1224,19 @@ function limpiarCampos() {
         if (elemento) {
             elemento.value = '';
             elemento.readOnly = false;
+            elemento.disabled = false;
             elemento.classList.remove('bg-light');
             elemento.removeAttribute('title');
+            
+            // Si es el select de sexo, restaurar el atributo name
+            if (campo === 'sexo' && elemento.tagName === 'SELECT') {
+                elemento.name = 'sexo';
+                // Eliminar campo hidden si existe
+                const hiddenSexo = document.getElementById('sexo_hidden');
+                if (hiddenSexo) {
+                    hiddenSexo.remove();
+                }
+            }
         }
     });
 
