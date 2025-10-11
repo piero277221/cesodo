@@ -70,7 +70,8 @@ class CertificadoMedico extends Model
             return null;
         }
 
-        return Carbon::now()->diffInDays($this->fecha_expiracion, false);
+        $dias = Carbon::now()->diffInDays($this->fecha_expiracion, false);
+        return (int) floor($dias);
     }
 
     /**

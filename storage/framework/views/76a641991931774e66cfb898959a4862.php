@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -37,7 +35,7 @@
             <form method="GET" action="<?php echo e(route('certificados-medicos.index')); ?>" class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Buscar</label>
-                    <input type="text" name="search" class="form-control" 
+                    <input type="text" name="search" class="form-control"
                            placeholder="DNI, nombre o apellido"
                            value="<?php echo e(request('search')); ?>">
                 </div>

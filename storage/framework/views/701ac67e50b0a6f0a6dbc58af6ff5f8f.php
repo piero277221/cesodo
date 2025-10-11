@@ -593,12 +593,15 @@ unset($__errorArgs, $__bag); ?>
                     <?php if($contrato->fecha_fin): ?>
                     <div class="mb-3">
                         <h6 class="text-muted">Días restantes</h6>
+                        <?php
+                            $diasRestantes = $contrato->diasRestantes();
+                        ?>
                         <p class="small mb-0
-                            <?php if($contrato->fecha_fin->diffInDays(now()) <= 30): ?> text-danger
-                            <?php elseif($contrato->fecha_fin->diffInDays(now()) <= 90): ?> text-warning
+                            <?php if($diasRestantes !== null && $diasRestantes <= 30): ?> text-danger
+                            <?php elseif($diasRestantes !== null && $diasRestantes <= 90): ?> text-warning
                             <?php else: ?> text-success
                             <?php endif; ?>">
-                            <?php echo e($contrato->fecha_fin->diffInDays(now())); ?> días
+                            <?php echo e($diasRestantes ?? 0); ?> días
                         </p>
                     </div>
                     <?php endif; ?>
