@@ -96,18 +96,21 @@
                                         <?php if($certificado->fecha_expiracion): ?>
                                             <?php
                                                 $dias = $certificado->diasRestantes();
+                                                $tiempoTexto = $certificado->tiempoRestanteTexto();
                                             ?>
                                             <?php if($dias < 0): ?>
                                                 <small class="text-danger">
-                                                    <i class="fas fa-exclamation-triangle"></i> Vencido hace <?php echo e(abs($dias)); ?> días
+                                                    <i class="fas fa-exclamation-triangle"></i> Vencido hace <?php echo e($tiempoTexto); ?>
+
                                                 </small>
                                             <?php elseif($dias <= 30): ?>
                                                 <small class="text-warning">
-                                                    <i class="fas fa-clock"></i> Vence en <?php echo e($dias); ?> días
+                                                    <i class="fas fa-clock"></i> Vence en <?php echo e($tiempoTexto); ?>
+
                                                 </small>
                                             <?php else: ?>
                                                 <small class="text-success">
-                                                    <i class="fas fa-check"></i> Vigente (<?php echo e($dias); ?> días)
+                                                    <i class="fas fa-check"></i> Vigente (<?php echo e($tiempoTexto); ?>)
                                                 </small>
                                             <?php endif; ?>
                                         <?php endif; ?>

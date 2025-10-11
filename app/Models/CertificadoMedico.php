@@ -97,7 +97,7 @@ class CertificadoMedico extends Model
         }
 
         $dias = $this->diasRestantes();
-        
+
         if ($dias < 0) {
             $diasVencido = abs($dias);
             if ($diasVencido == 0) {
@@ -106,7 +106,7 @@ class CertificadoMedico extends Model
             }
             return $diasVencido . ' ' . ($diasVencido == 1 ? 'día' : 'días');
         }
-        
+
         if ($dias == 0) {
             $horas = $this->horasRestantes();
             if ($horas <= 0) {
@@ -114,7 +114,7 @@ class CertificadoMedico extends Model
             }
             return $horas . ' ' . ($horas == 1 ? 'hora' : 'horas');
         }
-        
+
         return $dias . ' ' . ($dias == 1 ? 'día' : 'días');
     }
 

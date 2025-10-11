@@ -214,6 +214,46 @@
         </div>
     <?php endif; ?>
 
+    <!-- Alertas de Notificaciones al Iniciar Sesión -->
+    <?php
+        $todasLasNotificaciones = app(App\Http\Controllers\NotificacionController::class)->obtenerNotificaciones();
+        $notificacionesUrgentes = array_filter($todasLasNotificaciones, function($notif) {
+            return $notif['prioridad'] === 'alta';
+        });
+        $notificacionesUrgentes = array_slice($notificacionesUrgentes, 0, 5);
+    ?>
+
+    <?php if(count($notificacionesUrgentes) > 0): ?>
+        <div class="alert alert-danger alert-dismissible fade show mb-4 shadow-sm" role="alert" id="notificacionesAlerta">
+            <div class="d-flex align-items-start">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-circle fa-2x me-3"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-3">
+                        <i class="fas fa-bell me-2"></i>Notificaciones Urgentes (<?php echo e(count($notificacionesUrgentes)); ?>)
+                    </h5>
+                    <ul class="mb-2 ps-3">
+                        <?php $__currentLoopData = $notificacionesUrgentes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notif): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li class="mb-2">
+                                <strong><?php echo e($notif['titulo']); ?></strong>: <?php echo e($notif['mensaje']); ?>
+
+                                <a href="<?php echo e($notif['enlace']); ?>" class="alert-link ms-2">Ver detalles <i class="fas fa-arrow-right"></i></a>
+                            </li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                    <hr>
+                    <p class="mb-0">
+                        <a href="<?php echo e(route('notificaciones.index')); ?>" class="alert-link fw-bold">
+                            <i class="fas fa-list me-1"></i>Ver todas las notificaciones
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
     <!-- Header de Bienvenida -->
     <div class="welcome-header animate-fade-in">
         <div class="row align-items-center">

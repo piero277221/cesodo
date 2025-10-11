@@ -254,40 +254,6 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown - Esquina derecha -->
-            <div class="hidden sm:flex sm:items-center user-dropdown-right flex-shrink-0" style="margin-left: 20px;">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-4 py-2 border border-gray-200 text-sm leading-4 font-medium rounded-lg text-gray-600 bg-white hover:text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition ease-in-out duration-150 shadow-sm">
-                            <i class="bi bi-person-circle me-2 text-lg"></i>
-                            <div>{{ Auth::user()->name }}</div>
-                            <div class="ms-2">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
             <!-- Hamburger - Esquina derecha móvil -->
             <div class="flex items-center sm:hidden ms-auto">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-700 transition duration-150 ease-in-out border border-gray-200">
@@ -476,6 +442,101 @@
         </div>
     </div>
 </nav>
+
+<!-- Icono de Notificaciones - Posición Fija Esquina Superior Derecha -->
+<div id="notificaciones-fixed-container" style="position: fixed; top: 15px; right: 140px; z-index: 1100;">
+    <div class="relative">
+        <button onclick="toggleNotificaciones()"
+                class="relative inline-flex items-center justify-center rounded-full text-white transition-all duration-300 shadow-lg hover:shadow-xl"
+                style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--cesodo-red) 0%, #c82333 100%); border: 3px solid white;"
+                title="Notificaciones">
+            <i class="fas fa-bell" style="font-size: 20px;"></i>
+            <span id="notificaciones-badge"
+                  class="absolute inline-flex items-center justify-center font-bold leading-none text-white rounded-full animate-pulse"
+                  style="display: none; top: -5px; right: -5px; min-width: 22px; height: 22px; background: #dc3545; font-size: 11px; padding: 2px 6px; border: 2px solid white; box-shadow: 0 2px 8px rgba(220, 53, 69, 0.5);">0</span>
+        </button>
+
+        <!-- Dropdown de notificaciones -->
+        <div id="notificaciones-dropdown"
+             class="hidden absolute bg-white rounded-lg shadow-2xl border border-gray-200"
+             style="right: 0; top: 58px; width: 420px; max-height: 550px; overflow-y: auto; z-index: 1101;">
+            <div class="p-4 border-b border-gray-200 bg-gradient-to-r from-red-50 to-white rounded-t-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-gray-800 text-lg">
+                        <i class="fas fa-bell me-2 text-red-600"></i>Notificaciones
+                    </h3>
+                    <span id="notificaciones-count" class="text-xs px-3 py-1 bg-red-100 text-red-700 rounded-full font-semibold">0 nuevas</span>
+                </div>
+            </div>
+            <div id="notificaciones-lista" class="divide-y divide-gray-100">
+                <!-- Las notificaciones se cargarán aquí -->
+                <div class="p-6 text-center text-gray-500">
+                    <i class="fas fa-spinner fa-spin mb-3 text-2xl text-red-600"></i>
+                    <p class="text-sm font-medium">Cargando notificaciones...</p>
+                </div>
+            </div>
+            <div class="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg text-center">
+                <a href="{{ route('notificaciones.index') }}"
+                   class="inline-flex items-center text-sm font-semibold transition-colors duration-200"
+                   style="color: var(--cesodo-red);"
+                   onmouseover="this.style.color='var(--cesodo-black)'"
+                   onmouseout="this.style.color='var(--cesodo-red)'">
+                    <i class="fas fa-list me-2"></i>Ver todas las notificaciones
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menú de Usuario - Posición Fija Esquina Superior Derecha -->
+<div id="user-menu-fixed-container" style="position: fixed; top: 15px; right: 80px; z-index: 1100;">
+    <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+        <button @click="open = !open"
+                class="user-menu-button inline-flex items-center justify-center rounded-lg text-gray-600 bg-white shadow-sm border border-gray-200"
+                style="width: 48px; height: 48px;"
+                title="Menú de usuario: {{ Auth::user()->name }}">
+            <i class="fas fa-ellipsis-v text-xl"></i>
+        </button>
+
+        <!-- Dropdown -->
+        <div x-show="open"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-75"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+             style="display: none; z-index: 1101;"
+             @click="open = false">
+            <!-- Header con info del usuario -->
+            <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+                <div class="flex items-center">
+                    <i class="bi bi-person-circle text-3xl text-gray-600 me-3"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                        <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Opciones -->
+            <div class="py-1">
+                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <i class="bi bi-person me-2"></i>{{ __('Profile') }}
+                </a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); this.closest('form').submit();"
+                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="bi bi-box-arrow-right me-2"></i>{{ __('Log Out') }}
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- CSS Mejorado para Navegación Horizontal -->
 <style>
@@ -844,6 +905,83 @@
             min-width: 240px;
         }
     }
+
+    /* Estilos para el icono de notificaciones fijo */
+    #notificaciones-fixed-container button {
+        transition: all 0.3s ease;
+    }
+
+    #notificaciones-fixed-container button:hover {
+        transform: scale(1.1) rotate(15deg);
+    }
+
+    #notificaciones-fixed-container button:active {
+        transform: scale(0.95);
+    }
+
+    @keyframes bellRing {
+        0%, 100% { transform: rotate(0deg); }
+        10%, 30%, 50%, 70%, 90% { transform: rotate(-10deg); }
+        20%, 40%, 60%, 80% { transform: rotate(10deg); }
+    }
+
+    #notificaciones-fixed-container button:hover i {
+        animation: bellRing 0.5s ease-in-out;
+    }
+
+    /* Responsive - Ajustar posición en pantallas pequeñas */
+    @media (max-width: 768px) {
+        #notificaciones-fixed-container {
+            right: 15px !important;
+            top: 12px !important;
+        }
+
+        #notificaciones-fixed-container button {
+            width: 42px !important;
+            height: 42px !important;
+        }
+
+        #notificaciones-dropdown {
+            width: calc(100vw - 30px) !important;
+            max-width: 380px !important;
+        }
+    }
+
+    /* Asegurar que el dropdown esté por encima de todo */
+    #notificaciones-dropdown {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Estilo para las notificaciones dentro del dropdown */
+    #notificaciones-lista > div {
+        transition: background-color 0.2s ease;
+    }
+
+    #notificaciones-lista > div:hover {
+        background-color: #f9fafb;
+    }
+
+    /* Estilo para el botón de menú de usuario (3 puntos) */
+    .user-menu-button {
+        transition: background-color 0.2s ease, color 0.2s ease !important;
+    }
+
+    .user-menu-button:hover {
+        background-color: var(--cesodo-black) !important;
+        color: white !important;
+    }
+
+    .user-menu-button:hover i {
+        color: white !important;
+    }
+
+    /* Responsive - Ajustar posición en pantallas pequeñas */
+    @media (max-width: 768px) {
+        #user-menu-fixed-container {
+            right: 15px !important;
+            top: 12px !important;
+        }
+    }
 </style>
 
 <!-- JavaScript Mejorado para Navegación -->
@@ -1068,6 +1206,114 @@ document.addEventListener('click', function(e) {
             if (chevron) chevron.style.transform = 'rotate(0deg)';
         });
     }
+
+    // Cerrar notificaciones al hacer click fuera
+    if (!e.target.closest('#notificaciones-fixed-container')) {
+        const dropdown = document.getElementById('notificaciones-dropdown');
+        if (dropdown) {
+            dropdown.classList.add('hidden');
+        }
+    }
+});
+
+// Sistema de Notificaciones
+function toggleNotificaciones() {
+    const dropdown = document.getElementById('notificaciones-dropdown');
+    dropdown.classList.toggle('hidden');
+
+    if (!dropdown.classList.contains('hidden')) {
+        cargarNotificaciones();
+    }
+}
+
+function cargarNotificaciones() {
+    fetch('{{ route("notificaciones.obtener") }}')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarNotificaciones(data.notificaciones, data.total);
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar notificaciones:', error);
+            document.getElementById('notificaciones-lista').innerHTML = `
+                <div class="p-4 text-center text-red-500">
+                    <i class="fas fa-exclamation-triangle mb-2"></i>
+                    <p class="text-sm">Error al cargar notificaciones</p>
+                </div>
+            `;
+        });
+}
+
+function mostrarNotificaciones(notificaciones, total) {
+    const lista = document.getElementById('notificaciones-lista');
+    const badge = document.getElementById('notificaciones-badge');
+    const count = document.getElementById('notificaciones-count');
+
+    // Actualizar contador
+    if (total > 0) {
+        badge.textContent = total > 99 ? '99+' : total;
+        badge.style.display = 'inline-flex';
+        count.textContent = `${total} nueva${total !== 1 ? 's' : ''}`;
+    } else {
+        badge.style.display = 'none';
+        count.textContent = 'Sin notificaciones';
+    }
+
+    // Mostrar notificaciones
+    if (notificaciones.length === 0) {
+        lista.innerHTML = `
+            <div class="p-4 text-center text-gray-500">
+                <i class="fas fa-check-circle text-3xl mb-2 text-green-500"></i>
+                <p class="text-sm">No hay notificaciones pendientes</p>
+            </div>
+        `;
+        return;
+    }
+
+    lista.innerHTML = notificaciones.map(notif => `
+        <a href="${notif.enlace}" class="block p-3 hover:bg-gray-50 transition-colors">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 mt-1">
+                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-${notif.color}-100">
+                        <i class="fas ${notif.icono} text-${notif.color}-600"></i>
+                    </span>
+                </div>
+                <div class="ml-3 flex-1">
+                    <p class="text-sm font-medium text-gray-900">${notif.titulo}</p>
+                    <p class="text-sm text-gray-600 mt-1">${notif.mensaje}</p>
+                    <p class="text-xs text-gray-400 mt-1">
+                        <i class="far fa-clock"></i> ${formatearFecha(notif.fecha)}
+                    </p>
+                </div>
+                ${notif.prioridad === 'alta' ? '<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Urgente</span>' : ''}
+            </div>
+        </a>
+    `).join('');
+}
+
+function formatearFecha(fecha) {
+    const date = new Date(fecha);
+    const now = new Date();
+    const diff = date - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+
+    if (days < 0) return 'Vencido';
+    if (days === 0) {
+        if (hours === 0) return 'Menos de 1 hora';
+        return `${hours} hora${hours !== 1 ? 's' : ''}`;
+    }
+    return `${days} día${days !== 1 ? 's' : ''}`;
+}
+
+// Cargar notificaciones al iniciar
+document.addEventListener('DOMContentLoaded', function() {
+    cargarNotificaciones();
+
+    // Actualizar cada 5 minutos
+    setInterval(cargarNotificaciones, 300000);
 });
 
 </script>
+

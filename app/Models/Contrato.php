@@ -150,7 +150,7 @@ class Contrato extends Model
         }
 
         $dias = $this->diasRestantes();
-        
+
         if ($dias === null) {
             return 'Indefinido';
         }
@@ -162,7 +162,7 @@ class Contrato extends Model
             }
             return $horas . ' ' . ($horas == 1 ? 'hora' : 'horas');
         }
-        
+
         return $dias . ' ' . ($dias == 1 ? 'día' : 'días');
     }
 

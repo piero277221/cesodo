@@ -113,6 +113,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Notificaciones
+    Route::prefix('notificaciones')->name('notificaciones.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\NotificacionController::class, 'index'])->name('index');
+        Route::get('/obtener', [\App\Http\Controllers\NotificacionController::class, 'obtener'])->name('obtener');
+        Route::post('/marcar-leida', [\App\Http\Controllers\NotificacionController::class, 'marcarLeida'])->name('marcar-leida');
+    });
+
     // Dashboard Widgets - Sistema de widgets personalizables
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('editor', [\App\Http\Controllers\DashboardWidgetController::class, 'editor'])->name('editor');

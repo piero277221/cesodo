@@ -216,6 +216,45 @@
         </div>
     @endif
 
+    <!-- Alertas de Notificaciones al Iniciar Sesión -->
+    @php
+        $todasLasNotificaciones = app(App\Http\Controllers\NotificacionController::class)->obtenerNotificaciones();
+        $notificacionesUrgentes = array_filter($todasLasNotificaciones, function($notif) {
+            return $notif['prioridad'] === 'alta';
+        });
+        $notificacionesUrgentes = array_slice($notificacionesUrgentes, 0, 5);
+    @endphp
+
+    @if(count($notificacionesUrgentes) > 0)
+        <div class="alert alert-danger alert-dismissible fade show mb-4 shadow-sm" role="alert" id="notificacionesAlerta">
+            <div class="d-flex align-items-start">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-circle fa-2x me-3"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-3">
+                        <i class="fas fa-bell me-2"></i>Notificaciones Urgentes ({{ count($notificacionesUrgentes) }})
+                    </h5>
+                    <ul class="mb-2 ps-3">
+                        @foreach($notificacionesUrgentes as $notif)
+                            <li class="mb-2">
+                                <strong>{{ $notif['titulo'] }}</strong>: {{ $notif['mensaje'] }}
+                                <a href="{{ $notif['enlace'] }}" class="alert-link ms-2">Ver detalles <i class="fas fa-arrow-right"></i></a>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <hr>
+                    <p class="mb-0">
+                        <a href="{{ route('notificaciones.index') }}" class="alert-link fw-bold">
+                            <i class="fas fa-list me-1"></i>Ver todas las notificaciones
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <!-- Header de Bienvenida -->
     <div class="welcome-header animate-fade-in">
         <div class="row align-items-center">
