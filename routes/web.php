@@ -184,6 +184,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
 
+    // Nuevo Módulo de Configuraciones Mejorado (Intuitivo)
+    Route::middleware(['permission:ver-configuraciones'])->group(function () {
+        Route::get('configuraciones', [\App\Http\Controllers\ConfiguracionesController::class, 'index'])->name('configuraciones.index');
+        Route::put('configuraciones', [\App\Http\Controllers\ConfiguracionesController::class, 'update'])->name('configuraciones.update');
+        Route::post('configuraciones/delete-logo', [\App\Http\Controllers\ConfiguracionesController::class, 'deleteLogo'])->name('configuraciones.delete-logo');
+        Route::post('configuraciones/update-permissions', [\App\Http\Controllers\ConfiguracionesController::class, 'updatePermissions'])->name('configuraciones.update-permissions');
+    });
+
     // Gestión de Roles Avanzada - Módulo de Administración de Roles y Permisos
     Route::middleware(['permission:ver-configuraciones'])->group(function () {
         Route::resource('role-management', \App\Http\Controllers\RoleManagementController::class);

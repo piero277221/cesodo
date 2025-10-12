@@ -200,7 +200,7 @@
                             <!-- Grupo: Administración del Sistema -->
                             @can('ver-configuraciones')
                             <div class="nav-dropdown" id="dropdown-administracion">
-                                <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['configurations.*', 'role-management.*', 'dynamic-fields.*', 'contratos.templates.*']) ? 'active' : '' }}"
+                                <button type="button" class="nav-dropdown-trigger {{ request()->routeIs(['configuraciones.*', 'configurations.*', 'role-management.*', 'dynamic-fields.*', 'contratos.templates.*']) ? 'active' : '' }}"
                                         onclick="event.preventDefault(); event.stopPropagation(); toggleNav('dropdown-administracion');">
                                     <i class="bi bi-gear-fill me-1"></i>{{ __('Administración') }}
                                     <i class="bi bi-chevron-down ms-1"></i>
@@ -210,11 +210,11 @@
                                         <div class="px-3 pb-2 text-sm font-weight-bold border-bottom">
                                             {{ __('Sistema y Configuración') }}
                                         </div>
-                                        <a href="{{ route('configurations.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('configurations.*') ? 'active' : '' }}">
+                                        <a href="{{ route('configuraciones.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('configuraciones.*') ? 'active' : '' }}">
                                             <i class="bi bi-sliders"></i>
                                             <div>
                                                 <span class="d-block">{{ __('Configuraciones') }}</span>
-                                                <small class="text-muted">Parámetros del sistema</small>
+                                                <small class="text-muted">Empresa, Sistema y Permisos</small>
                                             </div>
                                         </a>
                                         <a href="{{ route('role-management.index') }}" class="nav-dropdown-item d-flex align-items-center gap-2 {{ request()->routeIs('role-management.*') ? 'active' : '' }}">
@@ -401,7 +401,7 @@
             <div class="px-4 py-2">
                 <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('Administración') }}</div>
             </div>
-            <x-responsive-nav-link :href="route('configurations.index')" :active="request()->routeIs('configurations.*')">
+            <x-responsive-nav-link :href="route('configuraciones.index')" :active="request()->routeIs('configuraciones.*')">
                 <i class="bi bi-sliders me-2"></i>{{ __('Configuraciones') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('role-management.index')" :active="request()->routeIs('role-management.*')">

@@ -65,7 +65,7 @@ class DashboardController extends Controller
                 }
                 $consumosSemana->push([
                     'fecha' => $fecha->format('Y-m-d'),
-                    'dia' => $fecha->format('D'),
+                    'dia' => $fecha->locale('es')->translatedFormat('D'),
                     'total' => $total
                 ]);
             }

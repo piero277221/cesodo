@@ -78,7 +78,7 @@ class Producto extends Model
     {
         $query->whereNotNull('fecha_vencimiento')
               ->whereDate('fecha_vencimiento', '>=', Carbon::now());
-        
+
         if ($dias) {
             // Si se especifican días, usar Carbon para calcular la fecha
             $query->whereDate('fecha_vencimiento', '<=', Carbon::now()->addDays($dias));
@@ -87,7 +87,7 @@ class Producto extends Model
             // Calcular fecha límite: fecha_vencimiento <= date('now', '+' || dias_alerta_vencimiento || ' days')
             $query->whereRaw("date(fecha_vencimiento) <= date('now', '+' || dias_alerta_vencimiento || ' days')");
         }
-        
+
         return $query->orderBy('fecha_vencimiento', 'asc');
     }
 
@@ -119,7 +119,7 @@ class Producto extends Model
         if (!$this->fecha_vencimiento) {
             return null;
         }
-        
+
         // Usar floor para obtener días completos (número entero)
         $dias = Carbon::now()->diffInDays($this->fecha_vencimiento, false);
         return (int) floor($dias);
@@ -130,7 +130,7 @@ class Producto extends Model
         if (!$this->fecha_vencimiento) {
             return false;
         }
-        
+
         return Carbon::now()->isAfter($this->fecha_vencimiento);
     }
 
@@ -139,11 +139,11 @@ class Producto extends Model
         if (!$this->fecha_vencimiento) {
             return false;
         }
-        
+
         $diasRestantes = $this->diasRestantesVencimiento();
-        
-        return $diasRestantes !== null && 
-               $diasRestantes >= 0 && 
+
+        return $diasRestantes !== null &&
+               $diasRestantes >= 0 &&
                $diasRestantes <= $this->dias_alerta_vencimiento;
     }
 
@@ -152,9 +152,9 @@ class Producto extends Model
         if (!$this->fecha_vencimiento) {
             return 'Sin fecha de vencimiento';
         }
-        
+
         $dias = (int) $this->diasRestantesVencimiento();
-        
+
         if ($dias < 0) {
             $diasVencido = abs($dias);
             if ($diasVencido == 1) {
@@ -162,33 +162,33 @@ class Producto extends Model
             }
             return "Vencido hace {$diasVencido} días";
         }
-        
+
         if ($dias == 0) {
             return 'Vence hoy';
         }
-        
+
         if ($dias == 1) {
             return 'Vence mañana';
         }
-        
+
         if ($dias <= 7) {
             return "Vence en {$dias} días";
         }
-        
+
         $semanas = (int) floor($dias / 7);
         if ($semanas == 1) {
             return 'Vence en 1 semana';
         }
-        
+
         if ($dias <= 30) {
             return "Vence en {$semanas} semanas";
         }
-        
+
         $meses = (int) floor($dias / 30);
         if ($meses == 1) {
             return 'Vence en 1 mes';
         }
-        
+
         return "Vence en {$meses} meses";
     }
 }

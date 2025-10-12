@@ -13,6 +13,8 @@ class SystemSetting extends Model
     protected $fillable = [
         'key',
         'value',
+        'logo_path',
+        'icon_path',
         'type',
         'module',
         'category',
