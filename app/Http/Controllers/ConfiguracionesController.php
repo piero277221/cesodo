@@ -142,6 +142,34 @@ class ConfiguracionesController extends Controller
                 'log_retention_days',
             ];
 
+            // Lista de campos de interfaz
+            $interfaceFields = [
+                'tema_sistema',
+                'color_primario',
+                'color_secundario',
+                'border_radius',
+                'font_size_base',
+                'densidad_interfaz',
+                'sidebar_tipo',
+                'logo_position',
+                'mostrar_breadcrumbs',
+                'menu_mostrar_iconos',
+                'animaciones_habilitadas',
+                'tabla_filas_alternas',
+                'tabla_bordes',
+                'tabla_hover',
+                'tabla_tamano',
+                'tabla_acciones_posicion',
+                'dashboard_card_style',
+                'dashboard_layout',
+                'dashboard_graficos_animados',
+                'dashboard_auto_refresh',
+                'dashboard_widgets_compactos',
+                'alto_contraste',
+                'texto_grande',
+                'reducir_movimiento',
+            ];
+
             // Procesar configuraciones del sistema
             foreach ($systemFields as $field) {
                 if ($request->has($field)) {
@@ -239,6 +267,60 @@ class ConfiguracionesController extends Controller
                         [
                             'value' => '0',
                             'category' => 'notificaciones',
+                            'type' => 'boolean',
+                            'editable' => true,
+                            'description' => ucfirst(str_replace('_', ' ', $field)),
+                        ]
+                    );
+                }
+            }
+
+            // Procesar configuraciones de interfaz
+            foreach ($interfaceFields as $field) {
+                if ($request->has($field)) {
+                    $value = $request->input($field);
+
+                    // Para checkboxes
+                    if (in_array($field, ['mostrar_breadcrumbs', 'menu_mostrar_iconos', 'animaciones_habilitadas',
+                                          'tabla_filas_alternas', 'tabla_bordes', 'tabla_hover',
+                                          'dashboard_graficos_animados', 'dashboard_auto_refresh', 'dashboard_widgets_compactos',
+                                          'alto_contraste', 'texto_grande', 'reducir_movimiento'])) {
+                        $value = $value ? '1' : '0';
+                    }
+
+                    SystemSetting::updateOrCreate(
+                        ['key' => $field],
+                        [
+                            'value' => $value,
+                            'category' => 'interfaz',
+                            'type' => in_array($field, ['mostrar_breadcrumbs', 'menu_mostrar_iconos', 'animaciones_habilitadas',
+                                                        'tabla_filas_alternas', 'tabla_bordes', 'tabla_hover',
+                                                        'dashboard_graficos_animados', 'dashboard_auto_refresh', 'dashboard_widgets_compactos',
+                                                        'alto_contraste', 'texto_grande', 'reducir_movimiento'])
+                                     ? 'boolean'
+                                     : 'text',
+                            'editable' => true,
+                            'description' => ucfirst(str_replace('_', ' ', $field)),
+                        ]
+                    );
+                }
+            }
+
+            // Para checkboxes de interfaz desmarcados
+            $interfaceCheckboxFields = [
+                'mostrar_breadcrumbs', 'menu_mostrar_iconos', 'animaciones_habilitadas',
+                'tabla_filas_alternas', 'tabla_bordes', 'tabla_hover',
+                'dashboard_graficos_animados', 'dashboard_auto_refresh', 'dashboard_widgets_compactos',
+                'alto_contraste', 'texto_grande', 'reducir_movimiento'
+            ];
+
+            foreach ($interfaceCheckboxFields as $field) {
+                if (!$request->has($field)) {
+                    SystemSetting::updateOrCreate(
+                        ['key' => $field],
+                        [
+                            'value' => '0',
+                            'category' => 'interfaz',
                             'type' => 'boolean',
                             'editable' => true,
                             'description' => ucfirst(str_replace('_', ' ', $field)),

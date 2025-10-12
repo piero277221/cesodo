@@ -136,8 +136,8 @@
                         <i class="bi bi-clock-history text-danger me-2"></i>
                         Timeout de Sesión (minutos)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="session_timeout" 
-                           name="session_timeout" 
+                    <input type="number" class="form-control form-control-lg" id="session_timeout"
+                           name="session_timeout"
                            value="<?php echo e(old('session_timeout', $settings['session_timeout'] ?? 120)); ?>"
                            min="5" max="1440" step="5">
                     <small class="text-muted">
@@ -152,8 +152,8 @@
                         <i class="bi bi-shield-lock text-warning me-2"></i>
                         Intentos Máximos de Login
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="max_login_attempts" 
-                           name="max_login_attempts" 
+                    <input type="number" class="form-control form-control-lg" id="max_login_attempts"
+                           name="max_login_attempts"
                            value="<?php echo e(old('max_login_attempts', $settings['max_login_attempts'] ?? 5)); ?>"
                            min="3" max="10" step="1">
                     <small class="text-muted">
@@ -168,8 +168,8 @@
                         <i class="bi bi-ban text-danger me-2"></i>
                         Duración del Bloqueo (minutos)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="lockout_duration" 
-                           name="lockout_duration" 
+                    <input type="number" class="form-control form-control-lg" id="lockout_duration"
+                           name="lockout_duration"
                            value="<?php echo e(old('lockout_duration', $settings['lockout_duration'] ?? 15)); ?>"
                            min="5" max="60" step="5">
                     <small class="text-muted">
@@ -184,8 +184,8 @@
                         <i class="bi bi-file-earmark-arrow-up text-primary me-2"></i>
                         Tamaño Máximo de Archivo (MB)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="max_upload_size" 
-                           name="max_upload_size" 
+                    <input type="number" class="form-control form-control-lg" id="max_upload_size"
+                           name="max_upload_size"
                            value="<?php echo e(old('max_upload_size', $settings['max_upload_size'] ?? 10)); ?>"
                            min="1" max="50" step="1">
                     <small class="text-muted">
@@ -274,8 +274,8 @@
                         <i class="bi bi-calendar-x text-warning me-2"></i>
                         Expiración de Contraseña (días)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="password_expiry_days" 
-                           name="password_expiry_days" 
+                    <input type="number" class="form-control form-control-lg" id="password_expiry_days"
+                           name="password_expiry_days"
                            value="<?php echo e(old('password_expiry_days', $settings['password_expiry_days'] ?? 0)); ?>"
                            min="0" max="365" step="30">
                     <small class="text-muted">
@@ -333,8 +333,8 @@
                         <i class="bi bi-archive text-warning me-2"></i>
                         Retención de Backups (días)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="backup_retention_days" 
-                           name="backup_retention_days" 
+                    <input type="number" class="form-control form-control-lg" id="backup_retention_days"
+                           name="backup_retention_days"
                            value="<?php echo e(old('backup_retention_days', $settings['backup_retention_days'] ?? 30)); ?>"
                            min="7" max="365" step="7">
                     <small class="text-muted">
@@ -361,8 +361,8 @@
                         <i class="bi bi-calendar3 text-info me-2"></i>
                         Retención de Logs (días)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="log_retention_days" 
-                           name="log_retention_days" 
+                    <input type="number" class="form-control form-control-lg" id="log_retention_days"
+                           name="log_retention_days"
                            value="<?php echo e(old('log_retention_days', $settings['log_retention_days'] ?? 30)); ?>"
                            min="7" max="180" step="7">
                     <small class="text-muted">

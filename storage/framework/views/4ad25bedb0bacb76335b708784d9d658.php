@@ -26,7 +26,7 @@
 
                 <!-- Stock bajo -->
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
-                    <input class="form-check-input" type="checkbox" id="email_stock_bajo" name="email_stock_bajo" 
+                    <input class="form-check-input" type="checkbox" id="email_stock_bajo" name="email_stock_bajo"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
                            <?php echo e(old('email_stock_bajo', $settings['email_stock_bajo'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="email_stock_bajo" style="cursor: pointer;">
@@ -78,8 +78,8 @@
                         <i class="bi bi-at me-1"></i>
                         Email de Notificaciones
                     </label>
-                    <input type="email" class="form-control form-control-lg" id="email_notificaciones" 
-                           name="email_notificaciones" 
+                    <input type="email" class="form-control form-control-lg" id="email_notificaciones"
+                           name="email_notificaciones"
                            value="<?php echo e(old('email_notificaciones', $settings['email_notificaciones'] ?? '')); ?>"
                            placeholder="admin@ejemplo.com">
                     <small class="text-muted">
@@ -160,8 +160,8 @@
                         <i class="bi bi-clock me-1"></i>
                         Duración de Notificaciones (segundos)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="duracion_notificaciones" 
-                           name="duracion_notificaciones" 
+                    <input type="number" class="form-control form-control-lg" id="duracion_notificaciones"
+                           name="duracion_notificaciones"
                            value="<?php echo e(old('duracion_notificaciones', $settings['duracion_notificaciones'] ?? 5)); ?>"
                            min="3" max="15" step="1">
                     <small class="text-muted">
@@ -198,8 +198,8 @@
                                 <i class="bi bi-calendar-x text-danger me-2"></i>
                                 Productos por Vencer
                             </label>
-                            <input type="number" class="form-control" id="dias_aviso_vencimiento" 
-                                   name="dias_aviso_vencimiento" 
+                            <input type="number" class="form-control" id="dias_aviso_vencimiento"
+                                   name="dias_aviso_vencimiento"
                                    value="<?php echo e(old('dias_aviso_vencimiento', $settings['dias_aviso_vencimiento'] ?? 7)); ?>"
                                    min="1" max="30">
                             <small class="text-muted">Días antes del vencimiento</small>
@@ -213,8 +213,8 @@
                                 <i class="bi bi-box-seam text-warning me-2"></i>
                                 Stock Mínimo
                             </label>
-                            <input type="number" class="form-control" id="stock_minimo_alerta" 
-                                   name="stock_minimo_alerta" 
+                            <input type="number" class="form-control" id="stock_minimo_alerta"
+                                   name="stock_minimo_alerta"
                                    value="<?php echo e(old('stock_minimo_alerta', $settings['stock_minimo_alerta'] ?? 10)); ?>"
                                    min="1" max="100">
                             <small class="text-muted">Cantidad mínima de alerta</small>
@@ -228,8 +228,8 @@
                                 <i class="bi bi-file-earmark-medical text-primary me-2"></i>
                                 Certificados Médicos
                             </label>
-                            <input type="number" class="form-control" id="dias_aviso_certificados" 
-                                   name="dias_aviso_certificados" 
+                            <input type="number" class="form-control" id="dias_aviso_certificados"
+                                   name="dias_aviso_certificados"
                                    value="<?php echo e(old('dias_aviso_certificados', $settings['dias_aviso_certificados'] ?? 5)); ?>"
                                    min="1" max="15">
                             <small class="text-muted">Días antes del vencimiento</small>
@@ -263,7 +263,7 @@
                             <i class="bi bi-server me-1"></i>
                             Servidor SMTP
                         </label>
-                        <input type="text" class="form-control" id="smtp_host" name="smtp_host" 
+                        <input type="text" class="form-control" id="smtp_host" name="smtp_host"
                                value="<?php echo e(old('smtp_host', $settings['smtp_host'] ?? 'smtp.gmail.com')); ?>"
                                placeholder="smtp.gmail.com">
                         <small class="text-muted">Ejemplo: smtp.gmail.com, smtp.office365.com</small>
@@ -274,7 +274,7 @@
                             <i class="bi bi-diagram-3 me-1"></i>
                             Puerto SMTP
                         </label>
-                        <input type="number" class="form-control" id="smtp_port" name="smtp_port" 
+                        <input type="number" class="form-control" id="smtp_port" name="smtp_port"
                                value="<?php echo e(old('smtp_port', $settings['smtp_port'] ?? 587)); ?>"
                                placeholder="587">
                         <small class="text-muted">Común: 587 (TLS) o 465 (SSL)</small>
@@ -285,7 +285,7 @@
                             <i class="bi bi-person-circle me-1"></i>
                             Usuario SMTP
                         </label>
-                        <input type="email" class="form-control" id="smtp_usuario" name="smtp_usuario" 
+                        <input type="email" class="form-control" id="smtp_usuario" name="smtp_usuario"
                                value="<?php echo e(old('smtp_usuario', $settings['smtp_usuario'] ?? '')); ?>"
                                placeholder="tu-email@ejemplo.com">
                     </div>
@@ -295,7 +295,7 @@
                             <i class="bi bi-key me-1"></i>
                             Contraseña SMTP
                         </label>
-                        <input type="password" class="form-control" id="smtp_password" name="smtp_password" 
+                        <input type="password" class="form-control" id="smtp_password" name="smtp_password"
                                value="<?php echo e(old('smtp_password', $settings['smtp_password'] ?? '')); ?>"
                                placeholder="••••••••">
                         <small class="text-muted">
@@ -320,7 +320,7 @@
                             <i class="bi bi-tag me-1"></i>
                             Nombre del Remitente
                         </label>
-                        <input type="text" class="form-control" id="smtp_from_name" name="smtp_from_name" 
+                        <input type="text" class="form-control" id="smtp_from_name" name="smtp_from_name"
                                value="<?php echo e(old('smtp_from_name', $settings['smtp_from_name'] ?? 'Sistema CESODO')); ?>"
                                placeholder="Sistema CESODO">
                     </div>
@@ -369,12 +369,12 @@ function testEmailConfig() {
     const smtp_port = document.getElementById('smtp_port').value;
     const smtp_usuario = document.getElementById('smtp_usuario').value;
     const smtp_password = document.getElementById('smtp_password').value;
-    
+
     if (!smtp_host || !smtp_port || !smtp_usuario || !smtp_password) {
         alert('Por favor completa todos los campos de configuración SMTP antes de probar.');
         return;
     }
-    
+
     // Aquí puedes implementar una llamada AJAX para probar la configuración
     alert('Función de prueba de email en desarrollo.\nPor ahora, guarda la configuración y el sistema intentará enviar emails con estos datos.');
 }

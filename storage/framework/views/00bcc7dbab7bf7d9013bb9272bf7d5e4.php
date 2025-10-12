@@ -18,13 +18,13 @@
                 <div class="col-md-4">
                     <label class="form-label">Tema del Sistema</label>
                     <select name="tema_sistema" class="form-select">
-                        <option value="light" {{ (old('tema_sistema', $settings['tema_sistema'] ?? 'light') == 'light') ? 'selected' : '' }}>
+                        <option value="light" <?php echo e((old('tema_sistema', $settings['tema_sistema'] ?? 'light') == 'light') ? 'selected' : ''); ?>>
                             🌞 Claro
                         </option>
-                        <option value="dark" {{ (old('tema_sistema', $settings['tema_sistema'] ?? 'light') == 'dark') ? 'selected' : '' }}>
+                        <option value="dark" <?php echo e((old('tema_sistema', $settings['tema_sistema'] ?? 'light') == 'dark') ? 'selected' : ''); ?>>
                             🌙 Oscuro
                         </option>
-                        <option value="auto" {{ (old('tema_sistema', $settings['tema_sistema'] ?? 'light') == 'auto') ? 'selected' : '' }}>
+                        <option value="auto" <?php echo e((old('tema_sistema', $settings['tema_sistema'] ?? 'light') == 'auto') ? 'selected' : ''); ?>>
                             🔄 Automático (según sistema)
                         </option>
                     </select>
@@ -38,11 +38,11 @@
                         <input type="color" 
                                name="color_primario" 
                                class="form-control form-control-color" 
-                               value="{{ old('color_primario', $settings['color_primario'] ?? '#dc2626') }}"
+                               value="<?php echo e(old('color_primario', $settings['color_primario'] ?? '#dc2626')); ?>"
                                title="Seleccionar color primario">
                         <input type="text" 
                                class="form-control" 
-                               value="{{ old('color_primario', $settings['color_primario'] ?? '#dc2626') }}"
+                               value="<?php echo e(old('color_primario', $settings['color_primario'] ?? '#dc2626')); ?>"
                                readonly>
                     </div>
                     <small class="text-muted">Color principal del sistema (Rojo CESODO)</small>
@@ -55,11 +55,11 @@
                         <input type="color" 
                                name="color_secundario" 
                                class="form-control form-control-color" 
-                               value="{{ old('color_secundario', $settings['color_secundario'] ?? '#1a1a1a') }}"
+                               value="<?php echo e(old('color_secundario', $settings['color_secundario'] ?? '#1a1a1a')); ?>"
                                title="Seleccionar color secundario">
                         <input type="text" 
                                class="form-control" 
-                               value="{{ old('color_secundario', $settings['color_secundario'] ?? '#1a1a1a') }}"
+                               value="<?php echo e(old('color_secundario', $settings['color_secundario'] ?? '#1a1a1a')); ?>"
                                readonly>
                     </div>
                     <small class="text-muted">Color secundario (Negro CESODO)</small>
@@ -71,16 +71,16 @@
                 <div class="col-md-4">
                     <label class="form-label">Bordes Redondeados</label>
                     <select name="border_radius" class="form-select">
-                        <option value="none" {{ (old('border_radius', $settings['border_radius'] ?? 'medium') == 'none') ? 'selected' : '' }}>
+                        <option value="none" <?php echo e((old('border_radius', $settings['border_radius'] ?? 'medium') == 'none') ? 'selected' : ''); ?>>
                             ▢ Sin redondeo
                         </option>
-                        <option value="small" {{ (old('border_radius', $settings['border_radius'] ?? 'medium') == 'small') ? 'selected' : '' }}>
+                        <option value="small" <?php echo e((old('border_radius', $settings['border_radius'] ?? 'medium') == 'small') ? 'selected' : ''); ?>>
                             ▢ Pequeño (4px)
                         </option>
-                        <option value="medium" {{ (old('border_radius', $settings['border_radius'] ?? 'medium') == 'medium') ? 'selected' : '' }}>
+                        <option value="medium" <?php echo e((old('border_radius', $settings['border_radius'] ?? 'medium') == 'medium') ? 'selected' : ''); ?>>
                             ▢ Medio (8px)
                         </option>
-                        <option value="large" {{ (old('border_radius', $settings['border_radius'] ?? 'medium') == 'large') ? 'selected' : '' }}>
+                        <option value="large" <?php echo e((old('border_radius', $settings['border_radius'] ?? 'medium') == 'large') ? 'selected' : ''); ?>>
                             ▢ Grande (12px)
                         </option>
                     </select>
@@ -91,13 +91,13 @@
                 <div class="col-md-4">
                     <label class="form-label">Tamaño de Fuente Base</label>
                     <select name="font_size_base" class="form-select">
-                        <option value="small" {{ (old('font_size_base', $settings['font_size_base'] ?? 'medium') == 'small') ? 'selected' : '' }}>
+                        <option value="small" <?php echo e((old('font_size_base', $settings['font_size_base'] ?? 'medium') == 'small') ? 'selected' : ''); ?>>
                             Pequeña (14px)
                         </option>
-                        <option value="medium" {{ (old('font_size_base', $settings['font_size_base'] ?? 'medium') == 'medium') ? 'selected' : '' }}>
+                        <option value="medium" <?php echo e((old('font_size_base', $settings['font_size_base'] ?? 'medium') == 'medium') ? 'selected' : ''); ?>>
                             Media (16px)
                         </option>
-                        <option value="large" {{ (old('font_size_base', $settings['font_size_base'] ?? 'medium') == 'large') ? 'selected' : '' }}>
+                        <option value="large" <?php echo e((old('font_size_base', $settings['font_size_base'] ?? 'medium') == 'large') ? 'selected' : ''); ?>>
                             Grande (18px)
                         </option>
                     </select>
@@ -108,13 +108,13 @@
                 <div class="col-md-4">
                     <label class="form-label">Densidad de Interfaz</label>
                     <select name="densidad_interfaz" class="form-select">
-                        <option value="compact" {{ (old('densidad_interfaz', $settings['densidad_interfaz'] ?? 'normal') == 'compact') ? 'selected' : '' }}>
+                        <option value="compact" <?php echo e((old('densidad_interfaz', $settings['densidad_interfaz'] ?? 'normal') == 'compact') ? 'selected' : ''); ?>>
                             📦 Compacta
                         </option>
-                        <option value="normal" {{ (old('densidad_interfaz', $settings['densidad_interfaz'] ?? 'normal') == 'normal') ? 'selected' : '' }}>
+                        <option value="normal" <?php echo e((old('densidad_interfaz', $settings['densidad_interfaz'] ?? 'normal') == 'normal') ? 'selected' : ''); ?>>
                             📋 Normal
                         </option>
-                        <option value="comfortable" {{ (old('densidad_interfaz', $settings['densidad_interfaz'] ?? 'normal') == 'comfortable') ? 'selected' : '' }}>
+                        <option value="comfortable" <?php echo e((old('densidad_interfaz', $settings['densidad_interfaz'] ?? 'normal') == 'comfortable') ? 'selected' : ''); ?>>
                             📄 Cómoda
                         </option>
                     </select>
@@ -137,13 +137,13 @@
                 <div class="col-md-6">
                     <label class="form-label">Tipo de Menú Lateral</label>
                     <select name="sidebar_tipo" class="form-select">
-                        <option value="fixed" {{ (old('sidebar_tipo', $settings['sidebar_tipo'] ?? 'fixed') == 'fixed') ? 'selected' : '' }}>
+                        <option value="fixed" <?php echo e((old('sidebar_tipo', $settings['sidebar_tipo'] ?? 'fixed') == 'fixed') ? 'selected' : ''); ?>>
                             📌 Fijo
                         </option>
-                        <option value="collapsible" {{ (old('sidebar_tipo', $settings['sidebar_tipo'] ?? 'fixed') == 'collapsible') ? 'selected' : '' }}>
+                        <option value="collapsible" <?php echo e((old('sidebar_tipo', $settings['sidebar_tipo'] ?? 'fixed') == 'collapsible') ? 'selected' : ''); ?>>
                             📂 Plegable
                         </option>
-                        <option value="mini" {{ (old('sidebar_tipo', $settings['sidebar_tipo'] ?? 'fixed') == 'mini') ? 'selected' : '' }}>
+                        <option value="mini" <?php echo e((old('sidebar_tipo', $settings['sidebar_tipo'] ?? 'fixed') == 'mini') ? 'selected' : ''); ?>>
                             📋 Mini (solo iconos)
                         </option>
                     </select>
@@ -154,13 +154,13 @@
                 <div class="col-md-6">
                     <label class="form-label">Posición del Logo</label>
                     <select name="logo_position" class="form-select">
-                        <option value="left" {{ (old('logo_position', $settings['logo_position'] ?? 'left') == 'left') ? 'selected' : '' }}>
+                        <option value="left" <?php echo e((old('logo_position', $settings['logo_position'] ?? 'left') == 'left') ? 'selected' : ''); ?>>
                             ← Izquierda
                         </option>
-                        <option value="center" {{ (old('logo_position', $settings['logo_position'] ?? 'left') == 'center') ? 'selected' : '' }}>
+                        <option value="center" <?php echo e((old('logo_position', $settings['logo_position'] ?? 'left') == 'center') ? 'selected' : ''); ?>>
                             ↔ Centro
                         </option>
-                        <option value="right" {{ (old('logo_position', $settings['logo_position'] ?? 'left') == 'right') ? 'selected' : '' }}>
+                        <option value="right" <?php echo e((old('logo_position', $settings['logo_position'] ?? 'left') == 'right') ? 'selected' : ''); ?>>
                             → Derecha
                         </option>
                     </select>
@@ -177,7 +177,7 @@
                                name="mostrar_breadcrumbs" 
                                id="mostrar_breadcrumbs"
                                value="1"
-                               {{ old('mostrar_breadcrumbs', $settings['mostrar_breadcrumbs'] ?? '1') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('mostrar_breadcrumbs', $settings['mostrar_breadcrumbs'] ?? '1') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="mostrar_breadcrumbs">
                             <span class="fw-semibold">Mostrar Breadcrumbs</span>
                             <small class="d-block text-muted">Ruta de navegación superior</small>
@@ -193,7 +193,7 @@
                                name="menu_mostrar_iconos" 
                                id="menu_mostrar_iconos"
                                value="1"
-                               {{ old('menu_mostrar_iconos', $settings['menu_mostrar_iconos'] ?? '1') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('menu_mostrar_iconos', $settings['menu_mostrar_iconos'] ?? '1') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="menu_mostrar_iconos">
                             <span class="fw-semibold">Iconos en Menú</span>
                             <small class="d-block text-muted">Mostrar iconos junto a opciones</small>
@@ -209,7 +209,7 @@
                                name="animaciones_habilitadas" 
                                id="animaciones_habilitadas"
                                value="1"
-                               {{ old('animaciones_habilitadas', $settings['animaciones_habilitadas'] ?? '1') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('animaciones_habilitadas', $settings['animaciones_habilitadas'] ?? '1') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="animaciones_habilitadas">
                             <span class="fw-semibold">Animaciones</span>
                             <small class="d-block text-muted">Transiciones y efectos visuales</small>
@@ -237,7 +237,7 @@
                                name="tabla_filas_alternas" 
                                id="tabla_filas_alternas"
                                value="1"
-                               {{ old('tabla_filas_alternas', $settings['tabla_filas_alternas'] ?? '1') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('tabla_filas_alternas', $settings['tabla_filas_alternas'] ?? '1') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="tabla_filas_alternas">
                             <span class="fw-semibold">Filas Alternas</span>
                             <small class="d-block text-muted">Colores alternados en tablas</small>
@@ -253,7 +253,7 @@
                                name="tabla_bordes" 
                                id="tabla_bordes"
                                value="1"
-                               {{ old('tabla_bordes', $settings['tabla_bordes'] ?? '1') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('tabla_bordes', $settings['tabla_bordes'] ?? '1') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="tabla_bordes">
                             <span class="fw-semibold">Bordes en Tablas</span>
                             <small class="d-block text-muted">Líneas divisoras en celdas</small>
@@ -269,7 +269,7 @@
                                name="tabla_hover" 
                                id="tabla_hover"
                                value="1"
-                               {{ old('tabla_hover', $settings['tabla_hover'] ?? '1') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('tabla_hover', $settings['tabla_hover'] ?? '1') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="tabla_hover">
                             <span class="fw-semibold">Hover en Filas</span>
                             <small class="d-block text-muted">Resaltar fila al pasar mouse</small>
@@ -283,13 +283,13 @@
                 <div class="col-md-6">
                     <label class="form-label">Tamaño de Tablas</label>
                     <select name="tabla_tamano" class="form-select">
-                        <option value="sm" {{ (old('tabla_tamano', $settings['tabla_tamano'] ?? 'normal') == 'sm') ? 'selected' : '' }}>
+                        <option value="sm" <?php echo e((old('tabla_tamano', $settings['tabla_tamano'] ?? 'normal') == 'sm') ? 'selected' : ''); ?>>
                             📋 Compacta
                         </option>
-                        <option value="normal" {{ (old('tabla_tamano', $settings['tabla_tamano'] ?? 'normal') == 'normal') ? 'selected' : '' }}>
+                        <option value="normal" <?php echo e((old('tabla_tamano', $settings['tabla_tamano'] ?? 'normal') == 'normal') ? 'selected' : ''); ?>>
                             📄 Normal
                         </option>
-                        <option value="lg" {{ (old('tabla_tamano', $settings['tabla_tamano'] ?? 'normal') == 'lg') ? 'selected' : '' }}>
+                        <option value="lg" <?php echo e((old('tabla_tamano', $settings['tabla_tamano'] ?? 'normal') == 'lg') ? 'selected' : ''); ?>>
                             📃 Grande
                         </option>
                     </select>
@@ -300,10 +300,10 @@
                 <div class="col-md-6">
                     <label class="form-label">Posición de Acciones</label>
                     <select name="tabla_acciones_posicion" class="form-select">
-                        <option value="left" {{ (old('tabla_acciones_posicion', $settings['tabla_acciones_posicion'] ?? 'right') == 'left') ? 'selected' : '' }}>
+                        <option value="left" <?php echo e((old('tabla_acciones_posicion', $settings['tabla_acciones_posicion'] ?? 'right') == 'left') ? 'selected' : ''); ?>>
                             ← Primera Columna
                         </option>
-                        <option value="right" {{ (old('tabla_acciones_posicion', $settings['tabla_acciones_posicion'] ?? 'right') == 'right') ? 'selected' : '' }}>
+                        <option value="right" <?php echo e((old('tabla_acciones_posicion', $settings['tabla_acciones_posicion'] ?? 'right') == 'right') ? 'selected' : ''); ?>>
                             → Última Columna
                         </option>
                     </select>
@@ -326,13 +326,13 @@
                 <div class="col-md-6">
                     <label class="form-label">Estilo de Cards</label>
                     <select name="dashboard_card_style" class="form-select">
-                        <option value="flat" {{ (old('dashboard_card_style', $settings['dashboard_card_style'] ?? 'shadow') == 'flat') ? 'selected' : '' }}>
+                        <option value="flat" <?php echo e((old('dashboard_card_style', $settings['dashboard_card_style'] ?? 'shadow') == 'flat') ? 'selected' : ''); ?>>
                             ▭ Plano
                         </option>
-                        <option value="shadow" {{ (old('dashboard_card_style', $settings['dashboard_card_style'] ?? 'shadow') == 'shadow') ? 'selected' : '' }}>
+                        <option value="shadow" <?php echo e((old('dashboard_card_style', $settings['dashboard_card_style'] ?? 'shadow') == 'shadow') ? 'selected' : ''); ?>>
                             ▢ Con Sombra
                         </option>
-                        <option value="bordered" {{ (old('dashboard_card_style', $settings['dashboard_card_style'] ?? 'shadow') == 'bordered') ? 'selected' : '' }}>
+                        <option value="bordered" <?php echo e((old('dashboard_card_style', $settings['dashboard_card_style'] ?? 'shadow') == 'bordered') ? 'selected' : ''); ?>>
                             ▯ Con Bordes
                         </option>
                     </select>
@@ -343,13 +343,13 @@
                 <div class="col-md-6">
                     <label class="form-label">Distribución de Widgets</label>
                     <select name="dashboard_layout" class="form-select">
-                        <option value="grid-2" {{ (old('dashboard_layout', $settings['dashboard_layout'] ?? 'grid-3') == 'grid-2') ? 'selected' : '' }}>
+                        <option value="grid-2" <?php echo e((old('dashboard_layout', $settings['dashboard_layout'] ?? 'grid-3') == 'grid-2') ? 'selected' : ''); ?>>
                             📱 2 Columnas
                         </option>
-                        <option value="grid-3" {{ (old('dashboard_layout', $settings['dashboard_layout'] ?? 'grid-3') == 'grid-3') ? 'selected' : '' }}>
+                        <option value="grid-3" <?php echo e((old('dashboard_layout', $settings['dashboard_layout'] ?? 'grid-3') == 'grid-3') ? 'selected' : ''); ?>>
                             💻 3 Columnas
                         </option>
-                        <option value="grid-4" {{ (old('dashboard_layout', $settings['dashboard_layout'] ?? 'grid-3') == 'grid-4') ? 'selected' : '' }}>
+                        <option value="grid-4" <?php echo e((old('dashboard_layout', $settings['dashboard_layout'] ?? 'grid-3') == 'grid-4') ? 'selected' : ''); ?>>
                             🖥️ 4 Columnas
                         </option>
                     </select>
@@ -366,7 +366,7 @@
                                name="dashboard_graficos_animados" 
                                id="dashboard_graficos_animados"
                                value="1"
-                               {{ old('dashboard_graficos_animados', $settings['dashboard_graficos_animados'] ?? '1') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('dashboard_graficos_animados', $settings['dashboard_graficos_animados'] ?? '1') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="dashboard_graficos_animados">
                             <span class="fw-semibold">Gráficos Animados</span>
                             <small class="d-block text-muted">Animación al cargar gráficos</small>
@@ -382,7 +382,7 @@
                                name="dashboard_auto_refresh" 
                                id="dashboard_auto_refresh"
                                value="1"
-                               {{ old('dashboard_auto_refresh', $settings['dashboard_auto_refresh'] ?? '0') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('dashboard_auto_refresh', $settings['dashboard_auto_refresh'] ?? '0') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="dashboard_auto_refresh">
                             <span class="fw-semibold">Actualización Automática</span>
                             <small class="d-block text-muted">Refrescar datos cada 5 min</small>
@@ -398,7 +398,7 @@
                                name="dashboard_widgets_compactos" 
                                id="dashboard_widgets_compactos"
                                value="1"
-                               {{ old('dashboard_widgets_compactos', $settings['dashboard_widgets_compactos'] ?? '0') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('dashboard_widgets_compactos', $settings['dashboard_widgets_compactos'] ?? '0') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="dashboard_widgets_compactos">
                             <span class="fw-semibold">Widgets Compactos</span>
                             <small class="d-block text-muted">Vista reducida de widgets</small>
@@ -426,7 +426,7 @@
                                name="alto_contraste" 
                                id="alto_contraste"
                                value="1"
-                               {{ old('alto_contraste', $settings['alto_contraste'] ?? '0') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('alto_contraste', $settings['alto_contraste'] ?? '0') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="alto_contraste">
                             <span class="fw-semibold">Alto Contraste</span>
                             <small class="d-block text-muted">Mejora visibilidad de elementos</small>
@@ -442,7 +442,7 @@
                                name="texto_grande" 
                                id="texto_grande"
                                value="1"
-                               {{ old('texto_grande', $settings['texto_grande'] ?? '0') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('texto_grande', $settings['texto_grande'] ?? '0') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="texto_grande">
                             <span class="fw-semibold">Texto Grande</span>
                             <small class="d-block text-muted">Aumentar tamaño de fuente</small>
@@ -458,7 +458,7 @@
                                name="reducir_movimiento" 
                                id="reducir_movimiento"
                                value="1"
-                               {{ old('reducir_movimiento', $settings['reducir_movimiento'] ?? '0') == '1' ? 'checked' : '' }}>
+                               <?php echo e(old('reducir_movimiento', $settings['reducir_movimiento'] ?? '0') == '1' ? 'checked' : ''); ?>>
                         <label class="form-check-label" for="reducir_movimiento">
                             <span class="fw-semibold">Reducir Movimiento</span>
                             <small class="d-block text-muted">Desactivar animaciones</small>
@@ -546,3 +546,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/configuraciones/tabs/interfaz.blade.php ENDPATH**/ ?>
