@@ -203,23 +203,23 @@ class RecetaController extends Controller
 
         // Primero buscar con patrón 1 (con "de")
         preg_match_all($regex1, $texto, $matches1, PREG_SET_ORDER);
-        
+
         foreach ($matches1 as $m) {
             $cantidadStr = $m[1];
             $unidad = strtolower($m[2]);
             $nombreDetectado = trim($m[3]);
-            
+
             $this->procesarIngrediente($cantidadStr, $unidad, $nombreDetectado, $productos, $nombresProductos, $resultados, $advertencias, $ingredientesDetectados);
         }
 
         // Luego buscar con patrón 2 (unidades métricas sin "de")
         preg_match_all($regex2, $texto, $matches2, PREG_SET_ORDER);
-        
+
         foreach ($matches2 as $m) {
             $cantidadStr = $m[1];
             $unidad = strtolower($m[2]);
             $nombreDetectado = trim($m[3]);
-            
+
             // Saltar si ya fue procesado
             $yaEncontrado = false;
             foreach ($resultados as $ing) {
@@ -230,18 +230,18 @@ class RecetaController extends Controller
                 }
             }
             if ($yaEncontrado) continue;
-            
+
             $this->procesarIngrediente($cantidadStr, $unidad, $nombreDetectado, $productos, $nombresProductos, $resultados, $advertencias, $ingredientesDetectados);
         }
 
         // Por último, patrón 3 (formato simple sin "de")
         preg_match_all($regex3, $texto, $matches3, PREG_SET_ORDER);
-        
+
         foreach ($matches3 as $m) {
             $cantidadStr = $m[1];
             $unidad = strtolower($m[2]); // Puede ser "taza", "piernas", etc.
             $nombreDetectado = trim($m[3]);
-            
+
             // Saltar si ya fue procesado
             $yaEncontrado = false;
             foreach ($resultados as $ing) {
@@ -254,7 +254,7 @@ class RecetaController extends Controller
                 }
             }
             if ($yaEncontrado) continue;
-            
+
             $this->procesarIngrediente($cantidadStr, $unidad, $nombreDetectado, $productos, $nombresProductos, $resultados, $advertencias, $ingredientesDetectados);
         }
 
@@ -300,7 +300,7 @@ class RecetaController extends Controller
                 $productoEncontrado = $nombreProducto;
             }
         }
-        
+
         // Considerar coincidencia si similitud > 55% (muy flexible)
         if ($maxSimilitud >= 55) {
             $producto = $productos->firstWhere('nombre', $productoEncontrado);

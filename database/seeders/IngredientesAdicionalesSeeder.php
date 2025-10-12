@@ -21,7 +21,7 @@ class IngredientesAdicionalesSeeder extends Seeder
                 'precio_unitario' => 6.50,
                 'stock_minimo' => 15,
             ],
-            
+
             // Cubos de Caldo (categoría Condimentos - id: 7)
             [
                 'codigo' => 'COND-007',
@@ -32,7 +32,7 @@ class IngredientesAdicionalesSeeder extends Seeder
                 'precio_unitario' => 8.00,
                 'stock_minimo' => 20,
             ],
-            
+
             // Ajo Molido ya existe (COND-006)
             // Ají Amarillo ya existe (VERD-003) pero puede necesitar versión molida
             [
@@ -49,7 +49,7 @@ class IngredientesAdicionalesSeeder extends Seeder
         foreach ($productosNuevos as $producto) {
             // Verificar si el código ya existe
             $existe = DB::table('productos')->where('codigo', $producto['codigo'])->exists();
-            
+
             if (!$existe) {
                 DB::table('productos')->insert(array_merge($producto, [
                     'estado' => 'activo',
@@ -64,7 +64,7 @@ class IngredientesAdicionalesSeeder extends Seeder
 
         echo "\n📋 Ingredientes de la receta 'Arroz con Pollo':\n";
         echo "═══════════════════════════════════════════\n\n";
-        
+
         $ingredientesReceta = [
             ['producto' => 'Pollo Entero', 'cantidad' => '4 piernas (aprox 1.5 kg)', 'codigo' => 'CARN-002'],
             ['producto' => 'Arroz Superior', 'cantidad' => '2 tazas (400g)', 'codigo' => 'CER-001'],
