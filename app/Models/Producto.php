@@ -120,7 +120,9 @@ class Producto extends Model
             return null;
         }
         
-        return Carbon::now()->diffInDays($this->fecha_vencimiento, false);
+        // Usar floor para obtener días completos (número entero)
+        $dias = Carbon::now()->diffInDays($this->fecha_vencimiento, false);
+        return (int) floor($dias);
     }
 
     public function estaVencido()
@@ -151,7 +153,7 @@ class Producto extends Model
             return 'Sin fecha de vencimiento';
         }
         
-        $dias = $this->diasRestantesVencimiento();
+        $dias = (int) $this->diasRestantesVencimiento();
         
         if ($dias < 0) {
             $diasVencido = abs($dias);
@@ -173,7 +175,7 @@ class Producto extends Model
             return "Vence en {$dias} días";
         }
         
-        $semanas = floor($dias / 7);
+        $semanas = (int) floor($dias / 7);
         if ($semanas == 1) {
             return 'Vence en 1 semana';
         }
@@ -182,7 +184,7 @@ class Producto extends Model
             return "Vence en {$semanas} semanas";
         }
         
-        $meses = floor($dias / 30);
+        $meses = (int) floor($dias / 30);
         if ($meses == 1) {
             return 'Vence en 1 mes';
         }
