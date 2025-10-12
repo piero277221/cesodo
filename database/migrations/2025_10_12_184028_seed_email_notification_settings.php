@@ -107,12 +107,12 @@ return new class extends Migration
     {
         // Eliminar todas las configuraciones de notificaciones
         $keys = [
-            'email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos', 
+            'email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos',
             'email_certificados_medicos', 'email_notificaciones',
             'sistema_alertas_stock', 'sistema_productos_vencer', 'sistema_pedidos_pendientes',
             'sistema_sonido_notificaciones', 'duracion_notificaciones',
             'dias_aviso_vencimiento', 'stock_minimo_alerta', 'dias_aviso_certificados',
-            'smtp_host', 'smtp_port', 'smtp_usuario', 'smtp_password', 
+            'smtp_host', 'smtp_port', 'smtp_usuario', 'smtp_password',
             'smtp_encryption', 'smtp_from_name',
         ];
 

@@ -129,13 +129,13 @@ return new class extends Migration
     {
         // Eliminar todas las configuraciones de interfaz
         $keys = [
-            'tema_sistema', 'color_primario', 'color_secundario', 'border_radius', 
+            'tema_sistema', 'color_primario', 'color_secundario', 'border_radius',
             'font_size_base', 'densidad_interfaz',
-            'sidebar_tipo', 'logo_position', 'mostrar_breadcrumbs', 'menu_mostrar_iconos', 
+            'sidebar_tipo', 'logo_position', 'mostrar_breadcrumbs', 'menu_mostrar_iconos',
             'animaciones_habilitadas',
-            'tabla_filas_alternas', 'tabla_bordes', 'tabla_hover', 'tabla_tamano', 
+            'tabla_filas_alternas', 'tabla_bordes', 'tabla_hover', 'tabla_tamano',
             'tabla_acciones_posicion',
-            'dashboard_card_style', 'dashboard_layout', 'dashboard_graficos_animados', 
+            'dashboard_card_style', 'dashboard_layout', 'dashboard_graficos_animados',
             'dashboard_auto_refresh', 'dashboard_widgets_compactos',
             'alto_contraste', 'texto_grande', 'reducir_movimiento',
         ];

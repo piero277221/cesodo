@@ -64,7 +64,7 @@ try {
                     ->subject('✅ Prueba de Email - Sistema CESODO Configurado');
         }
     );
-    
+
     echo "╔═══════════════════════════════════════════════════════════╗\n";
     echo "║                    ✅ ÉXITO                               ║\n";
     echo "╚═══════════════════════════════════════════════════════════╝\n\n";
@@ -76,7 +76,7 @@ try {
     echo "   1. Revisa tu email para confirmar la recepción\n";
     echo "   2. Las notificaciones automáticas ya están configuradas\n";
     echo "   3. Recibirás alertas en skeen6265@gmail.com\n\n";
-    
+
 } catch (Exception $e) {
     echo "╔═══════════════════════════════════════════════════════════╗\n";
     echo "║                    ❌ ERROR                               ║\n";

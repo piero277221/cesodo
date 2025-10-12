@@ -2,10 +2,10 @@
 
 /**
  * Script de Prueba para Envío de Emails
- * 
+ *
  * Este script prueba la configuración SMTP del sistema
  * y envía un email de prueba.
- * 
+ *
  * Uso: php test-email.php
  */
 
@@ -78,7 +78,7 @@ try {
                     ->subject('✅ Prueba de Email - Sistema CESODO');
         }
     );
-    
+
     echo "╔═══════════════════════════════════════════════════════════╗\n";
     echo "║                    ✅ ÉXITO                               ║\n";
     echo "╚═══════════════════════════════════════════════════════════╝\n\n";
@@ -86,7 +86,7 @@ try {
     echo "📥 Por favor, revisa tu bandeja de entrada.\n";
     echo "   (También revisa la carpeta de SPAM por si acaso)\n\n";
     echo "🎉 La configuración de email está funcionando correctamente!\n\n";
-    
+
 } catch (Exception $e) {
     echo "╔═══════════════════════════════════════════════════════════╗\n";
     echo "║                    ❌ ERROR                               ║\n";

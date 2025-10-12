@@ -92,10 +92,10 @@ return new class extends Migration
                 [
                     'value' => $data['value'],
                     'category' => 'sistema',
-                    'type' => in_array($key, ['auto_backup', 'auto_clean_logs']) 
-                            ? 'boolean' 
-                            : (in_array($key, ['backup_retention_days', 'log_retention_days']) 
-                                ? 'number' 
+                    'type' => in_array($key, ['auto_backup', 'auto_clean_logs'])
+                            ? 'boolean'
+                            : (in_array($key, ['backup_retention_days', 'log_retention_days'])
+                                ? 'number'
                                 : 'text'),
                     'editable' => true,
                     'description' => $data['description'],
@@ -112,11 +112,11 @@ return new class extends Migration
         // Eliminar todas las configuraciones del sistema
         $keys = [
             'timezone', 'language', 'date_format', 'currency', 'maintenance_mode',
-            'session_timeout', 'max_login_attempts', 'lockout_duration', 
+            'session_timeout', 'max_login_attempts', 'lockout_duration',
             'max_upload_size', 'records_per_page',
-            'require_strong_password', 'two_factor_auth', 'activity_log', 
+            'require_strong_password', 'two_factor_auth', 'activity_log',
             'password_expiry_days',
-            'auto_backup', 'backup_frequency', 'backup_retention_days', 
+            'auto_backup', 'backup_frequency', 'backup_retention_days',
             'auto_clean_logs', 'log_retention_days',
         ];
 

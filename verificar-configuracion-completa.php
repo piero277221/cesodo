@@ -14,21 +14,21 @@ function showCategory($title, $category) {
     echo "┌─────────────────────────────────────────────────────────┐\n";
     echo "│  $title\n";
     echo "└─────────────────────────────────────────────────────────┘\n\n";
-    
+
     $settings = App\Models\SystemSetting::where('category', $category)->orderBy('key')->get();
-    
+
     if ($settings->isEmpty()) {
         echo "   ⚠️  No hay configuraciones guardadas en esta categoría\n\n";
         return 0;
     }
-    
+
     foreach ($settings as $setting) {
         $key = str_pad($setting->key, 35);
-        
+
         // Ocultar contraseñas
         if (str_contains($setting->key, 'password')) {
             $value = '***************';
-        } 
+        }
         // Para booleanos, mostrar ✓ o ✗
         elseif ($setting->type === 'boolean') {
             $value = $setting->value == '1' ? '✓ Activado' : '✗ Desactivado';
@@ -40,10 +40,10 @@ function showCategory($title, $category) {
         else {
             $value = $setting->value;
         }
-        
+
         echo "   $key → $value\n";
     }
-    
+
     echo "\n   📊 Total: " . $settings->count() . " configuraciones\n\n";
     return $settings->count();
 }

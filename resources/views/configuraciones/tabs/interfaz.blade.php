@@ -12,7 +12,7 @@
                 <i class="bi bi-brush text-danger me-2"></i>
                 Tema Visual
             </h6>
-            
+
             <div class="row g-3">
                 <!-- Tema del Sistema -->
                 <div class="col-md-4">
@@ -35,13 +35,13 @@
                 <div class="col-md-4">
                     <label class="form-label">Color Primario</label>
                     <div class="input-group">
-                        <input type="color" 
-                               name="color_primario" 
-                               class="form-control form-control-color" 
+                        <input type="color"
+                               name="color_primario"
+                               class="form-control form-control-color"
                                value="{{ old('color_primario', $settings['color_primario'] ?? '#dc2626') }}"
                                title="Seleccionar color primario">
-                        <input type="text" 
-                               class="form-control" 
+                        <input type="text"
+                               class="form-control"
                                value="{{ old('color_primario', $settings['color_primario'] ?? '#dc2626') }}"
                                readonly>
                     </div>
@@ -52,13 +52,13 @@
                 <div class="col-md-4">
                     <label class="form-label">Color Secundario</label>
                     <div class="input-group">
-                        <input type="color" 
-                               name="color_secundario" 
-                               class="form-control form-control-color" 
+                        <input type="color"
+                               name="color_secundario"
+                               class="form-control form-control-color"
                                value="{{ old('color_secundario', $settings['color_secundario'] ?? '#1a1a1a') }}"
                                title="Seleccionar color secundario">
-                        <input type="text" 
-                               class="form-control" 
+                        <input type="text"
+                               class="form-control"
                                value="{{ old('color_secundario', $settings['color_secundario'] ?? '#1a1a1a') }}"
                                readonly>
                     </div>
@@ -131,7 +131,7 @@
                 <i class="bi bi-compass text-danger me-2"></i>
                 Navegación
             </h6>
-            
+
             <div class="row g-3">
                 <!-- Tipo de Sidebar -->
                 <div class="col-md-6">
@@ -172,9 +172,9 @@
                 <!-- Mostrar Breadcrumbs -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="mostrar_breadcrumbs" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="mostrar_breadcrumbs"
                                id="mostrar_breadcrumbs"
                                value="1"
                                {{ old('mostrar_breadcrumbs', $settings['mostrar_breadcrumbs'] ?? '1') == '1' ? 'checked' : '' }}>
@@ -188,9 +188,9 @@
                 <!-- Iconos en Menú -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="menu_mostrar_iconos" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="menu_mostrar_iconos"
                                id="menu_mostrar_iconos"
                                value="1"
                                {{ old('menu_mostrar_iconos', $settings['menu_mostrar_iconos'] ?? '1') == '1' ? 'checked' : '' }}>
@@ -204,9 +204,9 @@
                 <!-- Animaciones -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="animaciones_habilitadas" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="animaciones_habilitadas"
                                id="animaciones_habilitadas"
                                value="1"
                                {{ old('animaciones_habilitadas', $settings['animaciones_habilitadas'] ?? '1') == '1' ? 'checked' : '' }}>
@@ -227,14 +227,14 @@
                 <i class="bi bi-table text-danger me-2"></i>
                 Tablas y Listados
             </h6>
-            
+
             <div class="row g-3">
                 <!-- Filas Alternas -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="tabla_filas_alternas" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="tabla_filas_alternas"
                                id="tabla_filas_alternas"
                                value="1"
                                {{ old('tabla_filas_alternas', $settings['tabla_filas_alternas'] ?? '1') == '1' ? 'checked' : '' }}>
@@ -248,9 +248,9 @@
                 <!-- Bordes en Tablas -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="tabla_bordes" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="tabla_bordes"
                                id="tabla_bordes"
                                value="1"
                                {{ old('tabla_bordes', $settings['tabla_bordes'] ?? '1') == '1' ? 'checked' : '' }}>
@@ -264,9 +264,9 @@
                 <!-- Hover en Filas -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="tabla_hover" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="tabla_hover"
                                id="tabla_hover"
                                value="1"
                                {{ old('tabla_hover', $settings['tabla_hover'] ?? '1') == '1' ? 'checked' : '' }}>
@@ -320,7 +320,7 @@
                 <i class="bi bi-speedometer2 text-danger me-2"></i>
                 Dashboard
             </h6>
-            
+
             <div class="row g-3">
                 <!-- Diseño de Cards -->
                 <div class="col-md-6">
@@ -361,9 +361,9 @@
                 <!-- Gráficos Animados -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="dashboard_graficos_animados" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="dashboard_graficos_animados"
                                id="dashboard_graficos_animados"
                                value="1"
                                {{ old('dashboard_graficos_animados', $settings['dashboard_graficos_animados'] ?? '1') == '1' ? 'checked' : '' }}>
@@ -377,9 +377,9 @@
                 <!-- Actualización Automática -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="dashboard_auto_refresh" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="dashboard_auto_refresh"
                                id="dashboard_auto_refresh"
                                value="1"
                                {{ old('dashboard_auto_refresh', $settings['dashboard_auto_refresh'] ?? '0') == '1' ? 'checked' : '' }}>
@@ -393,9 +393,9 @@
                 <!-- Widgets Compactos -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="dashboard_widgets_compactos" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="dashboard_widgets_compactos"
                                id="dashboard_widgets_compactos"
                                value="1"
                                {{ old('dashboard_widgets_compactos', $settings['dashboard_widgets_compactos'] ?? '0') == '1' ? 'checked' : '' }}>
@@ -416,14 +416,14 @@
                 <i class="bi bi-universal-access text-danger me-2"></i>
                 Accesibilidad
             </h6>
-            
+
             <div class="row g-3">
                 <!-- Alto Contraste -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="alto_contraste" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="alto_contraste"
                                id="alto_contraste"
                                value="1"
                                {{ old('alto_contraste', $settings['alto_contraste'] ?? '0') == '1' ? 'checked' : '' }}>
@@ -437,9 +437,9 @@
                 <!-- Texto Grande -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="texto_grande" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="texto_grande"
                                id="texto_grande"
                                value="1"
                                {{ old('texto_grande', $settings['texto_grande'] ?? '0') == '1' ? 'checked' : '' }}>
@@ -453,9 +453,9 @@
                 <!-- Reducir Movimiento -->
                 <div class="col-md-4">
                     <div class="form-check form-switch d-flex align-items-center" style="min-height: 50px;">
-                        <input class="form-check-input me-3" 
-                               type="checkbox" 
-                               name="reducir_movimiento" 
+                        <input class="form-check-input me-3"
+                               type="checkbox"
+                               name="reducir_movimiento"
                                id="reducir_movimiento"
                                value="1"
                                {{ old('reducir_movimiento', $settings['reducir_movimiento'] ?? '0') == '1' ? 'checked' : '' }}>
@@ -495,33 +495,33 @@ function resetInterfazDefaults() {
         document.querySelector('select[name="border_radius"]').value = 'medium';
         document.querySelector('select[name="font_size_base"]').value = 'medium';
         document.querySelector('select[name="densidad_interfaz"]').value = 'normal';
-        
+
         // Navegación
         document.querySelector('select[name="sidebar_tipo"]').value = 'fixed';
         document.querySelector('select[name="logo_position"]').value = 'left';
         document.getElementById('mostrar_breadcrumbs').checked = true;
         document.getElementById('menu_mostrar_iconos').checked = true;
         document.getElementById('animaciones_habilitadas').checked = true;
-        
+
         // Tablas
         document.getElementById('tabla_filas_alternas').checked = true;
         document.getElementById('tabla_bordes').checked = true;
         document.getElementById('tabla_hover').checked = true;
         document.querySelector('select[name="tabla_tamano"]').value = 'normal';
         document.querySelector('select[name="tabla_acciones_posicion"]').value = 'right';
-        
+
         // Dashboard
         document.querySelector('select[name="dashboard_card_style"]').value = 'shadow';
         document.querySelector('select[name="dashboard_layout"]').value = 'grid-3';
         document.getElementById('dashboard_graficos_animados').checked = true;
         document.getElementById('dashboard_auto_refresh').checked = false;
         document.getElementById('dashboard_widgets_compactos').checked = false;
-        
+
         // Accesibilidad
         document.getElementById('alto_contraste').checked = false;
         document.getElementById('texto_grande').checked = false;
         document.getElementById('reducir_movimiento').checked = false;
-        
+
         // Actualizar inputs de texto junto a color pickers
         document.querySelectorAll('input[type="color"]').forEach(input => {
             const textInput = input.nextElementSibling;
@@ -529,7 +529,7 @@ function resetInterfazDefaults() {
                 textInput.value = input.value;
             }
         });
-        
+
         alert('✅ Valores restaurados a configuración por defecto');
     }
 }
