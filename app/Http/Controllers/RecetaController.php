@@ -231,11 +231,14 @@ class RecetaController extends Controller
         $soloNombres = preg_split('/[\n,]+/', $texto);
         foreach ($soloNombres as $nombre) {
             $nombre = trim($nombre);
-            if (strlen($nombre) < 2) continue;
+            // Saltar líneas vacías, muy cortas o que contienen números (ya procesadas)
+            if (strlen($nombre) < 3 || preg_match('/\d/', $nombre)) continue;
+            
             // Verificar si ya fue detectado por el regex
             $yaDetectado = false;
             foreach ($resultados as $ing) {
-                if (mb_strtolower($ing['nombre']) == mb_strtolower($nombre)) {
+                similar_text(mb_strtolower($ing['nombre']), mb_strtolower($nombre), $similitudYaDetectado);
+                if ($similitudYaDetectado > 70) {
                     $yaDetectado = true;
                     break;
                 }
@@ -252,6 +255,7 @@ class RecetaController extends Controller
                     $productoEncontrado = $nombreProducto;
                 }
             }
+            // Solo agregar advertencia si el texto parece ser un ingrediente real (más de 5 caracteres)
             if ($maxSimilitud >= 70) {
                 $producto = $productos->firstWhere('nombre', $productoEncontrado);
                 $resultados[] = [
@@ -260,7 +264,7 @@ class RecetaController extends Controller
                     'cantidad' => 1,
                     'unidad' => $producto->unidad_medida ?? 'unidad',
                 ];
-            } else {
+            } elseif (strlen($nombre) > 5) {
                 $advertencias[] = "Ingrediente no encontrado: $nombre";
             }
         }
