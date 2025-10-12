@@ -88,6 +88,8 @@ class ProductoController extends Controller
             'stock_minimo' => 'required|integer|min:0',
             'cantidad_inicial' => 'required|integer|min:0',
             'estado' => 'required|in:activo,inactivo',
+            'fecha_vencimiento' => 'nullable|date|after_or_equal:today',
+            'dias_alerta_vencimiento' => 'nullable|integer|min:1|max:365',
         ]);
 
         $cantidadInicial = $validated['cantidad_inicial'];
@@ -142,6 +144,8 @@ class ProductoController extends Controller
             'stock_minimo' => 'required|integer|min:0',
             'stock_actual' => 'required|integer|min:0',
             'estado' => 'required|in:activo,inactivo',
+            'fecha_vencimiento' => 'nullable|date|after_or_equal:today',
+            'dias_alerta_vencimiento' => 'nullable|integer|min:1|max:365',
         ]);
 
         $stockActual = $validated['stock_actual'];

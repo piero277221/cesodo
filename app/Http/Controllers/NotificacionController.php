@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contrato;
 use App\Models\CertificadoMedico;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -119,6 +120,62 @@ class NotificacionController extends Controller
                     'numero_contrato' => $contrato->numero_contrato,
                     'dias_restantes' => $diasRestantes,
                     'tiempo_texto' => $tiempoTexto
+                ]
+            ];
+        }
+
+        // 4. Productos próximos a vencer
+        $productosProximos = Producto::with('categoria')
+            ->where('estado', 'activo')
+            ->proximosAVencer()
+            ->get();
+
+        foreach ($productosProximos as $producto) {
+            $diasRestantes = $producto->diasRestantesVencimiento();
+            $tiempoTexto = $producto->tiempoVencimientoTexto();
+
+            $notificaciones[] = [
+                'tipo' => 'producto_proximo_vencer',
+                'prioridad' => $diasRestantes <= 7 ? 'alta' : 'media',
+                'titulo' => 'Producto próximo a vencer',
+                'mensaje' => "{$producto->nombre} - {$tiempoTexto}",
+                'icono' => 'fa-box-open',
+                'color' => $diasRestantes <= 7 ? 'danger' : 'warning',
+                'enlace' => route('productos.show', $producto->id),
+                'fecha' => $producto->fecha_vencimiento,
+                'datos' => [
+                    'producto' => $producto->nombre,
+                    'codigo' => $producto->codigo,
+                    'categoria' => $producto->categoria->nombre ?? 'Sin categoría',
+                    'dias_restantes' => $diasRestantes,
+                    'tiempo_texto' => $tiempoTexto,
+                    'fecha_vencimiento' => $producto->fecha_vencimiento->format('d/m/Y')
+                ]
+            ];
+        }
+
+        // 5. Productos vencidos
+        $productosVencidos = Producto::with('categoria')
+            ->where('estado', 'activo')
+            ->vencidos()
+            ->limit(10)
+            ->get();
+
+        foreach ($productosVencidos as $producto) {
+            $notificaciones[] = [
+                'tipo' => 'producto_vencido',
+                'prioridad' => 'alta',
+                'titulo' => 'Producto Vencido',
+                'mensaje' => "{$producto->nombre} - {$producto->tiempoVencimientoTexto()}",
+                'icono' => 'fa-exclamation-triangle',
+                'color' => 'danger',
+                'enlace' => route('productos.show', $producto->id),
+                'fecha' => $producto->fecha_vencimiento,
+                'datos' => [
+                    'producto' => $producto->nombre,
+                    'codigo' => $producto->codigo,
+                    'categoria' => $producto->categoria->nombre ?? 'Sin categoría',
+                    'fecha_vencimiento' => $producto->fecha_vencimiento->format('d/m/Y')
                 ]
             ];
         }

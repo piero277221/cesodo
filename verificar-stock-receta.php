@@ -31,16 +31,16 @@ $todosDisponibles = true;
 foreach ($receta->ingredientes as $ingrediente) {
     $producto = $ingrediente->producto;
     $inventario = $producto->inventario;
-    
+
     $stockDisponible = $inventario ? $inventario->stock_disponible : 0;
     $cantidadNecesaria = $ingrediente->cantidad;
-    
+
     $estado = $stockDisponible >= $cantidadNecesaria ? "✅ OK" : "❌ FALTA";
-    
+
     if ($stockDisponible < $cantidadNecesaria) {
         $todosDisponibles = false;
     }
-    
+
     printf(
         "%-30s %8.2f %-6s %8.2f %-6s %s\n",
         substr($producto->nombre, 0, 28),

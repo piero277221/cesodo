@@ -29,14 +29,14 @@ $productos = [
 
 foreach ($productos as $nombre => $cantidad) {
     $p = Producto::where('nombre', $nombre)->first();
-    
+
     if (!$p) {
         echo "❌ Producto no encontrado: {$nombre}\n";
         continue;
     }
-    
+
     $inv = Inventario::where('producto_id', $p->id)->first();
-    
+
     if ($inv) {
         $stockAnterior = $inv->stock_disponible;
         $inv->update([

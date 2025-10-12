@@ -180,6 +180,9 @@ unset($__errorArgs, $__bag); ?>
                                 <label for="hora_consumo" class="form-label fw-bold">
                                     <i class="fas fa-clock me-1 text-primary"></i>
                                     Hora de Consumo *
+                                    <span class="badge bg-success ms-2" id="autoUpdateBadge" style="cursor: pointer;" title="Click para cambiar modo">
+                                        <i class="fas fa-sync-alt fa-spin"></i> Auto
+                                    </span>
                                 </label>
                                 <input type="time"
                                        name="hora_consumo"
@@ -193,7 +196,8 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                                        value="<?php echo e(old('hora_consumo', date('H:i'))); ?>"
-                                       required>
+                                       required
+                                       title="Doble clic para sincronizar con hora actual">
                                 <?php $__errorArgs = ['hora_consumo'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -204,7 +208,10 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                                <small class="text-muted">Hora en formato 24 horas</small>
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i>
+                                    <strong>Click en badge</strong> para cambiar modo. <strong>Doble click en campo</strong> para re-sincronizar.
+                                </small>
                             </div>
                         </div>
 
@@ -351,6 +358,89 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualizar vista previa en tiempo real
     form.addEventListener('change', updatePreview);
     form.addEventListener('input', updatePreview);
+
+    // Auto-actualizar hora actual cada segundo
+    const horaInput = document.getElementById('hora_consumo');
+    const autoUpdateBadge = document.getElementById('autoUpdateBadge');
+    let autoUpdateEnabled = true;
+
+    // Función para actualizar la hora automáticamente
+    function updateCurrentTime() {
+        if (autoUpdateEnabled) {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            horaInput.value = `${hours}:${minutes}`;
+        }
+    }
+
+    // Actualizar hora cada segundo
+    setInterval(updateCurrentTime, 1000);
+
+    // Función para cambiar a modo manual
+    function setManualMode() {
+        autoUpdateEnabled = false;
+        horaInput.style.borderColor = '#ffc107';
+        horaInput.style.borderWidth = '2px';
+        autoUpdateBadge.className = 'badge bg-warning ms-2';
+        autoUpdateBadge.innerHTML = '<i class="fas fa-edit"></i> Manual';
+        autoUpdateBadge.style.cursor = 'pointer';
+        autoUpdateBadge.title = 'Click para volver a modo automático';
+    }
+
+    // Función para cambiar a modo automático
+    function setAutoMode() {
+        autoUpdateEnabled = true;
+        updateCurrentTime();
+        horaInput.style.borderColor = '';
+        horaInput.style.borderWidth = '';
+        autoUpdateBadge.className = 'badge bg-success ms-2';
+        autoUpdateBadge.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Auto';
+        autoUpdateBadge.style.cursor = 'pointer';
+        autoUpdateBadge.title = 'Click para cambiar a modo manual';
+        // Mostrar mensaje temporal
+        const existingMsg = horaInput.parentElement.querySelector('.sync-message');
+        if (existingMsg) existingMsg.remove();
+
+        const msg = document.createElement('small');
+        msg.className = 'text-success d-block mt-1 sync-message';
+        msg.innerHTML = '<i class="fas fa-check me-1"></i>Hora sincronizada con reloj actual';
+        horaInput.parentElement.appendChild(msg);
+        setTimeout(() => msg.remove(), 2000);
+    }
+
+    // Configurar badge como clickeable
+    autoUpdateBadge.style.cursor = 'pointer';
+    autoUpdateBadge.title = 'Click para cambiar a modo manual';
+
+    // Event listener para el badge con prevención de propagación
+    autoUpdateBadge.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        console.log('Badge clicked. Estado actual:', autoUpdateEnabled ? 'Auto' : 'Manual');
+
+        if (autoUpdateEnabled) {
+            console.log('Cambiando a modo Manual');
+            setManualMode();
+        } else {
+            console.log('Cambiando a modo Auto');
+            setAutoMode();
+        }
+    });
+
+    // Deshabilitar auto-actualización cuando el usuario edita manualmente
+    horaInput.addEventListener('focus', function() {
+        setManualMode();
+    });
+
+    // Re-habilitar auto-actualización con doble clic
+    horaInput.addEventListener('dblclick', function() {
+        setAutoMode();
+    });
+
+    // Inicializar con la hora actual
+    updateCurrentTime();
 
     function updatePreview() {
         const trabajadorSelect = document.getElementById('trabajador_id');

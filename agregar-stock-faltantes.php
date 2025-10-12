@@ -19,14 +19,14 @@ echo "🔄 Agregando stock a productos faltantes...\n\n";
 
 foreach ($productos as $nombre => $cantidad) {
     $p = Producto::where('nombre', $nombre)->first();
-    
+
     if (!$p) {
         echo "❌ Producto no encontrado: {$nombre}\n";
         continue;
     }
-    
+
     $inv = Inventario::where('producto_id', $p->id)->first();
-    
+
     if ($inv) {
         $inv->update([
             'stock_actual' => $inv->stock_actual + $cantidad,

@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mostrar mensaje temporal
         const existingMsg = horaInput.parentElement.querySelector('.sync-message');
         if (existingMsg) existingMsg.remove();
-        
+
         const msg = document.createElement('small');
         msg.className = 'text-success d-block mt-1 sync-message';
         msg.innerHTML = '<i class="fas fa-check me-1"></i>Hora sincronizada con reloj actual';
@@ -349,14 +349,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configurar badge como clickeable
     autoUpdateBadge.style.cursor = 'pointer';
     autoUpdateBadge.title = 'Click para cambiar a modo manual';
-    
+
     // Event listener para el badge con prevención de propagación
     autoUpdateBadge.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         console.log('Badge clicked. Estado actual:', autoUpdateEnabled ? 'Auto' : 'Manual');
-        
+
         if (autoUpdateEnabled) {
             console.log('Cambiando a modo Manual');
             setManualMode();

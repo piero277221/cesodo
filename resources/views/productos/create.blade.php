@@ -216,6 +216,47 @@
                                 </div>
 
                                 <div class="mt-3">
+                                    <label for="fecha_vencimiento" class="form-label">
+                                        <i class="fas fa-calendar-times me-1 text-warning"></i>
+                                        Fecha de Vencimiento
+                                    </label>
+                                    <input type="date"
+                                           class="form-control @error('fecha_vencimiento') is-invalid @enderror"
+                                           id="fecha_vencimiento"
+                                           name="fecha_vencimiento"
+                                           value="{{ old('fecha_vencimiento') }}"
+                                           min="{{ date('Y-m-d') }}">
+                                    @error('fecha_vencimiento')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle"></i>
+                                        Opcional. Si el producto no vence, dejar en blanco.
+                                    </small>
+                                </div>
+
+                                <div class="mt-3">
+                                    <label for="dias_alerta_vencimiento" class="form-label">
+                                        <i class="fas fa-bell me-1 text-info"></i>
+                                        Días de Alerta antes del Vencimiento
+                                    </label>
+                                    <input type="number"
+                                           class="form-control @error('dias_alerta_vencimiento') is-invalid @enderror"
+                                           id="dias_alerta_vencimiento"
+                                           name="dias_alerta_vencimiento"
+                                           value="{{ old('dias_alerta_vencimiento', 30) }}"
+                                           min="1"
+                                           max="365">
+                                    @error('dias_alerta_vencimiento')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle"></i>
+                                        Días antes del vencimiento para recibir notificaciones (por defecto 30 días).
+                                    </small>
+                                </div>
+
+                                <div class="mt-3">
                                     <label for="estado" class="form-label">Estado <span class="text-danger">*</span></label>
                                     <select class="form-select @error('estado') is-invalid @enderror"
                                             id="estado"

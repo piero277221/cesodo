@@ -23,7 +23,7 @@ class InventarioInicialSeeder extends Seeder
             'Carne de Res' => ['cantidad' => 50, 'unidad' => 'kg'],
             'Carne Molida' => ['cantidad' => 30, 'unidad' => 'kg'],
             'Pescado Fresco' => ['cantidad' => 30, 'unidad' => 'kg'],
-            
+
             // Cereales y Granos
             'Arroz Blanco' => ['cantidad' => 100, 'unidad' => 'kg'],
             'Arroz Integral' => ['cantidad' => 50, 'unidad' => 'kg'],
@@ -31,7 +31,7 @@ class InventarioInicialSeeder extends Seeder
             'Fideos' => ['cantidad' => 50, 'unidad' => 'kg'],
             'Lentejas' => ['cantidad' => 30, 'unidad' => 'kg'],
             'Frijoles' => ['cantidad' => 30, 'unidad' => 'kg'],
-            
+
             // Verduras
             'Cebolla Roja' => ['cantidad' => 50, 'unidad' => 'kg'],
             'Cebolla Blanca' => ['cantidad' => 30, 'unidad' => 'kg'],
@@ -46,14 +46,14 @@ class InventarioInicialSeeder extends Seeder
             'Lechuga' => ['cantidad' => 30, 'unidad' => 'unidad'],
             'Choclo Desgranado' => ['cantidad' => 30, 'unidad' => 'kg'],
             'Arvejas' => ['cantidad' => 30, 'unidad' => 'kg'],
-            
+
             // Frutas
             'Limón' => ['cantidad' => 50, 'unidad' => 'kg'],
             'Naranja' => ['cantidad' => 40, 'unidad' => 'kg'],
             'Manzana' => ['cantidad' => 40, 'unidad' => 'kg'],
             'Plátano' => ['cantidad' => 50, 'unidad' => 'kg'],
             'Aguaymanto' => ['cantidad' => 20, 'unidad' => 'kg'],
-            
+
             // Condimentos y Especias
             'Sal' => ['cantidad' => 50, 'unidad' => 'kg'],
             'Pimienta' => ['cantidad' => 5, 'unidad' => 'kg'],
@@ -64,20 +64,20 @@ class InventarioInicialSeeder extends Seeder
             'Ají Amarillo Molido' => ['cantidad' => 15, 'unidad' => 'kg'],
             'Ajo Molido' => ['cantidad' => 15, 'unidad' => 'kg'],
             'Cubo MAGGI® Sabor Gallina' => ['cantidad' => 500, 'unidad' => 'unidad'],
-            
+
             // Aceites y Vinagres
             'Aceite Vegetal' => ['cantidad' => 50, 'unidad' => 'litro'],
             'Aceite de Oliva' => ['cantidad' => 20, 'unidad' => 'litro'],
             'Vinagre Blanco' => ['cantidad' => 30, 'unidad' => 'litro'],
             'Vinagre de Manzana' => ['cantidad' => 20, 'unidad' => 'litro'],
-            
+
             // Lácteos
             'Leche Evaporada' => ['cantidad' => 100, 'unidad' => 'litro'],
             'Leche Fresca' => ['cantidad' => 50, 'unidad' => 'litro'],
             'Queso Fresco' => ['cantidad' => 30, 'unidad' => 'kg'],
             'Mantequilla' => ['cantidad' => 20, 'unidad' => 'kg'],
             'Yogurt Natural' => ['cantidad' => 50, 'unidad' => 'litro'],
-            
+
             // Otros
             'Huevos' => ['cantidad' => 500, 'unidad' => 'unidad'],
             'Pan' => ['cantidad' => 200, 'unidad' => 'unidad'],
@@ -86,14 +86,14 @@ class InventarioInicialSeeder extends Seeder
         ];
 
         echo "🔄 Iniciando carga de inventario...\n";
-        
+
         $creados = 0;
         $actualizados = 0;
         $noEncontrados = 0;
 
         foreach ($productosStock as $nombreProducto => $datos) {
             $producto = Producto::where('nombre', $nombreProducto)->first();
-            
+
             if (!$producto) {
                 echo "⚠️  Producto no encontrado: {$nombreProducto}\n";
                 $noEncontrados++;
@@ -102,7 +102,7 @@ class InventarioInicialSeeder extends Seeder
 
             // Verificar si ya existe inventario
             $inventario = Inventario::where('producto_id', $producto->id)->first();
-            
+
             if ($inventario) {
                 // Actualizar stock existente
                 $inventario->update([
