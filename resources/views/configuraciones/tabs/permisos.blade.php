@@ -82,23 +82,31 @@
                         <div class="card h-100 border-0 shadow-sm hover-card">
                             <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
                                 <h6 class="mb-0">
-                                    <i class="bi bi-{{ 
-                                        $modulo === 'usuarios' ? 'people' :
-                                        ($modulo === 'productos' ? 'box-seam' :
-                                        ($modulo === 'consumos' ? 'clipboard-data' :
-                                        ($modulo === 'menus' ? 'calendar3' :
-                                        ($modulo === 'trabajadores' ? 'person-badge' :
-                                        ($modulo === 'proveedores' ? 'truck' :
-                                        ($modulo === 'configuraciones' ? 'gear' :
-                                        ($modulo === 'reportes' ? 'graph-up' :
-                                        ($modulo === 'categorias' ? 'tags' :
-                                        ($modulo === 'inventario' ? 'box' :
-                                        ($modulo === 'personas' ? 'person' :
-                                        ($modulo === 'certificados' ? 'file-medical' :
-                                        ($modulo === 'recetas' ? 'journal-text' :
-                                        ($modulo === 'contratos' ? 'file-text' :
-                                        'circle')))))))))))))) 
-                                    }} me-2"></i>
+                                    @php
+                                        $iconos = [
+                                            'usuarios' => 'people',
+                                            'productos' => 'box-seam',
+                                            'consumos' => 'clipboard-data',
+                                            'menus' => 'calendar3',
+                                            'trabajadores' => 'person-badge',
+                                            'proveedores' => 'truck',
+                                            'configuraciones' => 'gear',
+                                            'reportes' => 'graph-up',
+                                            'categorias' => 'tags',
+                                            'inventario' => 'box',
+                                            'personas' => 'person',
+                                            'certificados' => 'file-medical',
+                                            'recetas' => 'journal-text',
+                                            'contratos' => 'file-text',
+                                            'roles' => 'shield-lock',
+                                            'pedidos' => 'cart',
+                                            'clientes' => 'person-circle',
+                                            'ventas' => 'cash-coin',
+                                            'compras' => 'bag',
+                                        ];
+                                        $icono = $iconos[$modulo] ?? 'circle';
+                                    @endphp
+                                    <i class="bi bi-{{ $icono }} me-2"></i>
                                     {{ ucfirst($modulo) }}
                                 </h6>
                             </div>
@@ -127,12 +135,19 @@
                                                    id="permission_{{ $permiso->id }}"
                                                    onchange="updateModuleSelectAll('{{ $modulo }}')">
                                             <label class="form-check-label" for="permission_{{ $permiso->id }}">
-                                                <i class="bi bi-{{ 
-                                                    str_contains($permiso->name, 'ver') ? 'eye' :
-                                                    (str_contains($permiso->name, 'crear') ? 'plus-circle' :
-                                                    (str_contains($permiso->name, 'editar') ? 'pencil' :
-                                                    (str_contains($permiso->name, 'eliminar') ? 'trash' : 'check')))
-                                                }} me-1"></i>
+                                                @php
+                                                    $iconoPermiso = 'check';
+                                                    if (str_contains($permiso->name, 'ver')) {
+                                                        $iconoPermiso = 'eye';
+                                                    } elseif (str_contains($permiso->name, 'crear')) {
+                                                        $iconoPermiso = 'plus-circle';
+                                                    } elseif (str_contains($permiso->name, 'editar')) {
+                                                        $iconoPermiso = 'pencil';
+                                                    } elseif (str_contains($permiso->name, 'eliminar')) {
+                                                        $iconoPermiso = 'trash';
+                                                    }
+                                                @endphp
+                                                <i class="bi bi-{{ $iconoPermiso }} me-1"></i>
                                                 {{ ucfirst(str_replace('-', ' ', explode('-', $permiso->name)[0])) }}
                                             </label>
                                         </div>
