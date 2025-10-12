@@ -317,12 +317,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para cambiar a modo manual
     function setManualMode() {
         autoUpdateEnabled = false;
-        horaInput.style.borderColor = '#ffc107'; // Amarillo para indicar edición manual
+        horaInput.style.borderColor = '#ffc107';
         horaInput.style.borderWidth = '2px';
         autoUpdateBadge.className = 'badge bg-warning ms-2';
         autoUpdateBadge.innerHTML = '<i class="fas fa-edit"></i> Manual';
         autoUpdateBadge.style.cursor = 'pointer';
-        autoUpdateBadge.title = 'Click para activar modo automático';
+        autoUpdateBadge.title = 'Click para volver a modo automático';
     }
 
     // Función para cambiar a modo automático
@@ -334,22 +334,34 @@ document.addEventListener('DOMContentLoaded', function() {
         autoUpdateBadge.className = 'badge bg-success ms-2';
         autoUpdateBadge.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Auto';
         autoUpdateBadge.style.cursor = 'pointer';
-        autoUpdateBadge.title = 'Click para activar modo manual';
+        autoUpdateBadge.title = 'Click para cambiar a modo manual';
         // Mostrar mensaje temporal
+        const existingMsg = horaInput.parentElement.querySelector('.sync-message');
+        if (existingMsg) existingMsg.remove();
+        
         const msg = document.createElement('small');
-        msg.className = 'text-success d-block mt-1';
+        msg.className = 'text-success d-block mt-1 sync-message';
         msg.innerHTML = '<i class="fas fa-check me-1"></i>Hora sincronizada con reloj actual';
         horaInput.parentElement.appendChild(msg);
         setTimeout(() => msg.remove(), 2000);
     }
 
-    // Hacer el badge clickeable para alternar entre modos
+    // Configurar badge como clickeable
     autoUpdateBadge.style.cursor = 'pointer';
-    autoUpdateBadge.title = 'Click para activar modo manual';
-    autoUpdateBadge.addEventListener('click', function() {
+    autoUpdateBadge.title = 'Click para cambiar a modo manual';
+    
+    // Event listener para el badge con prevención de propagación
+    autoUpdateBadge.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        console.log('Badge clicked. Estado actual:', autoUpdateEnabled ? 'Auto' : 'Manual');
+        
         if (autoUpdateEnabled) {
+            console.log('Cambiando a modo Manual');
             setManualMode();
         } else {
+            console.log('Cambiando a modo Auto');
             setAutoMode();
         }
     });
