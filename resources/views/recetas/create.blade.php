@@ -77,8 +77,9 @@
                                 <select class="form-select @error('dificultad') is-invalid @enderror"
                                         id="dificultad" name="dificultad" required>
                                     <option value="facil" {{ old('dificultad') == 'facil' ? 'selected' : '' }}>Fácil</option>
-                                    <option value="media" {{ old('dificultad') == 'media' ? 'selected' : '' }}>Media</option>
+                                    <option value="intermedio" {{ old('dificultad') == 'intermedio' ? 'selected' : '' }}>Intermedio</option>
                                     <option value="dificil" {{ old('dificultad') == 'dificil' ? 'selected' : '' }}>Difícil</option>
+                                    <option value="muy_dificil" {{ old('dificultad') == 'muy_dificil' ? 'selected' : '' }}>Muy Difícil</option>
                                 </select>
                                 @error('dificultad')
                                     <div class="invalid-feedback">{{ $message }}</div>
