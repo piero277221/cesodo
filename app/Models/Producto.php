@@ -80,10 +80,12 @@ class Producto extends Model
               ->whereDate('fecha_vencimiento', '>=', Carbon::now());
         
         if ($dias) {
+            // Si se especifican días, usar Carbon para calcular la fecha
             $query->whereDate('fecha_vencimiento', '<=', Carbon::now()->addDays($dias));
         } else {
-            // Usar el campo dias_alerta_vencimiento de cada producto
-            $query->whereRaw('fecha_vencimiento <= DATE_ADD(NOW(), INTERVAL dias_alerta_vencimiento DAY)');
+            // Para SQLite: usar función date() de SQLite
+            // Calcular fecha límite: fecha_vencimiento <= date('now', '+' || dias_alerta_vencimiento || ' days')
+            $query->whereRaw("date(fecha_vencimiento) <= date('now', '+' || dias_alerta_vencimiento || ' days')");
         }
         
         return $query->orderBy('fecha_vencimiento', 'asc');
