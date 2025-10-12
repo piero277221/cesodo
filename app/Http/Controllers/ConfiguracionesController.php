@@ -16,18 +16,25 @@ class ConfiguracionesController extends Controller
      */
     public function index(Request $request)
     {
-        $tab = $request->get('tab', 'empresa');
+        try {
+            $tab = $request->get('tab', 'empresa');
 
-        // Obtener configuraciones según el tab activo
-        $configuraciones = SystemSetting::where('category', $tab)
-                                      ->orderBy('sort_order')
-                                      ->get();
-
-        // Si no hay configuraciones, mostrar todas las editables
-        if ($configuraciones->isEmpty() && $tab === 'empresa') {
-            $configuraciones = SystemSetting::where('category', 'empresa')
-                                          ->orWhere('key', 'like', 'company_%')
+            // Obtener configuraciones según el tab activo
+            $configuraciones = SystemSetting::where('category', $tab)
                                           ->orderBy('sort_order')
+                                          ->orderBy('key')
+                                          ->get();
+
+            // Si no hay configuraciones para empresa, obtener las básicas
+            if ($configuraciones->isEmpty() && $tab === 'empresa') {
+                $configuraciones = SystemSetting::where(function($query) {
+                    $query->where('category', 'empresa')
+                          ->orWhere('key', 'like', 'company_%');
+                })
+                ->orderBy('sort_order')
+                ->orderBy('key')
+                ->get();
+            }
                                           ->get();
         }
 
@@ -74,7 +81,7 @@ class ConfiguracionesController extends Controller
 
         // Para el tab de notificaciones y sistema, obtener configuraciones como array
         $settings = [];
-        if (in_array($tab, ['notificaciones', 'sistema'])) {
+        if (in_array($tab, ['notificaciones', 'sistema', 'interfaz'])) {
             $allSettings = SystemSetting::where('category', $tab)->get();
             foreach ($allSettings as $setting) {
                 $settings[$setting->key] = $setting->value;
@@ -82,6 +89,11 @@ class ConfiguracionesController extends Controller
         }
 
         return view('configuraciones.index', compact('configuraciones', 'categorias', 'tab', 'roles', 'permisos', 'settings'));
+        
+        } catch (\Exception $e) {
+            \Log::error('Error en ConfiguracionesController@index: ' . $e->getMessage());
+            return redirect()->back()->with('error', '❌ Error al cargar configuraciones: ' . $e->getMessage());
+        }
     }
 
     /**

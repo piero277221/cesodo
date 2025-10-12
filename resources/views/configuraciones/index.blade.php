@@ -127,5 +127,56 @@
     transform: translateY(-2px);
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
+
+/* Prevenir el loading infinito de imágenes */
+img {
+    image-rendering: auto;
+    -webkit-image-rendering: auto;
+}
+
+img[src=""],
+img:not([src]),
+img[src="#"] {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Loading states optimizados */
+.logo-preview-container img,
+.icon-preview-container img {
+    transition: opacity 0.3s ease;
+    background: #f8f9fa;
+}
+
+.logo-preview-container img[src*="default"],
+.icon-preview-container img[src*="default"] {
+    opacity: 1;
+}
+
+/* Evitar parpadeo */
+form {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 </style>
+
+<script>
+// Prevenir loading infinito al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    // Forzar que las imágenes se carguen correctamente
+    const images = document.querySelectorAll('img[id*="Preview"]');
+    images.forEach(img => {
+        if (!img.complete || img.naturalHeight === 0) {
+            img.onerror = function() {
+                console.log('Error loading image:', this.id);
+                // No hacer nada, dejar la imagen por defecto
+            };
+        }
+    });
+
+    // Remover cualquier loading overlay que pueda quedar
+    const loadingOverlays = document.querySelectorAll('#loadingOverlay, .loading-overlay');
+    loadingOverlays.forEach(overlay => overlay.remove());
+});
+</script>
 @endsection

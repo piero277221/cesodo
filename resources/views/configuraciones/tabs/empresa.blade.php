@@ -22,7 +22,7 @@
                     <div class="mb-3">
                         @php
                             $logoSetting = $configuraciones->where('key', 'company_logo')->first();
-                            $logoPath = $logoSetting && $logoSetting->logo_path
+                            $logoPath = $logoSetting && $logoSetting->logo_path && Storage::disk('public')->exists($logoSetting->logo_path)
                                 ? asset('storage/' . $logoSetting->logo_path)
                                 : asset('images/default-logo.png');
                         @endphp
@@ -32,7 +32,7 @@
                                  alt="Logo"
                                  class="img-fluid"
                                  style="max-height: 180px; max-width: 100%; object-fit: contain;"
-                                 onerror="this.src='{{ asset('images/default-logo.png') }}'">
+                                 loading="eager">
                         </div>
                     </div>
 
@@ -86,7 +86,7 @@
                     <div class="mb-3">
                         @php
                             $iconSetting = $configuraciones->where('key', 'company_icon')->first();
-                            $iconPath = $iconSetting && $iconSetting->icon_path
+                            $iconPath = $iconSetting && $iconSetting->icon_path && Storage::disk('public')->exists($iconSetting->icon_path)
                                 ? asset('storage/' . $iconSetting->icon_path)
                                 : asset('images/default-icon.png');
                         @endphp
@@ -96,7 +96,7 @@
                                  alt="Icono"
                                  class="img-fluid"
                                  style="max-height: 180px; max-width: 180px; object-fit: contain;"
-                                 onerror="this.src='{{ asset('images/default-icon.png') }}'">
+                                 loading="eager">
                         </div>
                     </div>
 
@@ -205,151 +205,141 @@
 </form>
 
 <script>
+// Estado global para evitar múltiples submits
+let isSubmitting = false;
+
 // Preview de imagen al seleccionar
 function previewImage(input, previewId) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
+    if (!input.files || !input.files[0]) return;
 
-        // Validar tamaño (máx 2MB)
-        if (file.size > 2048 * 1024) {
-            alert('⚠️ El archivo es demasiado grande. Tamaño máximo: 2MB');
-            input.value = '';
-            return;
-        }
+    const file = input.files[0];
 
-        // Validar formato
-        const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
-        const extension = file.name.split('.').pop().toLowerCase();
-        if (!validExtensions.includes(extension)) {
-            alert('⚠️ Formato no válido. Use: JPG, PNG, GIF o SVG');
-            input.value = '';
-            return;
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            const img = document.getElementById(previewId);
-            img.src = e.target.result;
-
-            // Mostrar mensaje de éxito temporal
-            showToast('✅ Imagen cargada. Haga clic en "Guardar Configuraciones" para aplicar cambios.', 'success');
-        }
-
-        reader.onerror = function() {
-            alert('❌ Error al leer el archivo. Intente nuevamente.');
-            input.value = '';
-        }
-
-        reader.readAsDataURL(file);
+    // Validar tamaño (máx 2MB)
+    if (file.size > 2048 * 1024) {
+        alert('⚠️ El archivo es demasiado grande. Tamaño máximo: 2MB');
+        input.value = '';
+        return;
     }
+
+    // Validar formato
+    const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
+    const extension = file.name.split('.').pop().toLowerCase();
+    if (!validExtensions.includes(extension)) {
+        alert('⚠️ Formato no válido. Use: JPG, PNG, GIF o SVG');
+        input.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const img = document.getElementById(previewId);
+        if (img) {
+            img.src = e.target.result;
+            showToast('✅ Imagen cargada. Recuerda hacer clic en "Guardar Configuraciones"', 'success');
+        }
+    }
+
+    reader.onerror = function() {
+        alert('❌ Error al leer el archivo. Intente nuevamente.');
+        input.value = '';
+    }
+
+    reader.readAsDataURL(file);
 }
 
 // Eliminar logo
 function deleteLogo(key, field) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta imagen?')) {
-        // Mostrar loading
-        showLoading();
+    if (!confirm('¿Estás seguro de que deseas eliminar esta imagen?')) return;
 
-        fetch('{{ route("configuraciones.delete-logo") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ key: key, field: field })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            hideLoading();
-            if (data.success) {
-                showToast('✅ Imagen eliminada correctamente', 'success');
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-            } else {
-                showToast('❌ Error: ' + (data.message || 'No se pudo eliminar la imagen'), 'error');
-            }
-        })
-        .catch(error => {
-            hideLoading();
-            console.error('Error:', error);
-            showToast('❌ Error al eliminar: ' + error.message, 'error');
-        });
-    }
+    const button = event.target.closest('button');
+    if (button) button.disabled = true;
+
+    fetch('{{ route("configuraciones.delete-logo") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ key: key, field: field })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error en la respuesta del servidor');
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showToast('✅ Imagen eliminada correctamente', 'success');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showToast('❌ Error: ' + (data.message || 'No se pudo eliminar'), 'error');
+            if (button) button.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('❌ Error al eliminar: ' + error.message, 'error');
+        if (button) button.disabled = false;
+    });
 }
 
-// Funciones auxiliares para loading y toasts
-function showLoading() {
-    let loadingDiv = document.getElementById('loadingOverlay');
-    if (!loadingDiv) {
-        loadingDiv = document.createElement('div');
-        loadingDiv.id = 'loadingOverlay';
-        loadingDiv.innerHTML = `
-            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
-                    <div class="spinner-border text-danger" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                    </div>
-                    <p class="mt-3 mb-0">Procesando...</p>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(loadingDiv);
-    }
-    loadingDiv.style.display = 'block';
-}
-
-function hideLoading() {
-    const loadingDiv = document.getElementById('loadingOverlay');
-    if (loadingDiv) {
-        loadingDiv.style.display = 'none';
-    }
-}
-
+// Función auxiliar para toasts
 function showToast(message, type = 'info') {
+    // Remover toasts anteriores
+    const existingToasts = document.querySelectorAll('.custom-toast');
+    existingToasts.forEach(t => t.remove());
+
     const toast = document.createElement('div');
-    toast.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show`;
-    toast.style.position = 'fixed';
-    toast.style.top = '20px';
-    toast.style.right = '20px';
-    toast.style.zIndex = '10000';
-    toast.style.minWidth = '300px';
+    toast.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show custom-toast`;
+    toast.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
     toast.innerHTML = `
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
     document.body.appendChild(toast);
 
-    setTimeout(() => {
-        toast.remove();
-    }, 5000);
+    setTimeout(() => toast.remove(), 5000);
 }
 
-// Mostrar loading al enviar formulario
+// Event listener para el formulario
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form[action="{{ route('configuraciones.update') }}"]');
+    
     if (form) {
         form.addEventListener('submit', function(e) {
-            // Validar que se hayan hecho cambios
-            const inputs = form.querySelectorAll('input[type="file"]');
+            // Prevenir doble submit
+            if (isSubmitting) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Verificar si hay archivos para subir
+            const fileInputs = form.querySelectorAll('input[type="file"]');
             let hasFiles = false;
-            inputs.forEach(input => {
+            
+            fileInputs.forEach(input => {
                 if (input.files && input.files.length > 0) {
                     hasFiles = true;
                 }
             });
 
             if (hasFiles) {
-                showLoading();
-                // El loading se ocultará cuando la página se recargue
+                isSubmitting = true;
+                
+                // Deshabilitar botón de submit
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
+                }
+
+                // Mostrar mensaje
+                showToast('📤 Subiendo archivos...', 'info');
             }
         });
     }
+
+    // Prevenir que el navegador bloquee el submit
+    window.onbeforeunload = null;
 });
 </script>
