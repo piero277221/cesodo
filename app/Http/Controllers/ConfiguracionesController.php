@@ -72,7 +72,16 @@ class ConfiguracionesController extends Controller
             });
         }
 
-        return view('configuraciones.index', compact('configuraciones', 'categorias', 'tab', 'roles', 'permisos'));
+        // Para el tab de notificaciones, obtener configuraciones como array
+        $settings = [];
+        if ($tab === 'notificaciones') {
+            $allSettings = SystemSetting::where('category', 'notificaciones')->get();
+            foreach ($allSettings as $setting) {
+                $settings[$setting->key] = $setting->value;
+            }
+        }
+
+        return view('configuraciones.index', compact('configuraciones', 'categorias', 'tab', 'roles', 'permisos', 'settings'));
     }
 
     /**
@@ -83,7 +92,87 @@ class ConfiguracionesController extends Controller
         try {
             DB::beginTransaction();
 
-            // Procesar cada configuración enviada
+            // Lista de campos de notificaciones
+            $notificationFields = [
+                // Email notifications
+                'email_stock_bajo',
+                'email_productos_vencidos',
+                'email_nuevos_pedidos',
+                'email_certificados_medicos',
+                'email_notificaciones',
+                // Sistema notifications
+                'sistema_alertas_stock',
+                'sistema_productos_vencer',
+                'sistema_pedidos_pendientes',
+                'sistema_sonido_notificaciones',
+                'duracion_notificaciones',
+                // Recordatorios
+                'dias_aviso_vencimiento',
+                'stock_minimo_alerta',
+                'dias_aviso_certificados',
+                // SMTP Config
+                'smtp_host',
+                'smtp_port',
+                'smtp_usuario',
+                'smtp_password',
+                'smtp_encryption',
+                'smtp_from_name',
+            ];
+
+            // Procesar configuraciones de notificaciones directamente
+            foreach ($notificationFields as $field) {
+                if ($request->has($field)) {
+                    $value = $request->input($field);
+                    
+                    // Para checkboxes que no están marcados
+                    if (in_array($field, ['email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos', 
+                                          'email_certificados_medicos', 'sistema_alertas_stock', 'sistema_productos_vencer',
+                                          'sistema_pedidos_pendientes', 'sistema_sonido_notificaciones'])) {
+                        $value = $value ? '1' : '0';
+                    }
+                    
+                    SystemSetting::updateOrCreate(
+                        ['key' => $field],
+                        [
+                            'value' => $value,
+                            'category' => 'notificaciones',
+                            'type' => in_array($field, ['duracion_notificaciones', 'dias_aviso_vencimiento', 
+                                                        'stock_minimo_alerta', 'dias_aviso_certificados', 'smtp_port']) 
+                                     ? 'number' 
+                                     : (in_array($field, ['email_stock_bajo', 'email_productos_vencidos', 
+                                                         'sistema_alertas_stock', 'sistema_sonido_notificaciones']) 
+                                        ? 'boolean' 
+                                        : 'text'),
+                            'editable' => true,
+                            'description' => ucfirst(str_replace('_', ' ', $field)),
+                        ]
+                    );
+                }
+            }
+
+            // Para checkboxes desmarcados (no vienen en el request)
+            $checkboxFields = [
+                'email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos', 
+                'email_certificados_medicos', 'sistema_alertas_stock', 'sistema_productos_vencer',
+                'sistema_pedidos_pendientes', 'sistema_sonido_notificaciones'
+            ];
+
+            foreach ($checkboxFields as $field) {
+                if (!$request->has($field)) {
+                    SystemSetting::updateOrCreate(
+                        ['key' => $field],
+                        [
+                            'value' => '0',
+                            'category' => 'notificaciones',
+                            'type' => 'boolean',
+                            'editable' => true,
+                            'description' => ucfirst(str_replace('_', ' ', $field)),
+                        ]
+                    );
+                }
+            }
+
+            // Procesar cada configuración enviada (para otros tabs)
             foreach ($request->except(['_token', '_method', 'logo_file', 'icon_file']) as $key => $value) {
                 if (str_starts_with($key, 'config_')) {
                     $configKey = str_replace('config_', '', $key);
