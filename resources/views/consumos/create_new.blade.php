@@ -145,7 +145,7 @@
                                 <label for="hora_consumo" class="form-label fw-bold">
                                     <i class="fas fa-clock me-1 text-primary"></i>
                                     Hora de Consumo *
-                                    <span class="badge bg-success ms-2" id="autoUpdateBadge">
+                                    <span class="badge bg-success ms-2" id="autoUpdateBadge" style="cursor: pointer;" title="Click para cambiar modo">
                                         <i class="fas fa-sync-alt fa-spin"></i> Auto
                                     </span>
                                 </label>
@@ -161,7 +161,7 @@
                                 @enderror
                                 <small class="text-muted">
                                     <i class="fas fa-info-circle"></i>
-                                    Se actualiza automáticamente. Click para editar manualmente. Doble click para re-sincronizar.
+                                    <strong>Click en badge</strong> para cambiar modo. <strong>Doble click en campo</strong> para re-sincronizar.
                                 </small>
                             </div>
                         </div>
@@ -314,31 +314,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualizar hora cada segundo
     setInterval(updateCurrentTime, 1000);
 
-    // Deshabilitar auto-actualización cuando el usuario edita manualmente
-    horaInput.addEventListener('focus', function() {
+    // Función para cambiar a modo manual
+    function setManualMode() {
         autoUpdateEnabled = false;
-        this.style.borderColor = '#ffc107'; // Amarillo para indicar edición manual
-        this.style.borderWidth = '2px';
-        // Actualizar badge
+        horaInput.style.borderColor = '#ffc107'; // Amarillo para indicar edición manual
+        horaInput.style.borderWidth = '2px';
         autoUpdateBadge.className = 'badge bg-warning ms-2';
         autoUpdateBadge.innerHTML = '<i class="fas fa-edit"></i> Manual';
-    });
+        autoUpdateBadge.style.cursor = 'pointer';
+        autoUpdateBadge.title = 'Click para activar modo automático';
+    }
 
-    // Re-habilitar auto-actualización con doble clic
-    horaInput.addEventListener('dblclick', function() {
+    // Función para cambiar a modo automático
+    function setAutoMode() {
         autoUpdateEnabled = true;
         updateCurrentTime();
-        this.style.borderColor = '';
-        this.style.borderWidth = '';
-        // Actualizar badge
+        horaInput.style.borderColor = '';
+        horaInput.style.borderWidth = '';
         autoUpdateBadge.className = 'badge bg-success ms-2';
         autoUpdateBadge.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Auto';
+        autoUpdateBadge.style.cursor = 'pointer';
+        autoUpdateBadge.title = 'Click para activar modo manual';
         // Mostrar mensaje temporal
         const msg = document.createElement('small');
         msg.className = 'text-success d-block mt-1';
         msg.innerHTML = '<i class="fas fa-check me-1"></i>Hora sincronizada con reloj actual';
-        this.parentElement.appendChild(msg);
+        horaInput.parentElement.appendChild(msg);
         setTimeout(() => msg.remove(), 2000);
+    }
+
+    // Hacer el badge clickeable para alternar entre modos
+    autoUpdateBadge.style.cursor = 'pointer';
+    autoUpdateBadge.title = 'Click para activar modo manual';
+    autoUpdateBadge.addEventListener('click', function() {
+        if (autoUpdateEnabled) {
+            setManualMode();
+        } else {
+            setAutoMode();
+        }
+    });
+
+    // Deshabilitar auto-actualización cuando el usuario edita manualmente
+    horaInput.addEventListener('focus', function() {
+        setManualMode();
+    });
+
+    // Re-habilitar auto-actualización con doble clic
+    horaInput.addEventListener('dblclick', function() {
+        setAutoMode();
     });
 
     // Inicializar con la hora actual
