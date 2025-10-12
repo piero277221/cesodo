@@ -145,17 +145,24 @@
                                 <label for="hora_consumo" class="form-label fw-bold">
                                     <i class="fas fa-clock me-1 text-primary"></i>
                                     Hora de Consumo *
+                                    <span class="badge bg-success ms-2" id="autoUpdateBadge">
+                                        <i class="fas fa-sync-alt fa-spin"></i> Auto
+                                    </span>
                                 </label>
                                 <input type="time"
                                        name="hora_consumo"
                                        id="hora_consumo"
                                        class="form-control @error('hora_consumo') is-invalid @enderror"
                                        value="{{ old('hora_consumo', date('H:i')) }}"
-                                       required>
+                                       required
+                                       title="Doble clic para sincronizar con hora actual">
                                 @error('hora_consumo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <small class="text-muted">Hora en formato 24 horas</small>
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i>
+                                    Se actualiza automáticamente. Click para editar manualmente. Doble click para re-sincronizar.
+                                </small>
                             </div>
                         </div>
 
@@ -288,6 +295,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualizar vista previa en tiempo real
     form.addEventListener('change', updatePreview);
     form.addEventListener('input', updatePreview);
+
+    // Auto-actualizar hora actual cada segundo
+    const horaInput = document.getElementById('hora_consumo');
+    const autoUpdateBadge = document.getElementById('autoUpdateBadge');
+    let autoUpdateEnabled = true;
+
+    // Función para actualizar la hora automáticamente
+    function updateCurrentTime() {
+        if (autoUpdateEnabled) {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            horaInput.value = `${hours}:${minutes}`;
+        }
+    }
+
+    // Actualizar hora cada segundo
+    setInterval(updateCurrentTime, 1000);
+
+    // Deshabilitar auto-actualización cuando el usuario edita manualmente
+    horaInput.addEventListener('focus', function() {
+        autoUpdateEnabled = false;
+        this.style.borderColor = '#ffc107'; // Amarillo para indicar edición manual
+        this.style.borderWidth = '2px';
+        // Actualizar badge
+        autoUpdateBadge.className = 'badge bg-warning ms-2';
+        autoUpdateBadge.innerHTML = '<i class="fas fa-edit"></i> Manual';
+    });
+
+    // Re-habilitar auto-actualización con doble clic
+    horaInput.addEventListener('dblclick', function() {
+        autoUpdateEnabled = true;
+        updateCurrentTime();
+        this.style.borderColor = '';
+        this.style.borderWidth = '';
+        // Actualizar badge
+        autoUpdateBadge.className = 'badge bg-success ms-2';
+        autoUpdateBadge.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Auto';
+        // Mostrar mensaje temporal
+        const msg = document.createElement('small');
+        msg.className = 'text-success d-block mt-1';
+        msg.innerHTML = '<i class="fas fa-check me-1"></i>Hora sincronizada con reloj actual';
+        this.parentElement.appendChild(msg);
+        setTimeout(() => msg.remove(), 2000);
+    });
+
+    // Inicializar con la hora actual
+    updateCurrentTime();
 
     function updatePreview() {
         const trabajadorSelect = document.getElementById('trabajador_id');
