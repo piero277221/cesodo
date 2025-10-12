@@ -137,8 +137,9 @@ endif;
 unset($__errorArgs, $__bag); ?>"
                                         id="dificultad" name="dificultad" required>
                                     <option value="facil" <?php echo e(old('dificultad') == 'facil' ? 'selected' : ''); ?>>Fácil</option>
-                                    <option value="media" <?php echo e(old('dificultad') == 'media' ? 'selected' : ''); ?>>Media</option>
+                                    <option value="intermedio" <?php echo e(old('dificultad') == 'intermedio' ? 'selected' : ''); ?>>Intermedio</option>
                                     <option value="dificil" <?php echo e(old('dificultad') == 'dificil' ? 'selected' : ''); ?>>Difícil</option>
+                                    <option value="muy_dificil" <?php echo e(old('dificultad') == 'muy_dificil' ? 'selected' : ''); ?>>Muy Difícil</option>
                                 </select>
                                 <?php $__errorArgs = ['dificultad'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
