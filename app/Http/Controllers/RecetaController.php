@@ -189,81 +189,137 @@ class RecetaController extends Controller
         $productos = Producto::where('estado', 'activo')->get();
         $nombresProductos = $productos->pluck('nombre')->toArray();
 
-        // Regex flexible: Capturar cantidades con/sin fracciones, con/sin "de"
-        // Patrones: "4 piernas de pollo", "2 kg arroz", "1/2 taza de agua", "500 g tomate"
-        $regex = '/(\d+[\.,]?\d*|½|⅓|¼|⅔|¾|1\/2|1\/3|1\/4|2\/3|3\/4)\s*(kg|kilogramo|gramos?|g|litros?|l|ml|mililitros?|unidad(es)?|pieza(s)?|cucharada(s)?|cucharadita(s)?|taza(s)?|diente(s)?|pizca(s)?|lb|oz)?\s*(?:de\s+)?([\wáéíóúñ\- ]{3,})/iu';
-        preg_match_all($regex, $texto, $matches, PREG_SET_ORDER);
+        // Tres patrones de regex para capturar diferentes formatos:
+        // Patrón 1: "cantidad unidad/palabra de nombre" (ej: 2 tazas de arroz, 4 piernas de pollo)
+        $regex1 = '/(\d+[\.,]?\d*|½|⅓|¼|⅔|¾|1\/2|1\/3|1\/4|2\/3|3\/4)\s+([\wáéíóúñ\- ]+?)\s+de\s+([\wáéíóúñ\- ]+)/iu';
+        // Patrón 2: "cantidad unidad nombre" con unidades métricas (ej: 2 kg arroz, 500 g tomate)
+        $regex2 = '/(\d+[\.,]?\d*|½|⅓|¼|⅔|¾|1\/2|1\/3|1\/4|2\/3|3\/4)\s+(kg|kilogramo|gramos?|g|litros?|l|ml|mililitros?|lb|oz)\s+([\wáéíóúñ\- ]+)/iu';
+        // Patrón 3: "cantidad palabra palabra" sin "de" para casos como "4 piernas pollo"
+        $regex3 = '/(\d+[\.,]?\d*|½|⅓|¼|⅔|¾|1\/2|1\/3|1\/4|2\/3|3\/4)\s+([\wáéíóúñ]+)\s+([\wáéíóúñ]+)/iu';
 
         $resultados = [];
         $advertencias = [];
         $ingredientesDetectados = []; // Para evitar duplicados
 
-        // Procesar ingredientes con cantidad y unidad
-        foreach ($matches as $m) {
-            // Convertir fracciones a decimales
+        // Primero buscar con patrón 1 (con "de")
+        preg_match_all($regex1, $texto, $matches1, PREG_SET_ORDER);
+        
+        foreach ($matches1 as $m) {
             $cantidadStr = $m[1];
-            if (strpos($cantidadStr, '/') !== false) {
-                list($num, $den) = explode('/', $cantidadStr);
-                $cantidad = floatval($num) / floatval($den);
-            } elseif ($cantidadStr == '½') {
-                $cantidad = 0.5;
-            } elseif ($cantidadStr == '¼') {
-                $cantidad = 0.25;
-            } elseif ($cantidadStr == '¾') {
-                $cantidad = 0.75;
-            } elseif ($cantidadStr == '⅓') {
-                $cantidad = 0.33;
-            } elseif ($cantidadStr == '⅔') {
-                $cantidad = 0.67;
-            } else {
-                $cantidad = floatval(str_replace(',', '.', $cantidadStr));
-            }
-            
-            $unidad = isset($m[2]) && !empty($m[2]) ? strtolower($m[2]) : 'unidad';
+            $unidad = strtolower($m[2]);
             $nombreDetectado = trim($m[3]);
             
-            // Saltar si el nombre detectado es muy genérico o una unidad
-            $nombresGenericos = ['de', 'del', 'la', 'el', 'los', 'las', 'ingrediente', 'ingredientes'];
-            if (strlen($nombreDetectado) < 3 || in_array(mb_strtolower($nombreDetectado), $nombresGenericos)) {
-                continue;
-            }
+            $this->procesarIngrediente($cantidadStr, $unidad, $nombreDetectado, $productos, $nombresProductos, $resultados, $advertencias, $ingredientesDetectados);
+        }
 
-            // Fuzzy search: buscar el producto más parecido
-            $productoEncontrado = null;
-            $maxSimilitud = 0;
-            foreach ($nombresProductos as $nombreProducto) {
-                similar_text(mb_strtolower($nombreDetectado), mb_strtolower($nombreProducto), $similitud);
-                if ($similitud > $maxSimilitud) {
-                    $maxSimilitud = $similitud;
-                    $productoEncontrado = $nombreProducto;
-                }
-            }
+        // Luego buscar con patrón 2 (unidades métricas sin "de")
+        preg_match_all($regex2, $texto, $matches2, PREG_SET_ORDER);
+        
+        foreach ($matches2 as $m) {
+            $cantidadStr = $m[1];
+            $unidad = strtolower($m[2]);
+            $nombreDetectado = trim($m[3]);
             
-            // Considerar coincidencia si similitud > 60% (más flexible aún)
-            if ($maxSimilitud >= 60) {
-                $producto = $productos->firstWhere('nombre', $productoEncontrado);
-                $key = $producto->id;
-                if (!isset($ingredientesDetectados[$key])) {
-                    $resultados[] = [
-                        'producto_id' => $producto->id,
-                        'nombre' => $producto->nombre,
-                        'cantidad' => $cantidad,
-                        'unidad' => $unidad,
-                    ];
-                    $ingredientesDetectados[$key] = true;
-                }
-            } else {
-                // Solo agregar advertencia si el nombre detectado es significativo (más de 5 caracteres)
-                if (strlen($nombreDetectado) > 5) {
-                    $advertencias[] = "Ingrediente no encontrado: $nombreDetectado";
+            // Saltar si ya fue procesado
+            $yaEncontrado = false;
+            foreach ($resultados as $ing) {
+                similar_text(mb_strtolower($ing['nombre']), mb_strtolower($nombreDetectado), $sim);
+                if ($sim > 80) {
+                    $yaEncontrado = true;
+                    break;
                 }
             }
+            if ($yaEncontrado) continue;
+            
+            $this->procesarIngrediente($cantidadStr, $unidad, $nombreDetectado, $productos, $nombresProductos, $resultados, $advertencias, $ingredientesDetectados);
+        }
+
+        // Por último, patrón 3 (formato simple sin "de")
+        preg_match_all($regex3, $texto, $matches3, PREG_SET_ORDER);
+        
+        foreach ($matches3 as $m) {
+            $cantidadStr = $m[1];
+            $unidad = strtolower($m[2]); // Puede ser "taza", "piernas", etc.
+            $nombreDetectado = trim($m[3]);
+            
+            // Saltar si ya fue procesado
+            $yaEncontrado = false;
+            foreach ($resultados as $ing) {
+                $nombreCompleto = $unidad . ' ' . $nombreDetectado;
+                similar_text(mb_strtolower($ing['nombre']), mb_strtolower($nombreDetectado), $sim);
+                similar_text(mb_strtolower($ing['nombre']), mb_strtolower($nombreCompleto), $sim2);
+                if ($sim > 70 || $sim2 > 70) {
+                    $yaEncontrado = true;
+                    break;
+                }
+            }
+            if ($yaEncontrado) continue;
+            
+            $this->procesarIngrediente($cantidadStr, $unidad, $nombreDetectado, $productos, $nombresProductos, $resultados, $advertencias, $ingredientesDetectados);
         }
 
         return response()->json([
             'ingredientes' => $resultados,
             'advertencias' => $advertencias,
         ]);
+    }
+
+    private function procesarIngrediente($cantidadStr, $unidad, $nombreDetectado, $productos, $nombresProductos, &$resultados, &$advertencias, &$ingredientesDetectados)
+    {
+        // Saltar nombres muy genéricos o cortos
+        $nombresGenericos = ['de', 'del', 'la', 'el', 'los', 'las', 'ingrediente', 'ingredientes', 'y', 'o', 'con'];
+        if (strlen($nombreDetectado) < 3 || in_array(mb_strtolower($nombreDetectado), $nombresGenericos)) {
+            return;
+        }
+
+        // Convertir fracciones a decimales
+        if (strpos($cantidadStr, '/') !== false) {
+            list($num, $den) = explode('/', $cantidadStr);
+            $cantidad = floatval($num) / floatval($den);
+        } elseif ($cantidadStr == '½') {
+            $cantidad = 0.5;
+        } elseif ($cantidadStr == '¼') {
+            $cantidad = 0.25;
+        } elseif ($cantidadStr == '¾') {
+            $cantidad = 0.75;
+        } elseif ($cantidadStr == '⅓') {
+            $cantidad = 0.33;
+        } elseif ($cantidadStr == '⅔') {
+            $cantidad = 0.67;
+        } else {
+            $cantidad = floatval(str_replace(',', '.', $cantidadStr));
+        }
+
+        // Fuzzy search: buscar el producto más parecido
+        $productoEncontrado = null;
+        $maxSimilitud = 0;
+        foreach ($nombresProductos as $nombreProducto) {
+            similar_text(mb_strtolower($nombreDetectado), mb_strtolower($nombreProducto), $similitud);
+            if ($similitud > $maxSimilitud) {
+                $maxSimilitud = $similitud;
+                $productoEncontrado = $nombreProducto;
+            }
+        }
+        
+        // Considerar coincidencia si similitud > 55% (muy flexible)
+        if ($maxSimilitud >= 55) {
+            $producto = $productos->firstWhere('nombre', $productoEncontrado);
+            $key = $producto->id;
+            if (!isset($ingredientesDetectados[$key])) {
+                $resultados[] = [
+                    'producto_id' => $producto->id,
+                    'nombre' => $producto->nombre,
+                    'cantidad' => $cantidad,
+                    'unidad' => $unidad,
+                ];
+                $ingredientesDetectados[$key] = true;
+            }
+        } else {
+            // Solo advertencia para nombres significativos
+            if (strlen($nombreDetectado) > 5) {
+                $advertencias[] = "Ingrediente no encontrado: $nombreDetectado";
+            }
+        }
     }
 
 // ...existing code...
