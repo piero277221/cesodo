@@ -1,31 +1,33 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">
             <i class="fas fa-utensils text-primary me-2"></i>
-            {{ $receta->nombre }}
+            <?php echo e($receta->nombre); ?>
+
         </h2>
         <div>
-            <a href="{{ route('recetas.edit', $receta) }}" class="btn btn-warning">
+            <a href="<?php echo e(route('recetas.edit', $receta)); ?>" class="btn btn-warning">
                 <i class="fas fa-edit me-2"></i>
                 Editar
             </a>
-            <a href="{{ route('recetas.index') }}" class="btn btn-secondary">
+            <a href="<?php echo e(route('recetas.index')); ?>" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>
                 Volver al Listado
             </a>
         </div>
     </div>
 
-    @if(session('success'))
+    <?php if(session('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="fas fa-check-circle me-2"></i>
-            {{ session('success') }}
+            <?php echo e(session('success')); ?>
+
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="row">
         <!-- Información Principal -->
@@ -42,39 +44,41 @@
                         <div class="col-md-6 mb-3">
                             <strong><i class="fas fa-bookmark text-primary me-2"></i>Tipo de Plato:</strong>
                             <span class="badge bg-info ms-2">
-                                {{ str_replace('_', ' ', ucfirst($receta->tipo_plato)) }}
+                                <?php echo e(str_replace('_', ' ', ucfirst($receta->tipo_plato))); ?>
+
                             </span>
                         </div>
                         <div class="col-md-6 mb-3">
                             <strong><i class="fas fa-signal text-primary me-2"></i>Dificultad:</strong>
-                            <span class="badge
-                                @if($receta->dificultad == 'facil') bg-success
-                                @elseif($receta->dificultad == 'media' || $receta->dificultad == 'intermedio') bg-warning
-                                @else bg-danger
-                                @endif ms-2">
-                                {{ ucfirst($receta->dificultad) }}
+                            <span class="badge 
+                                <?php if($receta->dificultad == 'facil'): ?> bg-success
+                                <?php elseif($receta->dificultad == 'media' || $receta->dificultad == 'intermedio'): ?> bg-warning
+                                <?php else: ?> bg-danger
+                                <?php endif; ?> ms-2">
+                                <?php echo e(ucfirst($receta->dificultad)); ?>
+
                             </span>
                         </div>
                         <div class="col-md-4 mb-3">
                             <strong><i class="fas fa-clock text-primary me-2"></i>Tiempo:</strong>
-                            <span class="ms-2">{{ $receta->tiempo_preparacion }} min</span>
+                            <span class="ms-2"><?php echo e($receta->tiempo_preparacion); ?> min</span>
                         </div>
                         <div class="col-md-4 mb-3">
                             <strong><i class="fas fa-users text-primary me-2"></i>Porciones:</strong>
-                            <span class="ms-2">{{ $receta->porciones }}</span>
+                            <span class="ms-2"><?php echo e($receta->porciones); ?></span>
                         </div>
                         <div class="col-md-4 mb-3">
                             <strong><i class="fas fa-dollar-sign text-primary me-2"></i>Costo Aproximado:</strong>
-                            <span class="ms-2">S/ {{ number_format($receta->costo_aproximado, 2) }}</span>
+                            <span class="ms-2">S/ <?php echo e(number_format($receta->costo_aproximado, 2)); ?></span>
                         </div>
                     </div>
 
-                    @if($receta->descripcion)
+                    <?php if($receta->descripcion): ?>
                         <div class="mt-3">
                             <strong><i class="fas fa-align-left text-primary me-2"></i>Descripción:</strong>
-                            <p class="mt-2 text-muted">{{ $receta->descripcion }}</p>
+                            <p class="mt-2 text-muted"><?php echo e($receta->descripcion); ?></p>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -83,11 +87,11 @@
                 <div class="card-header bg-success text-white">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>
-                        Ingredientes ({{ $receta->ingredientes->count() }})
+                        Ingredientes (<?php echo e($receta->ingredientes->count()); ?>)
                     </h5>
                 </div>
                 <div class="card-body">
-                    @if($receta->ingredientes->count() > 0)
+                    <?php if($receta->ingredientes->count() > 0): ?>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -99,23 +103,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($receta->ingredientes as $ingrediente)
+                                    <?php $__currentLoopData = $receta->ingredientes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ingrediente): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
                                             <td>
                                                 <i class="fas fa-box text-primary me-2"></i>
-                                                {{ $ingrediente->producto->nombre }}
+                                                <?php echo e($ingrediente->producto->nombre); ?>
+
                                             </td>
-                                            <td>{{ number_format($ingrediente->cantidad, 2) }}</td>
-                                            <td>{{ $ingrediente->unidad_medida }}</td>
-                                            <td>{{ $ingrediente->observaciones ?? '-' }}</td>
+                                            <td><?php echo e(number_format($ingrediente->cantidad, 2)); ?></td>
+                                            <td><?php echo e($ingrediente->unidad_medida); ?></td>
+                                            <td><?php echo e($ingrediente->observaciones ?? '-'); ?></td>
                                         </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
-                    @else
+                    <?php else: ?>
                         <p class="text-muted mb-0">No hay ingredientes registrados.</p>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -128,22 +133,23 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    @if($receta->instrucciones)
+                    <?php if($receta->instrucciones): ?>
                         <div class="recipe-instructions">
-                            {!! nl2br(e($receta->instrucciones)) !!}
+                            <?php echo nl2br(e($receta->instrucciones)); ?>
+
                         </div>
-                    @else
+                    <?php else: ?>
                         <p class="text-muted mb-0">No hay instrucciones registradas.</p>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
             <!-- Pasos de Preparación -->
-            @if($receta->pasos_preparacion)
-                @php
+            <?php if($receta->pasos_preparacion): ?>
+                <?php
                     $pasos = json_decode($receta->pasos_preparacion, true);
-                @endphp
-                @if(is_array($pasos) && count($pasos) > 0)
+                ?>
+                <?php if(is_array($pasos) && count($pasos) > 0): ?>
                     <div class="card mb-4">
                         <div class="card-header bg-info text-white">
                             <h5 class="mb-0">
@@ -153,14 +159,14 @@
                         </div>
                         <div class="card-body">
                             <ol class="list-group list-group-numbered">
-                                @foreach($pasos as $paso)
-                                    <li class="list-group-item">{{ $paso }}</li>
-                                @endforeach
+                                <?php $__currentLoopData = $pasos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $paso): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li class="list-group-item"><?php echo e($paso); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ol>
                         </div>
                     </div>
-                @endif
-            @endif
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
 
         <!-- Panel Lateral -->
@@ -176,32 +182,33 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <strong>Estado:</strong>
-                        <span class="badge {{ $receta->estado == 'activo' ? 'bg-success' : 'bg-secondary' }} ms-2">
-                            {{ ucfirst($receta->estado) }}
+                        <span class="badge <?php echo e($receta->estado == 'activo' ? 'bg-success' : 'bg-secondary'); ?> ms-2">
+                            <?php echo e(ucfirst($receta->estado)); ?>
+
                         </span>
                     </div>
-
-                    @if($receta->createdBy)
+                    
+                    <?php if($receta->createdBy): ?>
                         <div class="mb-3">
                             <strong>Creado por:</strong>
-                            <p class="mb-0 text-muted">{{ $receta->createdBy->name }}</p>
+                            <p class="mb-0 text-muted"><?php echo e($receta->createdBy->name); ?></p>
                         </div>
-                    @endif
+                    <?php endif; ?>
 
                     <div class="mb-3">
                         <strong>Fecha de creación:</strong>
-                        <p class="mb-0 text-muted">{{ $receta->created_at->format('d/m/Y H:i') }}</p>
+                        <p class="mb-0 text-muted"><?php echo e($receta->created_at->format('d/m/Y H:i')); ?></p>
                     </div>
 
                     <div>
                         <strong>Última actualización:</strong>
-                        <p class="mb-0 text-muted">{{ $receta->updated_at->format('d/m/Y H:i') }}</p>
+                        <p class="mb-0 text-muted"><?php echo e($receta->updated_at->format('d/m/Y H:i')); ?></p>
                     </div>
                 </div>
             </div>
 
             <!-- Notas Adicionales -->
-            @if($receta->notas)
+            <?php if($receta->notas): ?>
                 <div class="card mb-4">
                     <div class="card-header bg-secondary text-white">
                         <h5 class="mb-0">
@@ -210,13 +217,13 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <p class="mb-0">{{ $receta->notas }}</p>
+                        <p class="mb-0"><?php echo e($receta->notas); ?></p>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Ingredientes Especiales -->
-            @if($receta->ingredientes_especiales)
+            <?php if($receta->ingredientes_especiales): ?>
                 <div class="card mb-4">
                     <div class="card-header bg-warning text-dark">
                         <h5 class="mb-0">
@@ -225,10 +232,10 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <p class="mb-0">{{ $receta->ingredientes_especiales }}</p>
+                        <p class="mb-0"><?php echo e($receta->ingredientes_especiales); ?></p>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Acciones -->
             <div class="card">
@@ -239,10 +246,10 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('recetas.destroy', $receta) }}" method="POST"
+                    <form action="<?php echo e(route('recetas.destroy', $receta)); ?>" method="POST" 
                           onsubmit="return confirm('¿Estás seguro de eliminar esta receta?');">
-                        @csrf
-                        @method('DELETE')
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('DELETE'); ?>
                         <button type="submit" class="btn btn-danger w-100">
                             <i class="fas fa-trash me-2"></i>
                             Eliminar Receta
@@ -289,4 +296,6 @@
     font-size: 0.875rem;
 }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/recetas/show.blade.php ENDPATH**/ ?>
