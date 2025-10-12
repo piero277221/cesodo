@@ -163,7 +163,7 @@ class MenuController extends Controller
         ];
 
         // Obtener productos para el formulario
-        $productos = Producto::with(['inventarios'])
+        $productos = Producto::with(['inventario'])
                              ->orderBy('nombre')
                              ->get();
 
@@ -376,7 +376,7 @@ class MenuController extends Controller
                          ->groupBy('tipo_plato');
 
         // Obtener todos los productos para los selects
-        $productos = Producto::with('inventarios')
+        $productos = Producto::with('inventario')
                              ->orderBy('nombre')
                              ->get();
 
