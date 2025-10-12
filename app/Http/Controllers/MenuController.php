@@ -44,8 +44,10 @@ class MenuController extends Controller
             $consumo = new \App\Models\Consumo([
                 'menu_id' => $menu->id,
                 'cantidad' => $request->cantidad,
-                'notas' => $request->notas,
-                'created_by' => Auth::id()
+                'observaciones' => $request->notas,
+                'user_id' => Auth::id(),
+                'fecha_consumo' => now()->toDateString(),
+                'hora_consumo' => now()->toTimeString(),
             ]);
             $consumo->save();
 
