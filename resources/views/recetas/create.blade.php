@@ -246,14 +246,16 @@
                                 <label for="costo_aproximado" class="form-label">Costo Aproximado *</label>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
-                                        <select class="form-select producto-select" name="ingredientes[${idx}][producto_id]" required>${productosOptions}</select>
+                                    <input type="number" class="form-control" id="costo_aproximado" name="costo_aproximado"
                                            value="{{ old('costo_aproximado', '0.00') }}"
-                                           step="0.01" min="0" max="9999.99" required>
+                                           step="0.01" min="0" max="9999.99" required readonly>
                                     @error('costo_aproximado')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <small class="text-muted">Este campo se calcula automáticamente según los ingredientes seleccionados</small>
                             </div>
+                        </div>
                         <!-- Botón Guardar Receta debajo de Costo Aproximado -->
                         <div class="d-flex justify-content-end gap-2 mt-3">
                             <button type="submit" class="btn btn-primary">
@@ -389,6 +391,11 @@ $(document).ready(function() {
 
     // Actualizar costos cuando cambia una cantidad
     $(document).on('input', '.cantidad-input', function() {
+        actualizarCostos();
+    });
+
+    // Actualizar costos cuando cambian las porciones
+    $('#porciones').on('input change', function() {
         actualizarCostos();
     });
 
