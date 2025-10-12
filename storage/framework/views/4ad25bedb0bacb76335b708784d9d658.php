@@ -26,9 +26,9 @@
 
                 <!-- Stock bajo -->
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
-                    <input class="form-check-input" type="checkbox" id="email_stock_bajo" name="email_stock_bajo"
+                    <input class="form-check-input" type="checkbox" id="email_stock_bajo" name="email_stock_bajo" 
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('email_stock_bajo', $settings['email_stock_bajo'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('email_stock_bajo', $settings['email_stock_bajo'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="email_stock_bajo" style="cursor: pointer;">
                         <i class="bi bi-box-seam text-warning me-2"></i>
                         <strong>Stock Bajo</strong>
@@ -40,7 +40,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="email_productos_vencidos" name="email_productos_vencidos"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('email_productos_vencidos', $settings['email_productos_vencidos'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('email_productos_vencidos', $settings['email_productos_vencidos'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="email_productos_vencidos" style="cursor: pointer;">
                         <i class="bi bi-calendar-x text-danger me-2"></i>
                         <strong>Productos por Vencer</strong>
@@ -52,7 +52,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="email_nuevos_pedidos" name="email_nuevos_pedidos"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('email_nuevos_pedidos', $settings['email_nuevos_pedidos'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('email_nuevos_pedidos', $settings['email_nuevos_pedidos'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="email_nuevos_pedidos" style="cursor: pointer;">
                         <i class="bi bi-cart-check text-success me-2"></i>
                         <strong>Nuevos Pedidos</strong>
@@ -64,7 +64,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="email_certificados_medicos" name="email_certificados_medicos"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('email_certificados_medicos', $settings['email_certificados_medicos'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('email_certificados_medicos', $settings['email_certificados_medicos'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="email_certificados_medicos" style="cursor: pointer;">
                         <i class="bi bi-file-earmark-medical text-primary me-2"></i>
                         <strong>Certificados Médicos</strong>
@@ -78,9 +78,9 @@
                         <i class="bi bi-at me-1"></i>
                         Email de Notificaciones
                     </label>
-                    <input type="email" class="form-control form-control-lg" id="email_notificaciones"
-                           name="email_notificaciones"
-                           value="{{ old('email_notificaciones', $settings['email_notificaciones'] ?? '') }}"
+                    <input type="email" class="form-control form-control-lg" id="email_notificaciones" 
+                           name="email_notificaciones" 
+                           value="<?php echo e(old('email_notificaciones', $settings['email_notificaciones'] ?? '')); ?>"
                            placeholder="admin@ejemplo.com">
                     <small class="text-muted">
                         <i class="bi bi-info-circle me-1"></i>
@@ -110,7 +110,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="sistema_alertas_stock" name="sistema_alertas_stock"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('sistema_alertas_stock', $settings['sistema_alertas_stock'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('sistema_alertas_stock', $settings['sistema_alertas_stock'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="sistema_alertas_stock" style="cursor: pointer;">
                         <i class="bi bi-exclamation-triangle text-warning me-2"></i>
                         <strong>Alertas de Stock en Dashboard</strong>
@@ -122,7 +122,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="sistema_productos_vencer" name="sistema_productos_vencer"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('sistema_productos_vencer', $settings['sistema_productos_vencer'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('sistema_productos_vencer', $settings['sistema_productos_vencer'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="sistema_productos_vencer" style="cursor: pointer;">
                         <i class="bi bi-calendar-event text-danger me-2"></i>
                         <strong>Productos por Vencer</strong>
@@ -134,7 +134,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="sistema_pedidos_pendientes" name="sistema_pedidos_pendientes"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('sistema_pedidos_pendientes', $settings['sistema_pedidos_pendientes'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('sistema_pedidos_pendientes', $settings['sistema_pedidos_pendientes'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="sistema_pedidos_pendientes" style="cursor: pointer;">
                         <i class="bi bi-clipboard-check text-info me-2"></i>
                         <strong>Pedidos Pendientes</strong>
@@ -146,7 +146,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="sistema_sonido_notificaciones" name="sistema_sonido_notificaciones"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('sistema_sonido_notificaciones', $settings['sistema_sonido_notificaciones'] ?? false) ? 'checked' : '' }}>
+                           <?php echo e(old('sistema_sonido_notificaciones', $settings['sistema_sonido_notificaciones'] ?? false) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="sistema_sonido_notificaciones" style="cursor: pointer;">
                         <i class="bi bi-volume-up text-primary me-2"></i>
                         <strong>Sonido en Notificaciones</strong>
@@ -160,9 +160,9 @@
                         <i class="bi bi-clock me-1"></i>
                         Duración de Notificaciones (segundos)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="duracion_notificaciones"
-                           name="duracion_notificaciones"
-                           value="{{ old('duracion_notificaciones', $settings['duracion_notificaciones'] ?? 5) }}"
+                    <input type="number" class="form-control form-control-lg" id="duracion_notificaciones" 
+                           name="duracion_notificaciones" 
+                           value="<?php echo e(old('duracion_notificaciones', $settings['duracion_notificaciones'] ?? 5)); ?>"
                            min="3" max="15" step="1">
                     <small class="text-muted">
                         <i class="bi bi-info-circle me-1"></i>
@@ -198,9 +198,9 @@
                                 <i class="bi bi-calendar-x text-danger me-2"></i>
                                 Productos por Vencer
                             </label>
-                            <input type="number" class="form-control" id="dias_aviso_vencimiento"
-                                   name="dias_aviso_vencimiento"
-                                   value="{{ old('dias_aviso_vencimiento', $settings['dias_aviso_vencimiento'] ?? 7) }}"
+                            <input type="number" class="form-control" id="dias_aviso_vencimiento" 
+                                   name="dias_aviso_vencimiento" 
+                                   value="<?php echo e(old('dias_aviso_vencimiento', $settings['dias_aviso_vencimiento'] ?? 7)); ?>"
                                    min="1" max="30">
                             <small class="text-muted">Días antes del vencimiento</small>
                         </div>
@@ -213,9 +213,9 @@
                                 <i class="bi bi-box-seam text-warning me-2"></i>
                                 Stock Mínimo
                             </label>
-                            <input type="number" class="form-control" id="stock_minimo_alerta"
-                                   name="stock_minimo_alerta"
-                                   value="{{ old('stock_minimo_alerta', $settings['stock_minimo_alerta'] ?? 10) }}"
+                            <input type="number" class="form-control" id="stock_minimo_alerta" 
+                                   name="stock_minimo_alerta" 
+                                   value="<?php echo e(old('stock_minimo_alerta', $settings['stock_minimo_alerta'] ?? 10)); ?>"
                                    min="1" max="100">
                             <small class="text-muted">Cantidad mínima de alerta</small>
                         </div>
@@ -228,9 +228,9 @@
                                 <i class="bi bi-file-earmark-medical text-primary me-2"></i>
                                 Certificados Médicos
                             </label>
-                            <input type="number" class="form-control" id="dias_aviso_certificados"
-                                   name="dias_aviso_certificados"
-                                   value="{{ old('dias_aviso_certificados', $settings['dias_aviso_certificados'] ?? 5) }}"
+                            <input type="number" class="form-control" id="dias_aviso_certificados" 
+                                   name="dias_aviso_certificados" 
+                                   value="<?php echo e(old('dias_aviso_certificados', $settings['dias_aviso_certificados'] ?? 5)); ?>"
                                    min="1" max="15">
                             <small class="text-muted">Días antes del vencimiento</small>
                         </div>
@@ -263,8 +263,8 @@
                             <i class="bi bi-server me-1"></i>
                             Servidor SMTP
                         </label>
-                        <input type="text" class="form-control" id="smtp_host" name="smtp_host"
-                               value="{{ old('smtp_host', $settings['smtp_host'] ?? 'smtp.gmail.com') }}"
+                        <input type="text" class="form-control" id="smtp_host" name="smtp_host" 
+                               value="<?php echo e(old('smtp_host', $settings['smtp_host'] ?? 'smtp.gmail.com')); ?>"
                                placeholder="smtp.gmail.com">
                         <small class="text-muted">Ejemplo: smtp.gmail.com, smtp.office365.com</small>
                     </div>
@@ -274,8 +274,8 @@
                             <i class="bi bi-diagram-3 me-1"></i>
                             Puerto SMTP
                         </label>
-                        <input type="number" class="form-control" id="smtp_port" name="smtp_port"
-                               value="{{ old('smtp_port', $settings['smtp_port'] ?? 587) }}"
+                        <input type="number" class="form-control" id="smtp_port" name="smtp_port" 
+                               value="<?php echo e(old('smtp_port', $settings['smtp_port'] ?? 587)); ?>"
                                placeholder="587">
                         <small class="text-muted">Común: 587 (TLS) o 465 (SSL)</small>
                     </div>
@@ -285,8 +285,8 @@
                             <i class="bi bi-person-circle me-1"></i>
                             Usuario SMTP
                         </label>
-                        <input type="email" class="form-control" id="smtp_usuario" name="smtp_usuario"
-                               value="{{ old('smtp_usuario', $settings['smtp_usuario'] ?? '') }}"
+                        <input type="email" class="form-control" id="smtp_usuario" name="smtp_usuario" 
+                               value="<?php echo e(old('smtp_usuario', $settings['smtp_usuario'] ?? '')); ?>"
                                placeholder="tu-email@ejemplo.com">
                     </div>
 
@@ -295,8 +295,8 @@
                             <i class="bi bi-key me-1"></i>
                             Contraseña SMTP
                         </label>
-                        <input type="password" class="form-control" id="smtp_password" name="smtp_password"
-                               value="{{ old('smtp_password', $settings['smtp_password'] ?? '') }}"
+                        <input type="password" class="form-control" id="smtp_password" name="smtp_password" 
+                               value="<?php echo e(old('smtp_password', $settings['smtp_password'] ?? '')); ?>"
                                placeholder="••••••••">
                         <small class="text-muted">
                             <i class="bi bi-shield-check me-1"></i>
@@ -310,8 +310,8 @@
                             Encriptación
                         </label>
                         <select class="form-select" id="smtp_encryption" name="smtp_encryption">
-                            <option value="tls" {{ old('smtp_encryption', $settings['smtp_encryption'] ?? 'tls') == 'tls' ? 'selected' : '' }}>TLS</option>
-                            <option value="ssl" {{ old('smtp_encryption', $settings['smtp_encryption'] ?? 'tls') == 'ssl' ? 'selected' : '' }}>SSL</option>
+                            <option value="tls" <?php echo e(old('smtp_encryption', $settings['smtp_encryption'] ?? 'tls') == 'tls' ? 'selected' : ''); ?>>TLS</option>
+                            <option value="ssl" <?php echo e(old('smtp_encryption', $settings['smtp_encryption'] ?? 'tls') == 'ssl' ? 'selected' : ''); ?>>SSL</option>
                         </select>
                     </div>
 
@@ -320,8 +320,8 @@
                             <i class="bi bi-tag me-1"></i>
                             Nombre del Remitente
                         </label>
-                        <input type="text" class="form-control" id="smtp_from_name" name="smtp_from_name"
-                               value="{{ old('smtp_from_name', $settings['smtp_from_name'] ?? 'Sistema CESODO') }}"
+                        <input type="text" class="form-control" id="smtp_from_name" name="smtp_from_name" 
+                               value="<?php echo e(old('smtp_from_name', $settings['smtp_from_name'] ?? 'Sistema CESODO')); ?>"
                                placeholder="Sistema CESODO">
                     </div>
                 </div>
@@ -369,13 +369,14 @@ function testEmailConfig() {
     const smtp_port = document.getElementById('smtp_port').value;
     const smtp_usuario = document.getElementById('smtp_usuario').value;
     const smtp_password = document.getElementById('smtp_password').value;
-
+    
     if (!smtp_host || !smtp_port || !smtp_usuario || !smtp_password) {
         alert('Por favor completa todos los campos de configuración SMTP antes de probar.');
         return;
     }
-
+    
     // Aquí puedes implementar una llamada AJAX para probar la configuración
     alert('Función de prueba de email en desarrollo.\nPor ahora, guarda la configuración y el sistema intentará enviar emails con estos datos.');
 }
 </script>
+<?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/configuraciones/tabs/notificaciones.blade.php ENDPATH**/ ?>

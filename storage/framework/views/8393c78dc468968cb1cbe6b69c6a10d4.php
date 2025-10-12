@@ -31,13 +31,13 @@
                         Zona Horaria
                     </label>
                     <select class="form-select form-select-lg" id="timezone" name="timezone">
-                        <option value="America/Lima" {{ old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Lima' ? 'selected' : '' }}>Lima (UTC-5)</option>
-                        <option value="America/New_York" {{ old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/New_York' ? 'selected' : '' }}>New York (UTC-5)</option>
-                        <option value="America/Mexico_City" {{ old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Mexico_City' ? 'selected' : '' }}>Ciudad de México (UTC-6)</option>
-                        <option value="America/Bogota" {{ old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Bogota' ? 'selected' : '' }}>Bogotá (UTC-5)</option>
-                        <option value="America/Santiago" {{ old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Santiago' ? 'selected' : '' }}>Santiago (UTC-4)</option>
-                        <option value="America/Buenos_Aires" {{ old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Buenos_Aires' ? 'selected' : '' }}>Buenos Aires (UTC-3)</option>
-                        <option value="Europe/Madrid" {{ old('timezone', $settings['timezone'] ?? 'America/Lima') == 'Europe/Madrid' ? 'selected' : '' }}>Madrid (UTC+1)</option>
+                        <option value="America/Lima" <?php echo e(old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Lima' ? 'selected' : ''); ?>>Lima (UTC-5)</option>
+                        <option value="America/New_York" <?php echo e(old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/New_York' ? 'selected' : ''); ?>>New York (UTC-5)</option>
+                        <option value="America/Mexico_City" <?php echo e(old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Mexico_City' ? 'selected' : ''); ?>>Ciudad de México (UTC-6)</option>
+                        <option value="America/Bogota" <?php echo e(old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Bogota' ? 'selected' : ''); ?>>Bogotá (UTC-5)</option>
+                        <option value="America/Santiago" <?php echo e(old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Santiago' ? 'selected' : ''); ?>>Santiago (UTC-4)</option>
+                        <option value="America/Buenos_Aires" <?php echo e(old('timezone', $settings['timezone'] ?? 'America/Lima') == 'America/Buenos_Aires' ? 'selected' : ''); ?>>Buenos Aires (UTC-3)</option>
+                        <option value="Europe/Madrid" <?php echo e(old('timezone', $settings['timezone'] ?? 'America/Lima') == 'Europe/Madrid' ? 'selected' : ''); ?>>Madrid (UTC+1)</option>
                     </select>
                     <small class="text-muted">
                         <i class="bi bi-globe me-1"></i>
@@ -52,8 +52,8 @@
                         Idioma del Sistema
                     </label>
                     <select class="form-select form-select-lg" id="language" name="language">
-                        <option value="es" {{ old('language', $settings['language'] ?? 'es') == 'es' ? 'selected' : '' }}>Español</option>
-                        <option value="en" {{ old('language', $settings['language'] ?? 'es') == 'en' ? 'selected' : '' }}>English</option>
+                        <option value="es" <?php echo e(old('language', $settings['language'] ?? 'es') == 'es' ? 'selected' : ''); ?>>Español</option>
+                        <option value="en" <?php echo e(old('language', $settings['language'] ?? 'es') == 'en' ? 'selected' : ''); ?>>English</option>
                     </select>
                     <small class="text-muted">
                         <i class="bi bi-chat-square-text me-1"></i>
@@ -68,10 +68,10 @@
                         Formato de Fecha
                     </label>
                     <select class="form-select form-select-lg" id="date_format" name="date_format">
-                        <option value="d/m/Y" {{ old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'd/m/Y' ? 'selected' : '' }}>DD/MM/YYYY (25/12/2025)</option>
-                        <option value="Y-m-d" {{ old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'Y-m-d' ? 'selected' : '' }}>YYYY-MM-DD (2025-12-25)</option>
-                        <option value="m/d/Y" {{ old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'm/d/Y' ? 'selected' : '' }}>MM/DD/YYYY (12/25/2025)</option>
-                        <option value="d-m-Y" {{ old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'd-m-Y' ? 'selected' : '' }}>DD-MM-YYYY (25-12-2025)</option>
+                        <option value="d/m/Y" <?php echo e(old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'd/m/Y' ? 'selected' : ''); ?>>DD/MM/YYYY (25/12/2025)</option>
+                        <option value="Y-m-d" <?php echo e(old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'Y-m-d' ? 'selected' : ''); ?>>YYYY-MM-DD (2025-12-25)</option>
+                        <option value="m/d/Y" <?php echo e(old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'm/d/Y' ? 'selected' : ''); ?>>MM/DD/YYYY (12/25/2025)</option>
+                        <option value="d-m-Y" <?php echo e(old('date_format', $settings['date_format'] ?? 'd/m/Y') == 'd-m-Y' ? 'selected' : ''); ?>>DD-MM-YYYY (25-12-2025)</option>
                     </select>
                     <small class="text-muted">
                         <i class="bi bi-calendar-check me-1"></i>
@@ -86,13 +86,13 @@
                         Moneda del Sistema
                     </label>
                     <select class="form-select form-select-lg" id="currency" name="currency">
-                        <option value="PEN" {{ old('currency', $settings['currency'] ?? 'PEN') == 'PEN' ? 'selected' : '' }}>Soles Peruanos (S/)</option>
-                        <option value="USD" {{ old('currency', $settings['currency'] ?? 'PEN') == 'USD' ? 'selected' : '' }}>Dólares (USD $)</option>
-                        <option value="EUR" {{ old('currency', $settings['currency'] ?? 'PEN') == 'EUR' ? 'selected' : '' }}>Euros (EUR €)</option>
-                        <option value="MXN" {{ old('currency', $settings['currency'] ?? 'PEN') == 'MXN' ? 'selected' : '' }}>Pesos Mexicanos (MXN $)</option>
-                        <option value="COP" {{ old('currency', $settings['currency'] ?? 'PEN') == 'COP' ? 'selected' : '' }}>Pesos Colombianos (COP $)</option>
-                        <option value="CLP" {{ old('currency', $settings['currency'] ?? 'PEN') == 'CLP' ? 'selected' : '' }}>Pesos Chilenos (CLP $)</option>
-                        <option value="ARS" {{ old('currency', $settings['currency'] ?? 'PEN') == 'ARS' ? 'selected' : '' }}>Pesos Argentinos (ARS $)</option>
+                        <option value="PEN" <?php echo e(old('currency', $settings['currency'] ?? 'PEN') == 'PEN' ? 'selected' : ''); ?>>Soles Peruanos (S/)</option>
+                        <option value="USD" <?php echo e(old('currency', $settings['currency'] ?? 'PEN') == 'USD' ? 'selected' : ''); ?>>Dólares (USD $)</option>
+                        <option value="EUR" <?php echo e(old('currency', $settings['currency'] ?? 'PEN') == 'EUR' ? 'selected' : ''); ?>>Euros (EUR €)</option>
+                        <option value="MXN" <?php echo e(old('currency', $settings['currency'] ?? 'PEN') == 'MXN' ? 'selected' : ''); ?>>Pesos Mexicanos (MXN $)</option>
+                        <option value="COP" <?php echo e(old('currency', $settings['currency'] ?? 'PEN') == 'COP' ? 'selected' : ''); ?>>Pesos Colombianos (COP $)</option>
+                        <option value="CLP" <?php echo e(old('currency', $settings['currency'] ?? 'PEN') == 'CLP' ? 'selected' : ''); ?>>Pesos Chilenos (CLP $)</option>
+                        <option value="ARS" <?php echo e(old('currency', $settings['currency'] ?? 'PEN') == 'ARS' ? 'selected' : ''); ?>>Pesos Argentinos (ARS $)</option>
                     </select>
                     <small class="text-muted">
                         <i class="bi bi-cash-coin me-1"></i>
@@ -104,7 +104,7 @@
                 <div class="form-check form-switch p-3 mb-3" style="background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
                     <input class="form-check-input" type="checkbox" id="maintenance_mode" name="maintenance_mode"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('maintenance_mode', $settings['maintenance_mode'] ?? false) ? 'checked' : '' }}>
+                           <?php echo e(old('maintenance_mode', $settings['maintenance_mode'] ?? false) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="maintenance_mode" style="cursor: pointer;">
                         <i class="bi bi-cone-striped text-warning me-2"></i>
                         <strong>Modo Mantenimiento</strong>
@@ -136,9 +136,9 @@
                         <i class="bi bi-clock-history text-danger me-2"></i>
                         Timeout de Sesión (minutos)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="session_timeout"
-                           name="session_timeout"
-                           value="{{ old('session_timeout', $settings['session_timeout'] ?? 120) }}"
+                    <input type="number" class="form-control form-control-lg" id="session_timeout" 
+                           name="session_timeout" 
+                           value="<?php echo e(old('session_timeout', $settings['session_timeout'] ?? 120)); ?>"
                            min="5" max="1440" step="5">
                     <small class="text-muted">
                         <i class="bi bi-hourglass-split me-1"></i>
@@ -152,9 +152,9 @@
                         <i class="bi bi-shield-lock text-warning me-2"></i>
                         Intentos Máximos de Login
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="max_login_attempts"
-                           name="max_login_attempts"
-                           value="{{ old('max_login_attempts', $settings['max_login_attempts'] ?? 5) }}"
+                    <input type="number" class="form-control form-control-lg" id="max_login_attempts" 
+                           name="max_login_attempts" 
+                           value="<?php echo e(old('max_login_attempts', $settings['max_login_attempts'] ?? 5)); ?>"
                            min="3" max="10" step="1">
                     <small class="text-muted">
                         <i class="bi bi-lock me-1"></i>
@@ -168,9 +168,9 @@
                         <i class="bi bi-ban text-danger me-2"></i>
                         Duración del Bloqueo (minutos)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="lockout_duration"
-                           name="lockout_duration"
-                           value="{{ old('lockout_duration', $settings['lockout_duration'] ?? 15) }}"
+                    <input type="number" class="form-control form-control-lg" id="lockout_duration" 
+                           name="lockout_duration" 
+                           value="<?php echo e(old('lockout_duration', $settings['lockout_duration'] ?? 15)); ?>"
                            min="5" max="60" step="5">
                     <small class="text-muted">
                         <i class="bi bi-stopwatch me-1"></i>
@@ -184,9 +184,9 @@
                         <i class="bi bi-file-earmark-arrow-up text-primary me-2"></i>
                         Tamaño Máximo de Archivo (MB)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="max_upload_size"
-                           name="max_upload_size"
-                           value="{{ old('max_upload_size', $settings['max_upload_size'] ?? 10) }}"
+                    <input type="number" class="form-control form-control-lg" id="max_upload_size" 
+                           name="max_upload_size" 
+                           value="<?php echo e(old('max_upload_size', $settings['max_upload_size'] ?? 10)); ?>"
                            min="1" max="50" step="1">
                     <small class="text-muted">
                         <i class="bi bi-cloud-upload me-1"></i>
@@ -201,10 +201,10 @@
                         Registros por Página
                     </label>
                     <select class="form-select form-select-lg" id="records_per_page" name="records_per_page">
-                        <option value="10" {{ old('records_per_page', $settings['records_per_page'] ?? 25) == 10 ? 'selected' : '' }}>10 registros</option>
-                        <option value="25" {{ old('records_per_page', $settings['records_per_page'] ?? 25) == 25 ? 'selected' : '' }}>25 registros</option>
-                        <option value="50" {{ old('records_per_page', $settings['records_per_page'] ?? 25) == 50 ? 'selected' : '' }}>50 registros</option>
-                        <option value="100" {{ old('records_per_page', $settings['records_per_page'] ?? 25) == 100 ? 'selected' : '' }}>100 registros</option>
+                        <option value="10" <?php echo e(old('records_per_page', $settings['records_per_page'] ?? 25) == 10 ? 'selected' : ''); ?>>10 registros</option>
+                        <option value="25" <?php echo e(old('records_per_page', $settings['records_per_page'] ?? 25) == 25 ? 'selected' : ''); ?>>25 registros</option>
+                        <option value="50" <?php echo e(old('records_per_page', $settings['records_per_page'] ?? 25) == 50 ? 'selected' : ''); ?>>50 registros</option>
+                        <option value="100" <?php echo e(old('records_per_page', $settings['records_per_page'] ?? 25) == 100 ? 'selected' : ''); ?>>100 registros</option>
                     </select>
                     <small class="text-muted">
                         <i class="bi bi-table me-1"></i>
@@ -236,7 +236,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="require_strong_password" name="require_strong_password"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('require_strong_password', $settings['require_strong_password'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('require_strong_password', $settings['require_strong_password'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="require_strong_password" style="cursor: pointer;">
                         <i class="bi bi-key-fill text-success me-2"></i>
                         <strong>Requerir Contraseña Fuerte</strong>
@@ -248,7 +248,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="two_factor_auth" name="two_factor_auth"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('two_factor_auth', $settings['two_factor_auth'] ?? false) ? 'checked' : '' }}>
+                           <?php echo e(old('two_factor_auth', $settings['two_factor_auth'] ?? false) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="two_factor_auth" style="cursor: pointer;">
                         <i class="bi bi-phone-vibrate text-primary me-2"></i>
                         <strong>Autenticación de Dos Factores (2FA)</strong>
@@ -260,7 +260,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="activity_log" name="activity_log"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('activity_log', $settings['activity_log'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('activity_log', $settings['activity_log'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="activity_log" style="cursor: pointer;">
                         <i class="bi bi-journal-text text-info me-2"></i>
                         <strong>Registro de Actividad</strong>
@@ -274,9 +274,9 @@
                         <i class="bi bi-calendar-x text-warning me-2"></i>
                         Expiración de Contraseña (días)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="password_expiry_days"
-                           name="password_expiry_days"
-                           value="{{ old('password_expiry_days', $settings['password_expiry_days'] ?? 0) }}"
+                    <input type="number" class="form-control form-control-lg" id="password_expiry_days" 
+                           name="password_expiry_days" 
+                           value="<?php echo e(old('password_expiry_days', $settings['password_expiry_days'] ?? 0)); ?>"
                            min="0" max="365" step="30">
                     <small class="text-muted">
                         <i class="bi bi-arrow-clockwise me-1"></i>
@@ -306,7 +306,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="auto_backup" name="auto_backup"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('auto_backup', $settings['auto_backup'] ?? false) ? 'checked' : '' }}>
+                           <?php echo e(old('auto_backup', $settings['auto_backup'] ?? false) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="auto_backup" style="cursor: pointer;">
                         <i class="bi bi-cloud-arrow-up text-primary me-2"></i>
                         <strong>Backup Automático</strong>
@@ -321,9 +321,9 @@
                         Frecuencia de Backup
                     </label>
                     <select class="form-select form-select-lg" id="backup_frequency" name="backup_frequency">
-                        <option value="daily" {{ old('backup_frequency', $settings['backup_frequency'] ?? 'weekly') == 'daily' ? 'selected' : '' }}>Diario</option>
-                        <option value="weekly" {{ old('backup_frequency', $settings['backup_frequency'] ?? 'weekly') == 'weekly' ? 'selected' : '' }}>Semanal</option>
-                        <option value="monthly" {{ old('backup_frequency', $settings['backup_frequency'] ?? 'weekly') == 'monthly' ? 'selected' : '' }}>Mensual</option>
+                        <option value="daily" <?php echo e(old('backup_frequency', $settings['backup_frequency'] ?? 'weekly') == 'daily' ? 'selected' : ''); ?>>Diario</option>
+                        <option value="weekly" <?php echo e(old('backup_frequency', $settings['backup_frequency'] ?? 'weekly') == 'weekly' ? 'selected' : ''); ?>>Semanal</option>
+                        <option value="monthly" <?php echo e(old('backup_frequency', $settings['backup_frequency'] ?? 'weekly') == 'monthly' ? 'selected' : ''); ?>>Mensual</option>
                     </select>
                 </div>
 
@@ -333,9 +333,9 @@
                         <i class="bi bi-archive text-warning me-2"></i>
                         Retención de Backups (días)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="backup_retention_days"
-                           name="backup_retention_days"
-                           value="{{ old('backup_retention_days', $settings['backup_retention_days'] ?? 30) }}"
+                    <input type="number" class="form-control form-control-lg" id="backup_retention_days" 
+                           name="backup_retention_days" 
+                           value="<?php echo e(old('backup_retention_days', $settings['backup_retention_days'] ?? 30)); ?>"
                            min="7" max="365" step="7">
                     <small class="text-muted">
                         <i class="bi bi-trash me-1"></i>
@@ -347,7 +347,7 @@
                 <div class="form-check form-switch mb-3 p-3" style="background: #f8f9fa; border-radius: 8px;">
                     <input class="form-check-input" type="checkbox" id="auto_clean_logs" name="auto_clean_logs"
                            style="width: 3em; height: 1.5em; cursor: pointer;"
-                           {{ old('auto_clean_logs', $settings['auto_clean_logs'] ?? true) ? 'checked' : '' }}>
+                           <?php echo e(old('auto_clean_logs', $settings['auto_clean_logs'] ?? true) ? 'checked' : ''); ?>>
                     <label class="form-check-label ms-2" for="auto_clean_logs" style="cursor: pointer;">
                         <i class="bi bi-trash3 text-danger me-2"></i>
                         <strong>Limpieza Automática de Logs</strong>
@@ -361,9 +361,9 @@
                         <i class="bi bi-calendar3 text-info me-2"></i>
                         Retención de Logs (días)
                     </label>
-                    <input type="number" class="form-control form-control-lg" id="log_retention_days"
-                           name="log_retention_days"
-                           value="{{ old('log_retention_days', $settings['log_retention_days'] ?? 30) }}"
+                    <input type="number" class="form-control form-control-lg" id="log_retention_days" 
+                           name="log_retention_days" 
+                           value="<?php echo e(old('log_retention_days', $settings['log_retention_days'] ?? 30)); ?>"
                            min="7" max="180" step="7">
                     <small class="text-muted">
                         <i class="bi bi-file-earmark-text me-1"></i>
@@ -396,28 +396,28 @@
                         <div class="p-3 text-center" style="background: #f8f9fa; border-radius: 8px;">
                             <i class="bi bi-code-square text-primary" style="font-size: 2rem;"></i>
                             <h6 class="mt-2 mb-0">Versión</h6>
-                            <p class="text-muted mb-0">{{ config('app.version', '1.0.0') }}</p>
+                            <p class="text-muted mb-0"><?php echo e(config('app.version', '1.0.0')); ?></p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="p-3 text-center" style="background: #f8f9fa; border-radius: 8px;">
                             <i class="bi bi-hdd-stack text-success" style="font-size: 2rem;"></i>
                             <h6 class="mt-2 mb-0">Base de Datos</h6>
-                            <p class="text-muted mb-0">{{ config('database.default', 'mysql') }}</p>
+                            <p class="text-muted mb-0"><?php echo e(config('database.default', 'mysql')); ?></p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="p-3 text-center" style="background: #f8f9fa; border-radius: 8px;">
                             <i class="bi bi-braces text-warning" style="font-size: 2rem;"></i>
                             <h6 class="mt-2 mb-0">PHP</h6>
-                            <p class="text-muted mb-0">{{ PHP_VERSION }}</p>
+                            <p class="text-muted mb-0"><?php echo e(PHP_VERSION); ?></p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="p-3 text-center" style="background: #f8f9fa; border-radius: 8px;">
                             <i class="bi bi-speedometer2 text-danger" style="font-size: 2rem;"></i>
                             <h6 class="mt-2 mb-0">Laravel</h6>
-                            <p class="text-muted mb-0">{{ app()->version() }}</p>
+                            <p class="text-muted mb-0"><?php echo e(app()->version()); ?></p>
                         </div>
                     </div>
                 </div>
@@ -466,7 +466,7 @@ function clearCache() {
         fetch('/configuraciones/clear-cache', {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                 'Content-Type': 'application/json',
             }
         })
@@ -487,7 +487,7 @@ function optimizeSystem() {
         fetch('/configuraciones/optimize', {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                 'Content-Type': 'application/json',
             }
         })
@@ -502,3 +502,4 @@ function optimizeSystem() {
     }
 }
 </script>
+<?php /**PATH C:\xampp\htdocs\cesodo4\resources\views/configuraciones/tabs/sistema.blade.php ENDPATH**/ ?>

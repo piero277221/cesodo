@@ -146,25 +146,25 @@ class ConfiguracionesController extends Controller
             foreach ($systemFields as $field) {
                 if ($request->has($field)) {
                     $value = $request->input($field);
-                    
+
                     // Para checkboxes
-                    if (in_array($field, ['maintenance_mode', 'require_strong_password', 'two_factor_auth', 
+                    if (in_array($field, ['maintenance_mode', 'require_strong_password', 'two_factor_auth',
                                           'activity_log', 'auto_backup', 'auto_clean_logs'])) {
                         $value = $value ? '1' : '0';
                     }
-                    
+
                     SystemSetting::updateOrCreate(
                         ['key' => $field],
                         [
                             'value' => $value,
                             'category' => 'sistema',
-                            'type' => in_array($field, ['session_timeout', 'max_login_attempts', 'lockout_duration', 
+                            'type' => in_array($field, ['session_timeout', 'max_login_attempts', 'lockout_duration',
                                                         'max_upload_size', 'records_per_page', 'password_expiry_days',
-                                                        'backup_retention_days', 'log_retention_days']) 
-                                     ? 'number' 
+                                                        'backup_retention_days', 'log_retention_days'])
+                                     ? 'number'
                                      : (in_array($field, ['maintenance_mode', 'require_strong_password', 'two_factor_auth',
-                                                         'activity_log', 'auto_backup', 'auto_clean_logs']) 
-                                        ? 'boolean' 
+                                                         'activity_log', 'auto_backup', 'auto_clean_logs'])
+                                        ? 'boolean'
                                         : 'text'),
                             'editable' => true,
                             'description' => ucfirst(str_replace('_', ' ', $field)),
@@ -175,7 +175,7 @@ class ConfiguracionesController extends Controller
 
             // Para checkboxes del sistema desmarcados
             $systemCheckboxFields = [
-                'maintenance_mode', 'require_strong_password', 'two_factor_auth', 
+                'maintenance_mode', 'require_strong_password', 'two_factor_auth',
                 'activity_log', 'auto_backup', 'auto_clean_logs'
             ];
 
@@ -198,25 +198,25 @@ class ConfiguracionesController extends Controller
             foreach ($notificationFields as $field) {
                 if ($request->has($field)) {
                     $value = $request->input($field);
-                    
+
                     // Para checkboxes que no están marcados
-                    if (in_array($field, ['email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos', 
+                    if (in_array($field, ['email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos',
                                           'email_certificados_medicos', 'sistema_alertas_stock', 'sistema_productos_vencer',
                                           'sistema_pedidos_pendientes', 'sistema_sonido_notificaciones'])) {
                         $value = $value ? '1' : '0';
                     }
-                    
+
                     SystemSetting::updateOrCreate(
                         ['key' => $field],
                         [
                             'value' => $value,
                             'category' => 'notificaciones',
-                            'type' => in_array($field, ['duracion_notificaciones', 'dias_aviso_vencimiento', 
-                                                        'stock_minimo_alerta', 'dias_aviso_certificados', 'smtp_port']) 
-                                     ? 'number' 
-                                     : (in_array($field, ['email_stock_bajo', 'email_productos_vencidos', 
-                                                         'sistema_alertas_stock', 'sistema_sonido_notificaciones']) 
-                                        ? 'boolean' 
+                            'type' => in_array($field, ['duracion_notificaciones', 'dias_aviso_vencimiento',
+                                                        'stock_minimo_alerta', 'dias_aviso_certificados', 'smtp_port'])
+                                     ? 'number'
+                                     : (in_array($field, ['email_stock_bajo', 'email_productos_vencidos',
+                                                         'sistema_alertas_stock', 'sistema_sonido_notificaciones'])
+                                        ? 'boolean'
                                         : 'text'),
                             'editable' => true,
                             'description' => ucfirst(str_replace('_', ' ', $field)),
@@ -227,7 +227,7 @@ class ConfiguracionesController extends Controller
 
             // Para checkboxes desmarcados (no vienen en el request)
             $checkboxFields = [
-                'email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos', 
+                'email_stock_bajo', 'email_productos_vencidos', 'email_nuevos_pedidos',
                 'email_certificados_medicos', 'sistema_alertas_stock', 'sistema_productos_vencer',
                 'sistema_pedidos_pendientes', 'sistema_sonido_notificaciones'
             ];
