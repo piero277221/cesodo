@@ -22,14 +22,14 @@
                     <div class="mb-3">
                         @php
                             $logoSetting = $configuraciones->where('key', 'company_logo')->first();
-                            $logoPath = $logoSetting && $logoSetting->logo_path 
-                                ? asset('storage/' . $logoSetting->logo_path) 
+                            $logoPath = $logoSetting && $logoSetting->logo_path
+                                ? asset('storage/' . $logoSetting->logo_path)
                                 : asset('images/default-logo.png');
                         @endphp
                         <div class="logo-preview-container mb-3" style="min-height: 200px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 8px; padding: 20px;">
-                            <img id="logoPreview" 
-                                 src="{{ $logoPath }}" 
-                                 alt="Logo" 
+                            <img id="logoPreview"
+                                 src="{{ $logoPath }}"
+                                 alt="Logo"
                                  class="img-fluid"
                                  style="max-height: 180px; max-width: 100%; object-fit: contain;"
                                  onerror="this.src='{{ asset('images/default-logo.png') }}'">
@@ -42,10 +42,10 @@
                             <i class="bi bi-upload me-2"></i>
                             Seleccionar Nuevo Logo
                         </label>
-                        <input type="file" 
-                               id="company_logo" 
-                               name="company_logo" 
-                               class="d-none" 
+                        <input type="file"
+                               id="company_logo"
+                               name="company_logo"
+                               class="d-none"
                                accept="image/*"
                                onchange="previewImage(this, 'logoPreview')">
                     </div>
@@ -56,7 +56,7 @@
                     </div>
 
                     @if($logoSetting && $logoSetting->logo_path)
-                        <button type="button" 
+                        <button type="button"
                                 class="btn btn-sm btn-outline-danger mt-2"
                                 onclick="deleteLogo('company_logo', 'logo_path')">
                             <i class="bi bi-trash me-1"></i>
@@ -86,14 +86,14 @@
                     <div class="mb-3">
                         @php
                             $iconSetting = $configuraciones->where('key', 'company_icon')->first();
-                            $iconPath = $iconSetting && $iconSetting->icon_path 
-                                ? asset('storage/' . $iconSetting->icon_path) 
+                            $iconPath = $iconSetting && $iconSetting->icon_path
+                                ? asset('storage/' . $iconSetting->icon_path)
                                 : asset('images/default-icon.png');
                         @endphp
                         <div class="icon-preview-container mb-3" style="min-height: 200px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 8px; padding: 20px;">
-                            <img id="iconPreview" 
-                                 src="{{ $iconPath }}" 
-                                 alt="Icono" 
+                            <img id="iconPreview"
+                                 src="{{ $iconPath }}"
+                                 alt="Icono"
                                  class="img-fluid"
                                  style="max-height: 180px; max-width: 180px; object-fit: contain;"
                                  onerror="this.src='{{ asset('images/default-icon.png') }}'">
@@ -106,10 +106,10 @@
                             <i class="bi bi-upload me-2"></i>
                             Seleccionar Nuevo Icono
                         </label>
-                        <input type="file" 
-                               id="company_icon" 
-                               name="company_icon" 
-                               class="d-none" 
+                        <input type="file"
+                               id="company_icon"
+                               name="company_icon"
+                               class="d-none"
                                accept="image/*"
                                onchange="previewImage(this, 'iconPreview')">
                     </div>
@@ -120,7 +120,7 @@
                     </div>
 
                     @if($iconSetting && $iconSetting->icon_path)
-                        <button type="button" 
+                        <button type="button"
                                 class="btn btn-sm btn-outline-danger mt-2"
                                 onclick="deleteLogo('company_icon', 'icon_path')">
                             <i class="bi bi-trash me-1"></i>
@@ -148,7 +148,7 @@
                             @if(!in_array($config->key, ['company_logo', 'company_icon']))
                                 <div class="col-md-6 mb-3">
                                     <label for="config_{{ $config->key }}" class="form-label">
-                                        <i class="bi bi-{{ 
+                                        <i class="bi bi-{{
                                             $config->key === 'company_name' ? 'building' :
                                             ($config->key === 'company_address' ? 'geo-alt' :
                                             ($config->key === 'company_phone' ? 'telephone' :
@@ -156,22 +156,22 @@
                                         }} me-2"></i>
                                         {{ $config->description ?? ucfirst(str_replace('_', ' ', $config->key)) }}
                                     </label>
-                                    
+
                                     @if($config->type === 'text')
-                                        <textarea name="config_{{ $config->key }}" 
-                                                  id="config_{{ $config->key }}" 
+                                        <textarea name="config_{{ $config->key }}"
+                                                  id="config_{{ $config->key }}"
                                                   class="form-control"
                                                   rows="3"
                                                   placeholder="Ingrese {{ strtolower($config->description) }}">{{ old('config_' . $config->key, $config->value) }}</textarea>
                                     @else
-                                        <input type="{{ $config->type === 'email' ? 'email' : 'text' }}" 
-                                               name="config_{{ $config->key }}" 
-                                               id="config_{{ $config->key }}" 
+                                        <input type="{{ $config->type === 'email' ? 'email' : 'text' }}"
+                                               name="config_{{ $config->key }}"
+                                               id="config_{{ $config->key }}"
                                                class="form-control"
                                                value="{{ old('config_' . $config->key, $config->value) }}"
                                                placeholder="Ingrese {{ strtolower($config->description) }}">
                                     @endif
-                                    
+
                                     @if($config->description)
                                         <small class="text-muted d-block mt-1">
                                             <i class="bi bi-info-circle me-1"></i>
@@ -209,11 +209,11 @@
 function previewImage(input, previewId) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
-        
+
         reader.onload = function(e) {
             document.getElementById(previewId).src = e.target.result;
         }
-        
+
         reader.readAsDataURL(input.files[0]);
     }
 }

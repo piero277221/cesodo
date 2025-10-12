@@ -17,7 +17,7 @@ class ConfiguracionesController extends Controller
     public function index(Request $request)
     {
         $tab = $request->get('tab', 'empresa');
-        
+
         // Obtener configuraciones según el tab activo
         $configuraciones = SystemSetting::where('category', $tab)
                                       ->orderBy('sort_order')
@@ -88,13 +88,13 @@ class ConfiguracionesController extends Controller
                 if (str_starts_with($key, 'config_')) {
                     $configKey = str_replace('config_', '', $key);
                     $setting = SystemSetting::where('key', $configKey)->first();
-                    
+
                     if ($setting && $setting->editable) {
                         // Procesar según tipo
                         if ($setting->type === 'boolean') {
                             $value = $value === '1' || $value === 'on' ? '1' : '0';
                         }
-                        
+
                         $setting->value = $value;
                         $setting->save();
                     }
@@ -131,7 +131,7 @@ class ConfiguracionesController extends Controller
     private function uploadLogo($file, $configKey, $pathField)
     {
         $setting = SystemSetting::where('key', $configKey)->first();
-        
+
         if (!$setting) {
             return;
         }
@@ -139,7 +139,7 @@ class ConfiguracionesController extends Controller
         // Validar archivo
         $extension = $file->getClientOriginalExtension();
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
-        
+
         if (!in_array(strtolower($extension), $allowedExtensions)) {
             throw new \Exception('Formato de imagen no válido. Use: ' . implode(', ', $allowedExtensions));
         }
@@ -166,25 +166,25 @@ class ConfiguracionesController extends Controller
     {
         $configKey = $request->input('key');
         $pathField = $request->input('field', 'logo_path');
-        
+
         $setting = SystemSetting::where('key', $configKey)->first();
-        
+
         if ($setting && $setting->$pathField) {
             // Eliminar archivo
             if (Storage::disk('public')->exists($setting->$pathField)) {
                 Storage::disk('public')->delete($setting->$pathField);
             }
-            
+
             // Limpiar base de datos
             $setting->$pathField = null;
             $setting->value = null;
             $setting->save();
-            
+
             SystemSetting::clearCache();
-            
+
             return response()->json(['success' => true, 'message' => 'Logo eliminado']);
         }
-        
+
         return response()->json(['success' => false, 'message' => 'No se encontró el logo'], 404);
     }
 
@@ -201,13 +201,13 @@ class ConfiguracionesController extends Controller
         try {
             $role = Role::findOrFail($request->role_id);
             $permissions = $request->permissions ?? [];
-            
+
             // Sincronizar permisos
             $role->syncPermissions($permissions);
-            
+
             return redirect()->back()
                 ->with('success', '✅ Permisos actualizados para el rol: ' . $role->name);
-                
+
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', '❌ Error al actualizar permisos: ' . $e->getMessage());
@@ -221,16 +221,16 @@ class ConfiguracionesController extends Controller
     {
         $key = $tipo === 'icon' ? 'company_icon' : 'company_logo';
         $pathField = $tipo === 'icon' ? 'icon_path' : 'logo_path';
-        
+
         $setting = SystemSetting::where('key', $key)->first();
-        
+
         if ($setting && $setting->$pathField && Storage::disk('public')->exists($setting->$pathField)) {
             return asset('storage/' . $setting->$pathField);
         }
-        
+
         // Logo por defecto
-        return $tipo === 'icon' 
-            ? asset('images/default-icon.png') 
+        return $tipo === 'icon'
+            ? asset('images/default-icon.png')
             : asset('images/default-logo.png');
     }
 

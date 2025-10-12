@@ -58,7 +58,7 @@
                     <ul class="nav nav-tabs nav-fill border-bottom-0" role="tablist" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
                         @foreach($categorias as $key => $categoria)
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link {{ $tab === $key ? 'active' : '' }} text-white" 
+                                <a class="nav-link {{ $tab === $key ? 'active' : '' }} text-white"
                                    href="?tab={{ $key }}"
                                    style="border: none; padding: 1.2rem 1.5rem; {{ $tab === $key ? 'background: #dc3545; font-weight: 600;' : '' }}">
                                     <i class="bi {{ $categoria['icono'] }} me-2" style="font-size: 1.2rem;"></i>
