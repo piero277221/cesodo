@@ -93,7 +93,7 @@ class Menu extends Model
             throw new \Exception('Este menú está cerrado y no acepta más consumos');
         }
 
-        return DB::transaction(function () use ($cantidad, $observaciones) {
+        return DB::transaction(function () use ($cantidad) {
             // Actualizar platos disponibles
             $this->decrement('platos_disponibles', $cantidad);
 
@@ -102,13 +102,8 @@ class Menu extends Model
                 $this->update(['estado' => 'cerrado']);
             }
 
-            // Registrar el consumo
-            return $this->consumos()->create([
-                'user_id' => Auth::id(),
-                'cantidad' => $cantidad,
-                'fecha_consumo' => now(),
-                'observaciones' => $observaciones
-            ]);
+            // Solo retornar true (el consumo se crea en el controlador con todos los datos)
+            return true;
         });
     }
 
