@@ -72,10 +72,10 @@ class ConfiguracionesController extends Controller
             });
         }
 
-        // Para el tab de notificaciones, obtener configuraciones como array
+        // Para el tab de notificaciones y sistema, obtener configuraciones como array
         $settings = [];
-        if ($tab === 'notificaciones') {
-            $allSettings = SystemSetting::where('category', 'notificaciones')->get();
+        if (in_array($tab, ['notificaciones', 'sistema'])) {
+            $allSettings = SystemSetting::where('category', $tab)->get();
             foreach ($allSettings as $setting) {
                 $settings[$setting->key] = $setting->value;
             }
@@ -118,6 +118,81 @@ class ConfiguracionesController extends Controller
                 'smtp_encryption',
                 'smtp_from_name',
             ];
+
+            // Lista de campos del sistema
+            $systemFields = [
+                'timezone',
+                'language',
+                'date_format',
+                'currency',
+                'maintenance_mode',
+                'session_timeout',
+                'max_login_attempts',
+                'lockout_duration',
+                'max_upload_size',
+                'records_per_page',
+                'require_strong_password',
+                'two_factor_auth',
+                'activity_log',
+                'password_expiry_days',
+                'auto_backup',
+                'backup_frequency',
+                'backup_retention_days',
+                'auto_clean_logs',
+                'log_retention_days',
+            ];
+
+            // Procesar configuraciones del sistema
+            foreach ($systemFields as $field) {
+                if ($request->has($field)) {
+                    $value = $request->input($field);
+                    
+                    // Para checkboxes
+                    if (in_array($field, ['maintenance_mode', 'require_strong_password', 'two_factor_auth', 
+                                          'activity_log', 'auto_backup', 'auto_clean_logs'])) {
+                        $value = $value ? '1' : '0';
+                    }
+                    
+                    SystemSetting::updateOrCreate(
+                        ['key' => $field],
+                        [
+                            'value' => $value,
+                            'category' => 'sistema',
+                            'type' => in_array($field, ['session_timeout', 'max_login_attempts', 'lockout_duration', 
+                                                        'max_upload_size', 'records_per_page', 'password_expiry_days',
+                                                        'backup_retention_days', 'log_retention_days']) 
+                                     ? 'number' 
+                                     : (in_array($field, ['maintenance_mode', 'require_strong_password', 'two_factor_auth',
+                                                         'activity_log', 'auto_backup', 'auto_clean_logs']) 
+                                        ? 'boolean' 
+                                        : 'text'),
+                            'editable' => true,
+                            'description' => ucfirst(str_replace('_', ' ', $field)),
+                        ]
+                    );
+                }
+            }
+
+            // Para checkboxes del sistema desmarcados
+            $systemCheckboxFields = [
+                'maintenance_mode', 'require_strong_password', 'two_factor_auth', 
+                'activity_log', 'auto_backup', 'auto_clean_logs'
+            ];
+
+            foreach ($systemCheckboxFields as $field) {
+                if (!$request->has($field)) {
+                    SystemSetting::updateOrCreate(
+                        ['key' => $field],
+                        [
+                            'value' => '0',
+                            'category' => 'sistema',
+                            'type' => 'boolean',
+                            'editable' => true,
+                            'description' => ucfirst(str_replace('_', ' ', $field)),
+                        ]
+                    );
+                }
+            }
 
             // Procesar configuraciones de notificaciones directamente
             foreach ($notificationFields as $field) {
@@ -336,5 +411,51 @@ class ConfiguracionesController extends Controller
             'logo' => self::getLogo('logo'),
             'icon' => self::getLogo('icon'),
         ];
+    }
+
+    /**
+     * Limpiar caché del sistema
+     */
+    public function clearCache(Request $request)
+    {
+        try {
+            \Artisan::call('cache:clear');
+            \Artisan::call('view:clear');
+            \Artisan::call('config:clear');
+            \Artisan::call('route:clear');
+
+            return response()->json([
+                'success' => true,
+                'message' => '✅ Caché del sistema limpiada correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '❌ Error al limpiar caché: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Optimizar sistema
+     */
+    public function optimize(Request $request)
+    {
+        try {
+            \Artisan::call('optimize');
+            \Artisan::call('config:cache');
+            \Artisan::call('route:cache');
+            \Artisan::call('view:cache');
+
+            return response()->json([
+                'success' => true,
+                'message' => '✅ Sistema optimizado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '❌ Error al optimizar: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

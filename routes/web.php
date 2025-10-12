@@ -190,6 +190,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('configuraciones', [\App\Http\Controllers\ConfiguracionesController::class, 'update'])->name('configuraciones.update');
         Route::post('configuraciones/delete-logo', [\App\Http\Controllers\ConfiguracionesController::class, 'deleteLogo'])->name('configuraciones.delete-logo');
         Route::post('configuraciones/update-permissions', [\App\Http\Controllers\ConfiguracionesController::class, 'updatePermissions'])->name('configuraciones.update-permissions');
+        Route::post('configuraciones/clear-cache', [\App\Http\Controllers\ConfiguracionesController::class, 'clearCache'])->name('configuraciones.clear-cache');
+        Route::post('configuraciones/optimize', [\App\Http\Controllers\ConfiguracionesController::class, 'optimize'])->name('configuraciones.optimize');
     });
 
     // Gestión de Roles Avanzada - Módulo de Administración de Roles y Permisos
