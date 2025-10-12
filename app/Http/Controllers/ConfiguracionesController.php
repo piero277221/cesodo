@@ -90,6 +90,12 @@ class ConfiguracionesController extends Controller
     public function update(Request $request)
     {
         try {
+            // Validar archivos si existen
+            $request->validate([
+                'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'company_icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
             DB::beginTransaction();
 
             // Lista de campos de notificaciones
@@ -349,12 +355,26 @@ class ConfiguracionesController extends Controller
 
             // Procesar upload de logo
             if ($request->hasFile('company_logo')) {
-                $this->uploadLogo($request->file('company_logo'), 'company_logo', 'logo_path');
+                try {
+                    $this->uploadLogo($request->file('company_logo'), 'company_logo', 'logo_path');
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return redirect()->back()
+                        ->with('error', '❌ Error al subir logo: ' . $e->getMessage())
+                        ->withInput();
+                }
             }
 
             // Procesar upload de icono
             if ($request->hasFile('company_icon')) {
-                $this->uploadLogo($request->file('company_icon'), 'company_icon', 'icon_path');
+                try {
+                    $this->uploadLogo($request->file('company_icon'), 'company_icon', 'icon_path');
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return redirect()->back()
+                        ->with('error', '❌ Error al subir icono: ' . $e->getMessage())
+                        ->withInput();
+                }
             }
 
             DB::commit();
@@ -376,33 +396,53 @@ class ConfiguracionesController extends Controller
      */
     private function uploadLogo($file, $configKey, $pathField)
     {
-        $setting = SystemSetting::where('key', $configKey)->first();
+        try {
+            // Validar archivo
+            $extension = $file->getClientOriginalExtension();
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
 
-        if (!$setting) {
-            return;
+            if (!in_array(strtolower($extension), $allowedExtensions)) {
+                throw new \Exception('Formato de imagen no válido. Use: ' . implode(', ', $allowedExtensions));
+            }
+
+            // Crear directorio si no existe
+            if (!Storage::disk('public')->exists('logos')) {
+                Storage::disk('public')->makeDirectory('logos');
+            }
+
+            // Buscar o crear setting
+            $setting = SystemSetting::firstOrCreate(
+                ['key' => $configKey],
+                [
+                    'category' => 'empresa',
+                    'type' => 'file',
+                    'editable' => true,
+                    'description' => $configKey === 'company_logo' ? 'Logo de la empresa' : 'Icono del sistema'
+                ]
+            );
+
+            // Eliminar logo anterior si existe
+            if ($setting->$pathField && Storage::disk('public')->exists($setting->$pathField)) {
+                Storage::disk('public')->delete($setting->$pathField);
+            }
+
+            // Guardar nuevo logo con nombre único
+            $filename = $configKey . '_' . time() . '_' . uniqid() . '.' . $extension;
+            $path = $file->storeAs('logos', $filename, 'public');
+
+            // Actualizar en base de datos
+            $setting->$pathField = $path;
+            $setting->value = $filename;
+            $setting->save();
+
+            // Limpiar caché
+            SystemSetting::clearCache();
+
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Error al subir logo: ' . $e->getMessage());
+            throw $e;
         }
-
-        // Validar archivo
-        $extension = $file->getClientOriginalExtension();
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
-
-        if (!in_array(strtolower($extension), $allowedExtensions)) {
-            throw new \Exception('Formato de imagen no válido. Use: ' . implode(', ', $allowedExtensions));
-        }
-
-        // Eliminar logo anterior si existe
-        if ($setting->$pathField && Storage::disk('public')->exists($setting->$pathField)) {
-            Storage::disk('public')->delete($setting->$pathField);
-        }
-
-        // Guardar nuevo logo
-        $filename = $configKey . '_' . time() . '.' . $extension;
-        $path = $file->storeAs('logos', $filename, 'public');
-
-        // Actualizar en base de datos
-        $setting->$pathField = $path;
-        $setting->value = $filename;
-        $setting->save();
     }
 
     /**
