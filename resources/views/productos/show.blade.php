@@ -151,7 +151,7 @@
                                     Editar Producto
                                 </a>
 
-                                @if($producto->inventarios->count() > 0)
+                                @if($producto->inventario)
                                 <a href="{{ route('inventarios.index', ['producto' => $producto->id]) }}" class="btn btn-info">
                                     <i class="fas fa-warehouse me-2"></i>
                                     Ver en Inventario
@@ -172,7 +172,7 @@
                     </div>
 
                     <!-- Estado de Stock -->
-                    @if($producto->inventarios->count() > 0)
+                    @if($producto->inventario)
                     <div class="card shadow-sm mt-4">
                         <div class="card-header bg-success text-white">
                             <h5 class="mb-0">
@@ -181,20 +181,18 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            @foreach($producto->inventarios as $inventario)
                             <div class="text-center mb-3">
-                                <h3 class="text-primary mb-1">{{ $inventario->cantidad_disponible }}</h3>
+                                <h3 class="text-primary mb-1">{{ $producto->inventario->stock_disponible ?? 0 }}</h3>
                                 <p class="text-muted mb-1">{{ $producto->unidad_medida }} disponibles</p>
 
-                                @if($producto->stock_minimo && $inventario->cantidad_disponible <= $producto->stock_minimo)
+                                @php
+                                    $stockDisponible = $producto->inventario->stock_disponible ?? 0;
+                                @endphp
+
+                                @if($producto->stock_minimo && $stockDisponible <= $producto->stock_minimo)
                                     <div class="alert alert-warning mb-0" role="alert">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
                                         Stock bajo
-                                    </div>
-                                @elseif($producto->stock_maximo && $inventario->cantidad_disponible >= $producto->stock_maximo)
-                                    <div class="alert alert-info mb-0" role="alert">
-                                        <i class="fas fa-info-circle me-1"></i>
-                                        Stock alto
                                     </div>
                                 @else
                                     <div class="alert alert-success mb-0" role="alert">
@@ -203,7 +201,6 @@
                                     </div>
                                 @endif
                             </div>
-                            @endforeach
                         </div>
                     </div>
                     @else
@@ -222,7 +219,7 @@
             </div>
 
             <!-- Historial de Movimientos -->
-            @if($producto->inventarios->count() > 0)
+            @if($producto->inventario)
             <div class="card shadow-sm">
                 <div class="card-header bg-secondary text-white">
                     <h5 class="mb-0">
@@ -232,10 +229,7 @@
                 </div>
                 <div class="card-body">
                     @php
-                        $movimientos = collect();
-                        foreach($producto->inventarios as $inventario) {
-                            $movimientos = $movimientos->merge($inventario->movimientos ?? collect());
-                        }
+                        $movimientos = $producto->movimientosInventario ?? collect();
                         $movimientos = $movimientos->sortByDesc('created_at')->take(10);
                     @endphp
 
