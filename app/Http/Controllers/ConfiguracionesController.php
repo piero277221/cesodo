@@ -6,6 +6,8 @@ use App\Models\SystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -35,8 +37,6 @@ class ConfiguracionesController extends Controller
                 ->orderBy('key')
                 ->get();
             }
-                                          ->get();
-        }
 
         // Obtener todas las categorías disponibles
         $categorias = [
@@ -91,7 +91,7 @@ class ConfiguracionesController extends Controller
         return view('configuraciones.index', compact('configuraciones', 'categorias', 'tab', 'roles', 'permisos', 'settings'));
 
         } catch (\Exception $e) {
-            \Log::error('Error en ConfiguracionesController@index: ' . $e->getMessage());
+            Log::error('Error en ConfiguracionesController@index: ' . $e->getMessage());
             return redirect()->back()->with('error', '❌ Error al cargar configuraciones: ' . $e->getMessage());
         }
     }
@@ -452,7 +452,7 @@ class ConfiguracionesController extends Controller
 
             return true;
         } catch (\Exception $e) {
-            \Log::error('Error al subir logo: ' . $e->getMessage());
+            Log::error('Error al subir logo: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -553,10 +553,10 @@ class ConfiguracionesController extends Controller
     public function clearCache(Request $request)
     {
         try {
-            \Artisan::call('cache:clear');
-            \Artisan::call('view:clear');
-            \Artisan::call('config:clear');
-            \Artisan::call('route:clear');
+            Artisan::call('cache:clear');
+            Artisan::call('view:clear');
+            Artisan::call('config:clear');
+            Artisan::call('route:clear');
 
             return response()->json([
                 'success' => true,
@@ -576,10 +576,10 @@ class ConfiguracionesController extends Controller
     public function optimize(Request $request)
     {
         try {
-            \Artisan::call('optimize');
-            \Artisan::call('config:cache');
-            \Artisan::call('route:cache');
-            \Artisan::call('view:cache');
+            Artisan::call('optimize');
+            Artisan::call('config:cache');
+            Artisan::call('route:cache');
+            Artisan::call('view:cache');
 
             return response()->json([
                 'success' => true,
