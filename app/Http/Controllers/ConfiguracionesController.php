@@ -89,7 +89,7 @@ class ConfiguracionesController extends Controller
         }
 
         return view('configuraciones.index', compact('configuraciones', 'categorias', 'tab', 'roles', 'permisos', 'settings'));
-        
+
         } catch (\Exception $e) {
             \Log::error('Error en ConfiguracionesController@index: ' . $e->getMessage());
             return redirect()->back()->with('error', '❌ Error al cargar configuraciones: ' . $e->getMessage());

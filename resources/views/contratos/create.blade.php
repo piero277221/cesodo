@@ -64,8 +64,6 @@
                                 <select class="form-select @error('tipo_contrato') is-invalid @enderror" id="tipo_contrato" name="tipo_contrato" required>
                                     <option value="">Seleccione un tipo...</option>
                                     <option value="temporal" {{ old('tipo_contrato') == 'temporal' ? 'selected' : '' }}>Temporal</option>
-                                    <option value="obra_labor" {{ old('tipo_contrato') == 'obra_labor' ? 'selected' : '' }}>Obra o Labor</option>
-                                    <option value="aprendizaje" {{ old('tipo_contrato') == 'aprendizaje' ? 'selected' : '' }}>Aprendizaje</option>
                                     <option value="prestacion_servicios" {{ old('tipo_contrato') == 'prestacion_servicios' ? 'selected' : '' }}>Prestación de Servicios</option>
                                 </select>
                                 @error('tipo_contrato')
@@ -187,13 +185,26 @@
                                 </label>
                                 <select class="form-select @error('jornada_laboral') is-invalid @enderror" id="jornada_laboral" name="jornada_laboral" required>
                                     <option value="">Seleccione una jornada...</option>
-                                    <option value="completa" {{ old('jornada_laboral') == 'completa' ? 'selected' : '' }}>Tiempo Completo</option>
-                                    <option value="parcial" {{ old('jornada_laboral') == 'parcial' ? 'selected' : '' }}>Tiempo Parcial</option>
-                                    <option value="flexible" {{ old('jornada_laboral') == 'flexible' ? 'selected' : '' }}>Horario Flexible</option>
+                                    <option value="8am-4pm" {{ old('jornada_laboral') == '8am-4pm' ? 'selected' : '' }} selected>8:00 AM - 4:00 PM (8 horas + refrigerio)</option>
                                 </select>
                                 @error('jornada_laboral')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-info-circle"></i> Lunes a Viernes. Feriados no laborables.
+                                </small>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="dias_laborables" class="form-label">
+                                    <i class="fas fa-calendar-week me-1"></i>Días Laborables
+                                </label>
+                                <input type="text" class="form-control bg-light"
+                                       id="dias_laborables" name="dias_laborables"
+                                       value="Lunes a Viernes" readonly>
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-ban me-1"></i>Feriados no laborables
+                                </small>
                             </div>
                         </div>
 

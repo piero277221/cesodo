@@ -107,28 +107,17 @@ class ContratoController extends Controller
         // Agregar listas de cargos y áreas desde trabajadores
         $cargos = [
             'Gerente',
-            'Jefe de Área',
-            'Supervisor',
-            'Analista',
-            'Asistente',
-            'Operario',
-            'Técnico',
-            'Especialista',
-            'Coordinador',
-            'Auxiliar'
+            'Administrador',
+            'Supervisora',
+            'Cocinera',
+            'Azafata',
+            'Vajillero'
         ];
 
         $areas = [
-            'Administración',
-            'Recursos Humanos',
-            'Finanzas',
-            'Operaciones',
-            'Ventas',
-            'Marketing',
-            'Tecnología',
-            'Logística',
-            'Calidad',
-            'Seguridad'
+            'Cocina',
+            'Almacén',
+            'Comedor'
         ];
 
         return view('contratos.create', compact('personas', 'tipos_contrato', 'modalidades', 'tipos_pago', 'cargos', 'areas'));
@@ -141,7 +130,7 @@ class ContratoController extends Controller
     {
         $request->validate([
             'persona_id' => 'required|exists:personas,id',
-            'tipo_contrato' => 'required|string|in:temporal,obra_labor,aprendizaje,prestacion_servicios',
+            'tipo_contrato' => 'required|string|in:temporal,prestacion_servicios',
             'numero_contrato' => 'nullable|string|unique:contratos,numero_contrato',
             'cargo' => 'required|string|max:255',
             'fecha_inicio' => 'required|date',
@@ -254,28 +243,17 @@ class ContratoController extends Controller
         // Agregar listas de cargos y áreas desde trabajadores
         $cargos = [
             'Gerente',
-            'Jefe de Área',
-            'Supervisor',
-            'Analista',
-            'Asistente',
-            'Operario',
-            'Técnico',
-            'Especialista',
-            'Coordinador',
-            'Auxiliar'
+            'Administrador',
+            'Supervisora',
+            'Cocinera',
+            'Azafata',
+            'Vajillero'
         ];
 
         $areas = [
-            'Administración',
-            'Recursos Humanos',
-            'Finanzas',
-            'Operaciones',
-            'Ventas',
-            'Marketing',
-            'Tecnología',
-            'Logística',
-            'Calidad',
-            'Seguridad'
+            'Cocina',
+            'Almacén',
+            'Comedor'
         ];
 
         return view('contratos.edit', compact('contrato', 'personas', 'tipos_contrato', 'modalidades', 'tipos_pago', 'cargos', 'areas'));

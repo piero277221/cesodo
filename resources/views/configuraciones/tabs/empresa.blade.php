@@ -304,7 +304,7 @@ function showToast(message, type = 'info') {
 // Event listener para el formulario
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form[action="{{ route('configuraciones.update') }}"]');
-    
+
     if (form) {
         form.addEventListener('submit', function(e) {
             // Prevenir doble submit
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Verificar si hay archivos para subir
             const fileInputs = form.querySelectorAll('input[type="file"]');
             let hasFiles = false;
-            
+
             fileInputs.forEach(input => {
                 if (input.files && input.files.length > 0) {
                     hasFiles = true;
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (hasFiles) {
                 isSubmitting = true;
-                
+
                 // Deshabilitar botón de submit
                 const submitBtn = form.querySelector('button[type="submit"]');
                 if (submitBtn) {
