@@ -79,6 +79,25 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
+                                    <label for="tipo_compra" class="form-label fw-semibold">
+                                        <i class="fas fa-tags me-1 text-muted"></i>Tipo de Compra
+                                    </label>
+                                    <select class="form-select @error('tipo_compra') is-invalid @enderror"
+                                            id="tipo_compra"
+                                            name="tipo_compra"
+                                            required>
+                                        <option value="">Seleccionar tipo</option>
+                                        <option value="productos" {{ old('tipo_compra', 'productos') == 'productos' ? 'selected' : '' }}>Productos</option>
+                                        <option value="insumos" {{ old('tipo_compra') == 'insumos' ? 'selected' : '' }}>Insumos</option>
+                                        <option value="equipos" {{ old('tipo_compra') == 'equipos' ? 'selected' : '' }}>Equipos</option>
+                                        <option value="servicios" {{ old('tipo_compra') == 'servicios' ? 'selected' : '' }}>Servicios</option>
+                                    </select>
+                                    @error('tipo_compra')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
                                     <label for="fecha_compra" class="form-label fw-semibold">
                                         <i class="fas fa-calendar me-1 text-muted"></i>Fecha de Compra
                                     </label>
@@ -92,53 +111,28 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="fecha_entrega" class="form-label fw-semibold">
-                                        <i class="fas fa-calendar-check me-1 text-muted"></i>Fecha de Entrega
-                                    </label>
-                                    <input type="date"
-                                           class="form-control @error('fecha_entrega') is-invalid @enderror"
-                                           id="fecha_entrega"
-                                           name="fecha_entrega"
-                                           value="{{ old('fecha_entrega') }}">
-                                    @error('fecha_entrega')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="tipo_comprobante" class="form-label">Tipo de Comprobante</label>
-                                    <select class="form-select @error('tipo_comprobante') is-invalid @enderror"
-                                            id="tipo_comprobante"
-                                            name="tipo_comprobante">
-                                        <option value="">Seleccionar tipo</option>
-                                        <option value="factura" {{ old('tipo_comprobante') == 'factura' ? 'selected' : '' }}>Factura</option>
-                                        <option value="boleta" {{ old('tipo_comprobante') == 'boleta' ? 'selected' : '' }}>Boleta</option>
-                                        <option value="ticket" {{ old('tipo_comprobante') == 'ticket' ? 'selected' : '' }}>Ticket</option>
-                                    </select>
-                                    @error('tipo_comprobante')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="numero_comprobante" class="form-label">Número de Comprobante</label>
-                                    <input type="text"
-                                           class="form-control @error('numero_comprobante') is-invalid @enderror"
-                                           id="numero_comprobante"
-                                           name="numero_comprobante"
-                                           value="{{ old('numero_comprobante') }}">
-                                    @error('numero_comprobante')
+                                    <label for="fecha_entrega_esperada" class="form-label fw-semibold">
+                                        <i class="fas fa-calendar-check me-1 text-muted"></i>Fecha de Entrega Esperada
+                                    </label>
+                                    <input type="date"
+                                           class="form-control @error('fecha_entrega_esperada') is-invalid @enderror"
+                                           id="fecha_entrega_esperada"
+                                           name="fecha_entrega_esperada"
+                                           value="{{ old('fecha_entrega_esperada') }}">
+                                    @error('fecha_entrega_esperada')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="observaciones" class="form-label">Observaciones</label>
+                                <label for="observaciones" class="form-label fw-semibold">
+                                    <i class="fas fa-comment me-1 text-muted"></i>Observaciones
+                                </label>
                                 <textarea class="form-control @error('observaciones') is-invalid @enderror"
                                           id="observaciones"
                                           name="observaciones"
@@ -189,9 +183,9 @@
                                     <div class="input-group input-group-sm" style="max-width: 120px;">
                                         <input type="number"
                                                class="form-control form-control-sm text-end"
-                                               id="descuento"
-                                               name="descuento"
-                                               value="{{ old('descuento', 0) }}"
+                                               id="descuento_total"
+                                               name="descuento_total"
+                                               value="{{ old('descuento_total', 0) }}"
                                                min="0"
                                                step="0.01"
                                                onchange="calcularTotal()">
@@ -217,30 +211,6 @@
                             <input type="hidden" id="subtotal" name="subtotal" value="0">
                             <input type="hidden" id="igv" name="igv" value="0">
                             <input type="hidden" id="total" name="total" value="0">
-
-                            <div class="mb-3">
-                                <label for="estado" class="form-label fw-semibold">
-                                    <i class="fas fa-flag me-1 text-muted"></i>Estado
-                                </label>
-                                <select class="form-select" id="estado" name="estado">
-                                    <option value="pendiente" {{ old('estado', 'pendiente') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                    <option value="enviado" {{ old('estado') == 'enviado' ? 'selected' : '' }}>Enviado</option>
-                                    <option value="recibido" {{ old('estado') == 'recibido' ? 'selected' : '' }}>Recibido</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="metodo_pago" class="form-label fw-semibold">
-                                    <i class="fas fa-credit-card me-1 text-muted"></i>Método de Pago
-                                </label>
-                                <select class="form-select" id="metodo_pago" name="metodo_pago">
-                                    <option value="">Seleccionar método</option>
-                                    <option value="efectivo" {{ old('metodo_pago') == 'efectivo' ? 'selected' : '' }}>Efectivo</option>
-                                    <option value="transferencia" {{ old('metodo_pago') == 'transferencia' ? 'selected' : '' }}>Transferencia</option>
-                                    <option value="cheque" {{ old('metodo_pago') == 'cheque' ? 'selected' : '' }}>Cheque</option>
-                                    <option value="credito" {{ old('metodo_pago') == 'credito' ? 'selected' : '' }}>Crédito</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
 
@@ -271,7 +241,7 @@
                 <label class="form-label fw-semibold small">
                     <i class="fas fa-box me-1"></i>Producto
                 </label>
-                <select class="form-select form-select-sm producto-select" name="productos[][producto_id]" required>
+                <select class="form-select form-select-sm producto-select" name="productos[INDEX][id]" required>
                     <option value="">Seleccionar producto</option>
                     @foreach($productos as $producto)
                         <option value="{{ $producto->id }}" data-precio="{{ $producto->precio_compra ?? $producto->precio_venta }}">
@@ -284,13 +254,13 @@
                 <label class="form-label fw-semibold small">
                     <i class="fas fa-sort-numeric-up me-1"></i>Cantidad
                 </label>
-                <input type="number" class="form-control form-control-sm cantidad-input" name="productos[][cantidad]" min="1" value="1" required>
+                <input type="number" class="form-control form-control-sm cantidad-input" name="productos[INDEX][cantidad]" min="1" step="0.01" value="1" required>
             </div>
             <div class="col-md-3 mb-2">
                 <label class="form-label fw-semibold small">
                     <i class="fas fa-dollar-sign me-1"></i>Precio (con IGV)
                 </label>
-                <input type="number" class="form-control form-control-sm precio-input" name="productos[][precio_unitario]" min="0" step="0.01" required>
+                <input type="number" class="form-control form-control-sm precio-input" name="productos[INDEX][precio_unitario]" min="0" step="0.01" required>
             </div>
             <div class="col-md-2 mb-2 d-flex flex-column">
                 <label class="form-label fw-semibold small">Subtotal</label>
@@ -313,8 +283,14 @@ function agregarProducto() {
     const container = document.getElementById('productos-container');
     const clone = template.content.cloneNode(true);
 
-    // Actualizar el índice
+    // Actualizar el índice en el data-attribute
     clone.querySelector('.producto-item').setAttribute('data-index', productoIndex);
+    
+    // Reemplazar INDEX por el número de índice actual en todos los name attributes
+    const inputs = clone.querySelectorAll('[name*="INDEX"]');
+    inputs.forEach(input => {
+        input.name = input.name.replace('INDEX', productoIndex);
+    });
 
     // Agregar event listeners
     const productoSelect = clone.querySelector('.producto-select');
@@ -331,7 +307,7 @@ function agregarProducto() {
         actualizarSubtotalProducto(this.closest('.producto-item'));
         calcularTotal();
     });
-    
+
     precioInput.addEventListener('input', function() {
         actualizarSubtotalProducto(this.closest('.producto-item'));
         calcularTotal();
@@ -363,9 +339,9 @@ function calcularTotal() {
         total += cantidad * precio;
     });
 
-    const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+    const descuento = parseFloat(document.getElementById('descuento_total').value) || 0;
     const totalConDescuento = total - descuento;
-    
+
     // Calcular IGV incluido en el total (IGV = total / 1.18 * 0.18)
     const igvIncluido = totalConDescuento - (totalConDescuento / 1.18);
     const subtotalSinIGV = totalConDescuento - igvIncluido;
