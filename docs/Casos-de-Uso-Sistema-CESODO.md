@@ -34,7 +34,19 @@
    - Gestión de contratos laborales
    - Control de certificados médicos
 
-6. **Sistema RENIEC** (Actor Externo)
+6. **Sistema** (Actor Técnico - SIEMPRE PRESENTE)
+   - Procesa lógica de negocio
+   - Valida datos
+   - Ejecuta operaciones
+   - Genera cálculos y reportes
+
+7. **Base de Datos** (Actor Técnico - SIEMPRE PRESENTE)
+   - Almacena información
+   - Consulta datos
+   - Actualiza registros
+   - Mantiene integridad referencial
+
+8. **Sistema RENIEC** (Actor Externo)
    - Validación de DNI
    - Consulta de datos personales
 
@@ -47,20 +59,21 @@
 ## 1️⃣ MÓDULO: AUTENTICACIÓN Y SEGURIDAD
 
 ### CU-01: Iniciar Sesión
-**Actor:** Todos los usuarios  
+**Actores:** Usuario (cualquier rol), Sistema, Base de Datos  
 **Precondición:** Usuario debe estar registrado en el sistema  
 **Flujo Principal:**
 1. Usuario accede a la página de login
 2. Sistema muestra formulario de autenticación
 3. Usuario ingresa email y contraseña
 4. Sistema valida credenciales
-5. Sistema verifica estado del usuario (activo/inactivo)
-6. Sistema registra fecha de último acceso
-7. Sistema redirige al dashboard según rol
+5. Base de Datos consulta información del usuario
+6. Sistema verifica estado del usuario (activo/inactivo)
+7. Base de Datos registra fecha de último acceso
+8. Sistema redirige al dashboard según rol
 
 **Flujo Alternativo:**
 - 4a. Credenciales incorrectas: Sistema muestra mensaje de error
-- 5a. Usuario inactivo: Sistema deniega acceso
+- 6a. Usuario inactivo: Sistema deniega acceso
 - 4b. Múltiples intentos fallidos: Sistema bloquea cuenta temporalmente
 
 **Postcondición:** Usuario autenticado y sesión iniciada
@@ -68,46 +81,48 @@
 ---
 
 ### CU-02: Cerrar Sesión
-**Actor:** Todos los usuarios  
+**Actores:** Usuario (cualquier rol), Sistema, Base de Datos  
 **Precondición:** Usuario debe estar autenticado  
 **Flujo Principal:**
 1. Usuario hace clic en "Cerrar Sesión"
 2. Sistema invalida sesión
-3. Sistema limpia tokens de autenticación
-4. Sistema redirige a página de login
+3. Base de Datos actualiza registro de sesión
+4. Sistema limpia tokens de autenticación
+5. Sistema redirige a página de login
 
 **Postcondición:** Sesión cerrada correctamente
 
 ---
 
 ### CU-03: Recuperar Contraseña
-**Actor:** Todos los usuarios  
+**Actores:** Usuario (cualquier rol), Sistema, Base de Datos  
 **Precondición:** Usuario registrado con email válido  
 **Flujo Principal:**
 1. Usuario hace clic en "¿Olvidaste tu contraseña?"
 2. Sistema muestra formulario de recuperación
 3. Usuario ingresa su email
 4. Sistema valida existencia del email
-5. Sistema genera token de recuperación
-6. Sistema envía email con enlace de recuperación
-7. Usuario hace clic en enlace del email
-8. Sistema valida token y expiraci
-
-ón
-9. Usuario ingresa nueva contraseña
-10. Sistema actualiza contraseña
-11. Sistema envía confirmación por email
+5. Base de Datos consulta información del usuario
+6. Sistema genera token de recuperación
+7. Base de Datos almacena token temporal
+8. Sistema envía email con enlace de recuperación
+9. Usuario hace clic en enlace del email
+10. Sistema valida token y expiración
+11. Usuario ingresa nueva contraseña
+12. Sistema actualiza contraseña
+13. Base de Datos guarda nueva contraseña encriptada
+14. Sistema envía confirmación por email
 
 **Flujo Alternativo:**
 - 4a. Email no existe: Sistema muestra mensaje genérico de seguridad
-- 8a. Token expirado: Sistema solicita nueva recuperación
+- 10a. Token expirado: Sistema solicita nueva recuperación
 
 **Postcondición:** Contraseña actualizada correctamente
 
 ---
 
 ### CU-04: Cambiar Contraseña
-**Actor:** Todos los usuarios  
+**Actores:** Usuario (cualquier rol), Sistema, Base de Datos  
 **Precondición:** Usuario autenticado  
 **Flujo Principal:**
 1. Usuario accede a su perfil
@@ -116,13 +131,15 @@
 4. Usuario ingresa contraseña actual
 5. Usuario ingresa nueva contraseña (2 veces)
 6. Sistema valida contraseña actual
-7. Sistema valida formato de nueva contraseña
-8. Sistema actualiza contraseña
-9. Sistema muestra mensaje de confirmación
+7. Base de Datos consulta contraseña encriptada actual
+8. Sistema valida formato de nueva contraseña
+9. Sistema actualiza contraseña
+10. Base de Datos guarda nueva contraseña encriptada
+11. Sistema muestra mensaje de confirmación
 
 **Flujo Alternativo:**
 - 6a. Contraseña actual incorrecta: Sistema muestra error
-- 7a. Nueva contraseña no cumple requisitos: Sistema muestra reglas
+- 8a. Nueva contraseña no cumple requisitos: Sistema muestra reglas
 
 **Postcondición:** Contraseña actualizada
 
@@ -131,14 +148,15 @@
 ## 2️⃣ MÓDULO: GESTIÓN DE USUARIOS Y ROLES
 
 ### CU-05: Crear Usuario
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Precondición:** Administrador autenticado con permisos  
 **Flujo Principal:**
 1. Administrador accede a módulo de usuarios
 2. Sistema muestra lista de usuarios
-3. Administrador hace clic en "Crear Usuario"
-4. Sistema muestra formulario de registro
-5. Administrador ingresa datos del usuario:
+3. Base de Datos consulta usuarios existentes
+4. Administrador hace clic en "Crear Usuario"
+5. Sistema muestra formulario de registro
+6. Administrador ingresa datos del usuario:
    - Nombre completo
    - Email (único)
    - DNI (opcional)
@@ -146,49 +164,53 @@
    - Persona asociada (opcional)
    - Trabajador asociado (opcional)
    - Roles a asignar
-6. Sistema valida datos ingresados
-7. Sistema genera contraseña temporal
-8. Sistema crea usuario
-9. Sistema asigna roles seleccionados
-10. Sistema muestra contraseña generada
-11. Sistema envía email de bienvenida (opcional)
+7. Sistema valida datos ingresados
+8. Base de Datos verifica unicidad de email
+9. Sistema genera contraseña temporal
+10. Base de Datos crea usuario
+11. Base de Datos asigna roles seleccionados
+12. Sistema muestra contraseña generada
+13. Sistema envía email de bienvenida (opcional)
 
 **Flujo Alternativo:**
-- 6a. Email ya existe: Sistema muestra error
-- 6b. DNI ya registrado: Sistema muestra advertencia
+- 8a. Email ya existe: Sistema muestra error
+- 8b. DNI ya registrado: Sistema muestra advertencia
 
 **Postcondición:** Usuario creado y roles asignados
 
 ---
 
 ### CU-06: Editar Usuario
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Precondición:** Usuario a editar debe existir  
 **Flujo Principal:**
 1. Administrador accede a lista de usuarios
-2. Administrador busca/filtra usuario
-3. Administrador hace clic en "Editar"
-4. Sistema muestra formulario con datos actuales
-5. Administrador modifica datos:
+2. Sistema muestra lista de usuarios
+3. Administrador busca/filtra usuario
+4. Administrador hace clic en "Editar"
+5. Sistema muestra formulario con datos actuales
+6. Base de Datos consulta información del usuario
+7. Administrador modifica datos:
    - Nombre
    - Email
    - Teléfono
    - Estado (activo/inactivo)
    - Roles
-6. Sistema valida cambios
-7. Sistema actualiza información
-8. Sistema sincroniza permisos según nuevos roles
+8. Sistema valida cambios
+9. Base de Datos verifica email duplicado
+10. Base de Datos actualiza información
+11. Sistema sincroniza permisos según nuevos roles
 
 **Flujo Alternativo:**
-- 6a. Email duplicado: Sistema muestra error
-- 5a. Cambio de estado a inactivo: Sistema cierra sesiones activas
+- 9a. Email duplicado: Sistema muestra error
+- 7a. Cambio de estado a inactivo: Sistema cierra sesiones activas
 
 **Postcondición:** Usuario actualizado
 
 ---
 
 ### CU-07: Eliminar Usuario
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Precondición:** Usuario no debe ser el mismo administrador  
 **Flujo Principal:**
 1. Administrador selecciona usuario a eliminar
@@ -196,7 +218,7 @@
 3. Sistema muestra confirmación
 4. Administrador confirma eliminación
 5. Sistema verifica que no sea auto-eliminación
-6. Sistema realiza soft delete
+6. Base de Datos realiza soft delete
 7. Sistema invalida sesiones activas del usuario
 8. Sistema muestra confirmación
 
@@ -208,27 +230,29 @@
 ---
 
 ### CU-08: Gestionar Roles
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Precondición:** Administrador con permisos de configuración  
 **Flujo Principal:**
 1. Administrador accede a "Gestión de Roles"
-2. Sistema muestra lista de roles existentes:
+2. Sistema muestra lista de roles existentes
+3. Base de Datos consulta roles y permisos:
    - Administrador
    - Almacenero
    - Supervisor
    - Personal de Atención
-3. Administrador selecciona rol a configurar
-4. Sistema muestra matriz de permisos por módulo
-5. Administrador activa/desactiva permisos
-6. Sistema guarda configuración
-7. Sistema aplica cambios a usuarios con ese rol
+4. Administrador selecciona rol a configurar
+5. Sistema muestra matriz de permisos por módulo
+6. Administrador activa/desactiva permisos
+7. Sistema valida configuración
+8. Base de Datos guarda configuración
+9. Sistema aplica cambios a usuarios con ese rol
 
 **Postcondición:** Permisos de rol actualizados
 
 ---
 
 ### CU-09: Crear Rol Personalizado
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Flujo Principal:**
 1. Administrador hace clic en "Crear Rol"
 2. Sistema muestra formulario
@@ -237,21 +261,23 @@
    - Descripción
    - Permisos por módulo
 4. Sistema valida nombre único
-5. Sistema crea rol
-6. Sistema asocia permisos seleccionados
+5. Base de Datos verifica nombre único
+6. Base de Datos crea rol
+7. Base de Datos asocia permisos seleccionados
 
 **Postcondición:** Nuevo rol disponible
 
 ---
 
 ### CU-10: Clonar Rol
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Flujo Principal:**
 1. Administrador selecciona rol a clonar
 2. Administrador hace clic en "Clonar"
 3. Sistema solicita nuevo nombre
-4. Sistema duplica permisos del rol original
-5. Sistema crea nuevo rol
+4. Base de Datos consulta permisos del rol original
+5. Sistema duplica permisos del rol original
+6. Base de Datos crea nuevo rol
 
 **Postcondición:** Rol clonado creado
 
@@ -260,13 +286,14 @@
 ## 3️⃣ MÓDULO: GESTIÓN DE PRODUCTOS E INVENTARIO
 
 ### CU-11: Registrar Producto
-**Actor:** Almacenero, Administrador  
+**Actores:** Almacenero, Administrador, Sistema, Base de Datos  
 **Precondición:** Usuario con permiso "crear-productos"  
 **Flujo Principal:**
 1. Usuario accede a módulo de productos
-2. Usuario hace clic en "Nuevo Producto"
-3. Sistema muestra formulario
-4. Usuario ingresa información:
+2. Sistema muestra lista de productos
+3. Usuario hace clic en "Nuevo Producto"
+4. Sistema muestra formulario
+5. Usuario ingresa información:
    - Código (opcional, auto-generado)
    - Nombre del producto
    - Categoría
@@ -277,58 +304,62 @@
    - Fecha de vencimiento (opcional)
    - Proveedor preferido
    - Imagen (opcional)
-5. Sistema valida datos
-6. Sistema guarda producto
-7. Sistema genera entrada en kardex
+6. Sistema valida datos
+7. Base de Datos verifica unicidad de código
+8. Base de Datos guarda producto
+9. Base de Datos genera entrada en kardex
 
 **Flujo Alternativo:**
-- 5a. Código duplicado: Sistema genera nuevo código
-- 5b. Nombre duplicado: Sistema solicita confirmación
+- 7a. Código duplicado: Sistema genera nuevo código
+- 7b. Nombre duplicado: Sistema solicita confirmación
 
 **Postcondición:** Producto registrado en sistema
 
 ---
 
 ### CU-12: Editar Producto
-**Actor:** Almacenero, Administrador  
+**Actores:** Almacenero, Administrador, Sistema, Base de Datos  
 **Precondición:** Producto debe existir  
 **Flujo Principal:**
 1. Usuario busca producto
-2. Usuario hace clic en "Editar"
-3. Sistema muestra formulario con datos actuales
-4. Usuario modifica información
-5. Sistema valida cambios
-6. Sistema actualiza producto
-7. Si cambió precio: Sistema registra en historial
+2. Sistema muestra resultados
+3. Usuario hace clic en "Editar"
+4. Sistema muestra formulario con datos actuales
+5. Base de Datos consulta información del producto
+6. Usuario modifica información
+7. Sistema valida cambios
+8. Base de Datos actualiza producto
+9. Base de Datos registra cambio en historial (si cambió precio)
 
 **Postcondición:** Producto actualizado
 
 ---
 
 ### CU-13: Eliminar Producto
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Precondición:** Producto no debe tener movimientos recientes  
 **Flujo Principal:**
 1. Administrador selecciona producto
 2. Administrador hace clic en "Eliminar"
-3. Sistema verifica dependencias:
+3. Sistema verifica dependencias
+4. Base de Datos consulta:
    - Movimientos de inventario
    - Recetas que lo incluyen
    - Órdenes de compra pendientes
-4. Sistema muestra advertencia
-5. Administrador confirma eliminación
-6. Sistema realiza soft delete
-7. Sistema registra en auditoría
+5. Sistema muestra advertencia
+6. Administrador confirma eliminación
+7. Base de Datos realiza soft delete
+8. Base de Datos registra en auditoría
 
 **Flujo Alternativo:**
-- 3a. Producto con dependencias activas: Sistema no permite eliminación
+- 4a. Producto con dependencias activas: Sistema no permite eliminación
 
 **Postcondición:** Producto eliminado/desactivado
 
 ---
 
 ### CU-14: Registrar Entrada de Inventario
-**Actor:** Almacenero  
+**Actores:** Almacenero, Sistema, Base de Datos  
 **Precondición:** Producto debe existir  
 **Flujo Principal:**
 1. Almacenero accede a "Movimientos de Inventario"
@@ -344,9 +375,9 @@
    - Observaciones
 5. Sistema calcula nuevo stock
 6. Sistema valida stock máximo (advertencia)
-7. Sistema registra movimiento
-8. Sistema actualiza inventario
-9. Sistema genera entrada en kardex
+7. Base de Datos registra movimiento
+8. Base de Datos actualiza inventario
+9. Base de Datos genera entrada en kardex
 10. Sistema verifica alertas de stock
 
 **Flujo Alternativo:**
@@ -357,7 +388,7 @@
 ---
 
 ### CU-15: Registrar Salida de Inventario
-**Actor:** Almacenero  
+**Actores:** Almacenero, Sistema, Base de Datos  
 **Precondición:** Producto debe tener stock disponible  
 **Flujo Principal:**
 1. Almacenero accede a "Movimientos de Inventario"
@@ -371,12 +402,13 @@
    - Trabajador solicitante (opcional)
    - Observaciones
 5. Sistema valida stock disponible
-6. Sistema calcula nuevo stock
-7. Sistema verifica stock mínimo
-8. Sistema registra salida
-9. Sistema actualiza inventario
-10. Sistema genera entrada en kardex
-11. Si stock < mínimo: Sistema genera alerta
+6. Base de Datos consulta stock actual
+7. Sistema calcula nuevo stock
+8. Sistema verifica stock mínimo
+9. Base de Datos registra salida
+10. Base de Datos actualiza inventario
+11. Base de Datos genera entrada en kardex
+12. Sistema genera alerta si stock < mínimo
 
 **Flujo Alternativo:**
 - 5a. Stock insuficiente: Sistema muestra error y no permite continuar
@@ -386,7 +418,7 @@
 ---
 
 ### CU-16: Consultar Kardex
-**Actor:** Almacenero, Supervisor, Administrador  
+**Actores:** Almacenero, Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Debe existir movimientos registrados  
 **Flujo Principal:**
 1. Usuario accede a "Kardex"
@@ -396,7 +428,8 @@
    - Tipo de movimiento
    - Usuario que registró
 3. Usuario aplica filtros
-4. Sistema muestra tabla con:
+4. Base de Datos consulta movimientos según filtros
+5. Sistema muestra tabla con:
    - Fecha y hora
    - Tipo de movimiento
    - Cantidad (entrada/salida)
@@ -405,14 +438,15 @@
    - Usuario responsable
    - Documento relacionado
    - Observaciones
-5. Usuario puede exportar a Excel/PDF
+6. Usuario puede exportar a Excel/PDF
+7. Sistema genera archivo de exportación
 
 **Postcondición:** Información consultada
 
 ---
 
 ### CU-17: Ajustar Inventario
-**Actor:** Administrador, Supervisor  
+**Actores:** Administrador, Supervisor, Sistema, Base de Datos  
 **Precondición:** Permiso "gestionar-inventario"  
 **Flujo Principal:**
 1. Usuario accede a producto
@@ -420,31 +454,33 @@
 3. Sistema muestra:
    - Stock actual en sistema
    - Stock físico contado
-4. Usuario ingresa stock físico real
-5. Sistema calcula diferencia
-6. Sistema solicita motivo del ajuste
-7. Usuario ingresa justificación
-8. Sistema registra ajuste
-9. Sistema actualiza inventario
-10. Sistema notifica a administrador (si diferencia > 10%)
+4. Base de Datos consulta stock actual
+5. Usuario ingresa stock físico real
+6. Sistema calcula diferencia
+7. Sistema solicita motivo del ajuste
+8. Usuario ingresa justificación
+9. Base de Datos registra ajuste
+10. Base de Datos actualiza inventario
+11. Sistema notifica a administrador (si diferencia > 10%)
 
 **Flujo Alternativo:**
-- 5a. Diferencia significativa: Sistema requiere aprobación de supervisor
+- 6a. Diferencia significativa: Sistema requiere aprobación de supervisor
 
 **Postcondición:** Inventario ajustado y registrado
 
 ---
 
 ### CU-18: Generar Alerta de Stock Mínimo
-**Actor:** Sistema (Automatizado)  
+**Actores:** Sistema, Base de Datos  
 **Precondición:** Productos con stock mínimo configurado  
 **Flujo Principal:**
-1. Sistema ejecuta tarea programada (diaria)
-2. Sistema consulta productos
+1. Sistema ejecuta tarea programada (diaria a las 6:00 AM)
+2. Base de Datos consulta todos los productos activos
 3. Para cada producto:
-   - Compara stock actual con stock mínimo
+   - Sistema compara stock actual con stock mínimo
    - Si stock actual ≤ stock mínimo:
      * Sistema crea notificación
+     * Base de Datos guarda notificación
      * Sistema envía email a almacenero
      * Sistema marca producto en dashboard
 4. Sistema genera reporte de productos críticos
@@ -456,13 +492,14 @@
 ## 4️⃣ MÓDULO: GESTIÓN DE COMPRAS Y PROVEEDORES
 
 ### CU-19: Registrar Proveedor
-**Actor:** Almacenero, Administrador  
+**Actores:** Almacenero, Administrador, Sistema, Base de Datos  
 **Precondición:** Permiso "crear-proveedores"  
 **Flujo Principal:**
 1. Usuario accede a módulo de proveedores
-2. Usuario hace clic en "Nuevo Proveedor"
-3. Sistema muestra formulario
-4. Usuario ingresa datos:
+2. Sistema muestra lista de proveedores
+3. Usuario hace clic en "Nuevo Proveedor"
+4. Sistema muestra formulario
+5. Usuario ingresa datos:
    - Razón social
    - RUC
    - Nombre comercial
@@ -473,94 +510,99 @@
    - Tipo de productos que provee
    - Días de crédito (opcional)
    - Observaciones
-5. Sistema valida RUC único
-6. Sistema consulta SUNAT (opcional)
-7. Sistema guarda proveedor
+6. Sistema valida RUC único
+7. Base de Datos verifica unicidad de RUC
+8. Sistema consulta SUNAT (opcional)
+9. Base de Datos guarda proveedor
 
 **Flujo Alternativo:**
-- 5a. RUC duplicado: Sistema muestra error
-- 6a. RUC no encontrado en SUNAT: Sistema permite continuar
+- 7a. RUC duplicado: Sistema muestra error
+- 8a. RUC no encontrado en SUNAT: Sistema permite continuar
 
 **Postcondición:** Proveedor registrado
 
 ---
 
 ### CU-20: Crear Orden de Compra
-**Actor:** Almacenero  
+**Actores:** Almacenero, Sistema, Base de Datos  
 **Precondición:** Proveedor y productos deben existir  
 **Flujo Principal:**
 1. Almacenero accede a "Compras"
-2. Almacenero hace clic en "Nueva Compra"
-3. Sistema muestra formulario
-4. Almacenero selecciona:
+2. Sistema muestra lista de órdenes
+3. Almacenero hace clic en "Nueva Compra"
+4. Sistema muestra formulario
+5. Base de Datos consulta proveedores y productos disponibles
+6. Almacenero selecciona:
    - Tipo de compra (productos, insumos, equipos, servicios)
    - Proveedor
    - Fecha de compra
    - Fecha de entrega esperada
-5. Almacenero agrega productos:
+7. Almacenero agrega productos:
    - Selecciona producto
    - Ingresa cantidad
    - Ingresa precio unitario
    - Sistema calcula subtotal
-6. Almacenero puede agregar múltiples productos
-7. Sistema calcula:
+8. Almacenero puede agregar múltiples productos
+9. Sistema calcula:
    - Subtotal
    - IGV (18%)
    - Total
-8. Almacenero ingresa descuento (opcional)
-9. Sistema recalcula total
-10. Almacenero guarda orden
-11. Sistema genera número de orden
-12. Sistema cambia estado a "Pendiente"
+10. Almacenero ingresa descuento (opcional)
+11. Sistema recalcula total
+12. Almacenero guarda orden
+13. Sistema genera número de orden
+14. Base de Datos guarda orden con estado "Pendiente"
 
 **Flujo Alternativo:**
-- 5a. Producto no disponible: Sistema permite buscarlo o crearlo
+- 7a. Producto no disponible: Sistema permite buscarlo o crearlo
 
 **Postcondición:** Orden de compra creada con estado "Pendiente"
 
 ---
 
 ### CU-21: Recepcionar Orden de Compra
-**Actor:** Almacenero  
+**Actores:** Almacenero, Sistema, Base de Datos  
 **Precondición:** Orden debe estar en estado "Pendiente"  
 **Flujo Principal:**
 1. Almacenero accede a orden de compra
-2. Almacenero hace clic en "Recepcionar"
-3. Sistema muestra productos ordenados
-4. Para cada producto:
+2. Base de Datos consulta detalles de la orden
+3. Almacenero hace clic en "Recepcionar"
+4. Sistema muestra productos ordenados
+5. Para cada producto:
    - Almacenero verifica cantidad recibida
    - Almacenero verifica calidad
    - Almacenero puede ajustar cantidad si hay diferencia
    - Almacenero ingresa fecha de vencimiento (si aplica)
-5. Sistema solicita confirmación
-6. Almacenero confirma recepción
-7. Sistema actualiza estado a "Recibida"
-8. Sistema genera movimientos de inventario (entradas)
-9. Sistema actualiza stock de productos
-10. Sistema genera entradas en kardex
+6. Sistema solicita confirmación
+7. Almacenero confirma recepción
+8. Base de Datos actualiza estado a "Recibida"
+9. Base de Datos genera movimientos de inventario (entradas)
+10. Base de Datos actualiza stock de productos
+11. Base de Datos genera entradas en kardex
 
 **Flujo Alternativo:**
-- 4a. Cantidad recibida < cantidad ordenada: Sistema marca diferencia
-- 4b. Producto en mal estado: Almacenero puede rechazar parcialmente
+- 5a. Cantidad recibida < cantidad ordenada: Sistema marca diferencia
+- 5b. Producto en mal estado: Almacenero puede rechazar parcialmente
 
 **Postcondición:** Orden recepcionada, inventario actualizado
 
 ---
 
 ### CU-22: Anular Orden de Compra
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Precondición:** Orden no debe estar recepcionada  
 **Flujo Principal:**
 1. Administrador accede a orden
-2. Administrador hace clic en "Anular"
-3. Sistema solicita motivo
-4. Administrador ingresa justificación
-5. Sistema verifica que no esté recepcionada
-6. Sistema cambia estado a "Anulada"
-7. Sistema registra en auditoría
+2. Base de Datos consulta estado de la orden
+3. Administrador hace clic en "Anular"
+4. Sistema solicita motivo
+5. Administrador ingresa justificación
+6. Sistema verifica que no esté recepcionada
+7. Base de Datos cambia estado a "Anulada"
+8. Base de Datos registra en auditoría
 
 **Flujo Alternativo:**
-- 5a. Orden ya recepcionada: Sistema no permite anulación
+- 6a. Orden ya recepcionada: Sistema no permite anulación
 
 **Postcondición:** Orden anulada
 
@@ -569,13 +611,14 @@
 ## 5️⃣ MÓDULO: GESTIÓN DE MENÚS Y RECETAS
 
 ### CU-23: Crear Receta
-**Actor:** Supervisor, Administrador  
+**Actores:** Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Productos/insumos deben existir  
 **Flujo Principal:**
 1. Usuario accede a "Recetas"
-2. Usuario hace clic en "Nueva Receta"
-3. Sistema muestra formulario
-4. Usuario ingresa:
+2. Sistema muestra lista de recetas
+3. Usuario hace clic en "Nueva Receta"
+4. Sistema muestra formulario
+5. Usuario ingresa:
    - Nombre de la receta
    - Descripción
    - Categoría (entrada, plato principal, postre, bebida)
@@ -583,122 +626,130 @@
    - Porciones que rinde
    - Imagen (opcional)
    - Instrucciones de preparación
-5. Usuario agrega ingredientes:
+6. Usuario agrega ingredientes:
    - Selecciona producto/insumo
    - Ingresa cantidad necesaria
    - Sistema muestra unidad de medida
+   - Base de Datos consulta stock disponible
    - Sistema muestra stock disponible
-6. Usuario puede agregar múltiples ingredientes
-7. Sistema calcula:
+7. Usuario puede agregar múltiples ingredientes
+8. Sistema calcula:
    - Costo total de la receta
    - Costo por porción
    - Disponibilidad según stock actual
-8. Usuario guarda receta
-9. Sistema valida que tenga al menos 1 ingrediente
+9. Usuario guarda receta
+10. Sistema valida que tenga al menos 1 ingrediente
+11. Base de Datos guarda receta e ingredientes
 
 **Flujo Alternativo:**
-- 5a. Stock insuficiente: Sistema muestra advertencia
+- 6a. Stock insuficiente: Sistema muestra advertencia
 
 **Postcondición:** Receta creada y disponible para menús
 
 ---
 
 ### CU-24: Editar Receta
-**Actor:** Supervisor, Administrador  
+**Actores:** Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Receta debe existir  
 **Flujo Principal:**
 1. Usuario busca receta
-2. Usuario hace clic en "Editar"
-3. Sistema muestra formulario con datos actuales
-4. Usuario modifica información
-5. Usuario puede agregar/quitar/modificar ingredientes
-6. Sistema recalcula costos
-7. Sistema valida cambios
-8. Sistema actualiza receta
-9. Si receta está en menús activos: Sistema notifica cambios
+2. Sistema muestra resultados
+3. Usuario hace clic en "Editar"
+4. Sistema muestra formulario con datos actuales
+5. Base de Datos consulta información de la receta
+6. Usuario modifica información
+7. Usuario puede agregar/quitar/modificar ingredientes
+8. Sistema recalcula costos
+9. Sistema valida cambios
+10. Base de Datos actualiza receta
+11. Sistema notifica si receta está en menús activos
 
 **Postcondición:** Receta actualizada
 
 ---
 
 ### CU-25: Crear Menú Diario
-**Actor:** Supervisor, Administrador  
+**Actores:** Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Recetas deben existir  
 **Flujo Principal:**
 1. Usuario accede a "Menús"
-2. Usuario hace clic en "Crear Menú"
-3. Sistema muestra formulario
-4. Usuario ingresa:
+2. Sistema muestra lista de menús
+3. Usuario hace clic en "Crear Menú"
+4. Sistema muestra formulario
+5. Usuario ingresa:
    - Fecha del menú
    - Tipo de menú (desayuno, almuerzo, cena)
    - Nombre/descripción
-5. Usuario agrega platos/recetas:
+6. Base de Datos consulta recetas disponibles
+7. Usuario agrega platos/recetas:
    - Entrada (opcional)
    - Plato principal
    - Guarniciones
    - Postre (opcional)
    - Bebida (opcional)
-6. Para cada receta seleccionada:
+8. Para cada receta seleccionada:
    - Sistema verifica disponibilidad de ingredientes
+   - Base de Datos consulta stock de ingredientes
    - Sistema muestra alertas si stock insuficiente
    - Sistema calcula porciones disponibles
-7. Usuario define:
+9. Usuario define:
    - Cantidad estimada de comensales
    - Precio (si aplica)
    - Estado (activo/inactivo)
-8. Sistema calcula:
-   - Costo total del menú
-   - Costo por porción
-   - Ingredientes totales necesarios
-9. Usuario guarda menú
-10. Sistema reserva ingredientes (opcional)
+10. Sistema calcula:
+    - Costo total del menú
+    - Costo por porción
+    - Ingredientes totales necesarios
+11. Usuario guarda menú
+12. Base de Datos guarda menú
+13. Sistema reserva ingredientes si está activo
 
 **Flujo Alternativo:**
-- 6a. Stock insuficiente para algún ingrediente: Sistema sugiere recetas alternativas
-- 3a. Ya existe menú para esa fecha/tipo: Sistema solicita confirmación
+- 8a. Stock insuficiente para algún ingrediente: Sistema sugiere recetas alternativas
+- 5a. Ya existe menú para esa fecha/tipo: Sistema solicita confirmación
 
 **Postcondición:** Menú creado y disponible
 
 ---
 
 ### CU-26: Activar/Desactivar Menú
-**Actor:** Supervisor, Administrador  
+**Actores:** Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Menú debe existir  
 **Flujo Principal:**
 1. Usuario accede a lista de menús
-2. Usuario selecciona menú
-3. Usuario hace clic en "Cambiar Estado"
-4. Sistema verifica:
+2. Sistema muestra menús
+3. Usuario selecciona menú
+4. Usuario hace clic en "Cambiar Estado"
+5. Sistema verifica:
    - Fecha del menú (no debe ser pasada)
    - Disponibilidad de ingredientes
-5. Sistema cambia estado
-6. Si se activa: Sistema reserva ingredientes
-7. Si se desactiva: Sistema libera ingredientes reservados
+6. Base de Datos consulta stock de ingredientes
+7. Base de Datos cambia estado
+8. Sistema reserva/libera ingredientes según nuevo estado
 
 **Flujo Alternativo:**
-- 4a. Ingredientes insuficientes: Sistema no permite activación
+- 6a. Ingredientes insuficientes: Sistema no permite activación
 
 **Postcondición:** Estado del menú actualizado
 
 ---
 
 ### CU-27: Verificar Disponibilidad de Menú
-**Actor:** Sistema (Automatizado), Usuarios  
+**Actores:** Sistema, Base de Datos  
 **Precondición:** Menú debe estar activo  
 **Flujo Principal:**
-1. Sistema ejecuta verificación:
-   - Automáticamente cada hora
-   - Manualmente cuando usuario consulta
-2. Para cada receta del menú:
-   - Sistema verifica stock de cada ingrediente
+1. Sistema ejecuta verificación automática cada hora
+2. Base de Datos consulta menús activos
+3. Para cada receta del menú:
+   - Base de Datos verifica stock de cada ingrediente
    - Sistema compara con cantidad necesaria
    - Sistema calcula porciones disponibles
-3. Sistema determina estado:
+4. Sistema determina estado:
    - "Disponible" si todos los ingredientes están
    - "Disponible Parcialmente" si faltan algunos
    - "No Disponible" si faltan ingredientes críticos
-4. Sistema actualiza estado del menú
-5. Si cambia a "No Disponible": Sistema notifica supervisor
+5. Base de Datos actualiza estado del menú
+6. Sistema notifica supervisor si cambia a "No Disponible"
 
 **Postcondición:** Disponibilidad actualizada
 
@@ -707,73 +758,77 @@
 ## 6️⃣ MÓDULO: REGISTRO DE CONSUMOS
 
 ### CU-28: Registrar Consumo Individual
-**Actor:** Personal de Atención, Supervisor  
+**Actores:** Personal de Atención, Supervisor, Sistema, Base de Datos, RENIEC  
 **Precondición:** Menú activo y trabajador registrado  
 **Flujo Principal:**
 1. Usuario accede a "Registrar Consumo"
 2. Sistema muestra menús activos del día
-3. Usuario selecciona tipo de menú (desayuno/almuerzo/cena)
-4. Sistema muestra información del menú
-5. Usuario busca trabajador:
+3. Base de Datos consulta menús activos
+4. Usuario selecciona tipo de menú (desayuno/almuerzo/cena)
+5. Sistema muestra información del menú
+6. Usuario busca trabajador:
    - Por DNI
    - Por nombre
    - Escaneando código (QR/barras)
-6. Sistema valida trabajador:
+7. Base de Datos busca trabajador
+8. Sistema valida trabajador:
    - Existe en sistema
    - Está activo
    - No ha consumido ese menú hoy
-7. Sistema muestra datos del trabajador
-8. Usuario confirma consumo
-9. Sistema registra:
-   - Trabajador
-   - Menú consumido
-   - Fecha y hora
-   - Usuario que registró
-   - Ubicación (opcional)
-10. Sistema descuenta ingredientes del stock
-11. Sistema muestra confirmación
+9. Sistema muestra datos del trabajador
+10. Usuario confirma consumo
+11. Base de Datos registra:
+    - Trabajador
+    - Menú consumido
+    - Fecha y hora
+    - Usuario que registró
+    - Ubicación (opcional)
+12. Base de Datos descuenta ingredientes del stock
+13. Base de Datos genera entrada en kardex
+14. Sistema muestra confirmación
 
 **Flujo Alternativo:**
-- 6a. Trabajador no encontrado: Sistema permite registrar datos básicos
-- 6b. Trabajador ya consumió: Sistema muestra alerta y no permite duplicado
-- 5a. DNI inválido: Sistema integra con RENIEC para validar
+- 7a. Trabajador no encontrado: RENIEC valida DNI y Sistema permite registrar datos básicos
+- 8a. Trabajador ya consumió: Sistema muestra alerta y no permite duplicado
 
 **Postcondición:** Consumo registrado, stock actualizado
 
 ---
 
 ### CU-29: Registrar Consumo Masivo
-**Actor:** Supervisor, Administrador  
+**Actores:** Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Menú activo y lista de trabajadores  
 **Flujo Principal:**
 1. Usuario accede a "Consumo Masivo"
 2. Sistema muestra menús activos
-3. Usuario selecciona menú
-4. Usuario carga archivo Excel con DNIs o:
+3. Base de Datos consulta menús activos
+4. Usuario selecciona menú
+5. Usuario carga archivo Excel con DNIs o:
    - Usuario selecciona área/departamento
-   - Sistema lista trabajadores
-5. Usuario revisa lista de trabajadores
-6. Usuario puede agregar/quitar trabajadores
-7. Usuario confirma consumo masivo
-8. Sistema procesa cada registro:
+   - Base de Datos lista trabajadores
+   - Sistema muestra trabajadores
+6. Usuario revisa lista de trabajadores
+7. Usuario puede agregar/quitar trabajadores
+8. Usuario confirma consumo masivo
+9. Sistema procesa cada registro:
    - Valida trabajador
    - Verifica que no haya consumido
-   - Registra consumo
-9. Sistema muestra resumen:
-   - Consumos exitosos
-   - Errores (duplicados, no encontrados)
-10. Sistema descuenta ingredientes proporcionalmente
-11. Sistema genera reporte
+   - Base de Datos registra consumo
+10. Sistema muestra resumen:
+    - Consumos exitosos
+    - Errores (duplicados, no encontrados)
+11. Base de Datos descuenta ingredientes proporcionalmente
+12. Sistema genera reporte
 
 **Flujo Alternativo:**
-- 8a. Algunos trabajadores ya consumieron: Sistema los omite y continúa
+- 9a. Algunos trabajadores ya consumieron: Sistema los omite y continúa
 
 **Postcondición:** Consumos masivos registrados
 
 ---
 
 ### CU-30: Consultar Historial de Consumos
-**Actor:** Supervisor, Administrador, Personal de RR.HH.  
+**Actores:** Supervisor, Administrador, Personal de RR.HH., Sistema, Base de Datos  
 **Precondición:** Debe haber consumos registrados  
 **Flujo Principal:**
 1. Usuario accede a "Consumos"
@@ -783,36 +838,38 @@
    - Tipo de menú
    - Área/departamento
 3. Usuario aplica filtros
-4. Sistema muestra tabla con:
+4. Base de Datos consulta consumos según filtros
+5. Sistema muestra tabla con:
    - Fecha y hora
    - Trabajador
    - Menú consumido
    - Usuario que registró
-5. Usuario puede:
+6. Usuario puede:
    - Ver detalles del consumo
    - Exportar a Excel/PDF
-   - Generar estadísticas
+   - Sistema generar estadísticas
 
 **Postcondición:** Información consultada
 
 ---
 
 ### CU-31: Anular Consumo
-**Actor:** Supervisor, Administrador  
+**Actores:** Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Consumo debe existir y ser del día actual  
 **Flujo Principal:**
 1. Usuario busca consumo a anular
-2. Usuario hace clic en "Anular"
-3. Sistema verifica que sea del día actual
-4. Sistema solicita motivo
-5. Usuario ingresa justificación
-6. Sistema confirma anulación
-7. Sistema revierte descuento de ingredientes
-8. Sistema marca consumo como anulado
-9. Sistema registra en auditoría
+2. Base de Datos consulta consumo
+3. Usuario hace clic en "Anular"
+4. Sistema verifica que sea del día actual
+5. Sistema solicita motivo
+6. Usuario ingresa justificación
+7. Sistema confirma anulación
+8. Base de Datos revierte descuento de ingredientes
+9. Base de Datos marca consumo como anulado
+10. Base de Datos registra en auditoría
 
 **Flujo Alternativo:**
-- 3a. Consumo de días anteriores: Sistema no permite anulación directa
+- 4a. Consumo de días anteriores: Sistema no permite anulación directa
 
 **Postcondición:** Consumo anulado, stock devuelto
 
@@ -821,18 +878,19 @@
 ## 7️⃣ MÓDULO: GESTIÓN DE PERSONAL
 
 ### CU-32: Registrar Trabajador
-**Actor:** Personal de RR.HH., Administrador  
+**Actores:** Personal de RR.HH., Administrador, Sistema, Base de Datos, RENIEC  
 **Precondición:** Permiso "crear-trabajadores"  
 **Flujo Principal:**
 1. Usuario accede a "Personal"
-2. Usuario hace clic en "Nuevo Trabajador"
-3. Sistema muestra formulario
-4. Usuario ingresa DNI
-5. Sistema integra con RENIEC:
+2. Sistema muestra lista de trabajadores
+3. Usuario hace clic en "Nuevo Trabajador"
+4. Sistema muestra formulario
+5. Usuario ingresa DNI
+6. Sistema integra con RENIEC:
    - Consulta datos del DNI
-   - Obtiene nombre completo, fecha de nacimiento
-6. Sistema auto-completa datos personales
-7. Usuario completa/corrige información:
+   - RENIEC retorna nombre completo, fecha de nacimiento
+7. Sistema auto-completa datos personales
+8. Usuario completa/corrige información:
    - Datos personales (nombre, DNI, fecha nacimiento)
    - Dirección
    - Teléfono
@@ -844,36 +902,39 @@
    - Salario (opcional)
    - Contacto de emergencia
    - Foto (opcional)
-8. Sistema valida DNI único
-9. Sistema guarda trabajador
-10. Sistema genera código de empleado
+9. Sistema valida DNI único
+10. Base de Datos verifica unicidad de DNI
+11. Base de Datos guarda trabajador
+12. Sistema genera código de empleado
 
 **Flujo Alternativo:**
-- 5a. DNI no encontrado en RENIEC: Usuario ingresa datos manualmente
-- 8a. DNI duplicado: Sistema muestra error
+- 6a. DNI no encontrado en RENIEC: Usuario ingresa datos manualmente
+- 10a. DNI duplicado: Sistema muestra error
 
 **Postcondición:** Trabajador registrado
 
 ---
 
 ### CU-33: Editar Trabajador
-**Actor:** Personal de RR.HH., Administrador  
+**Actores:** Personal de RR.HH., Administrador, Sistema, Base de Datos  
 **Precondición:** Trabajador debe existir  
 **Flujo Principal:**
 1. Usuario busca trabajador
-2. Usuario hace clic en "Editar"
-3. Sistema muestra formulario con datos actuales
-4. Usuario modifica información
-5. Sistema valida cambios
-6. Sistema actualiza trabajador
-7. Si cambió área/cargo: Sistema notifica a supervisor
+2. Sistema muestra resultados
+3. Usuario hace clic en "Editar"
+4. Sistema muestra formulario con datos actuales
+5. Base de Datos consulta información del trabajador
+6. Usuario modifica información
+7. Sistema valida cambios
+8. Base de Datos actualiza trabajador
+9. Sistema notifica a supervisor si cambió área/cargo
 
 **Postcondición:** Trabajador actualizado
 
 ---
 
 ### CU-34: Desactivar Trabajador
-**Actor:** Personal de RR.HH., Administrador  
+**Actores:** Personal de RR.HH., Administrador, Sistema, Base de Datos  
 **Precondición:** Trabajador activo  
 **Flujo Principal:**
 1. Usuario accede a ficha de trabajador
@@ -883,16 +944,16 @@
    - Motivo
 4. Usuario ingresa información
 5. Sistema confirma desactivación
-6. Sistema cambia estado a "Inactivo"
-7. Sistema finaliza contrato activo (si existe)
-8. Si trabajador tiene usuario: Sistema desactiva cuenta
+6. Base de Datos cambia estado a "Inactivo"
+7. Base de Datos finaliza contrato activo (si existe)
+8. Base de Datos desactiva cuenta de usuario (si existe)
 
 **Postcondición:** Trabajador desactivado
 
 ---
 
 ### CU-35: Consultar Datos de Trabajador
-**Actor:** Personal de RR.HH., Supervisor, Administrador  
+**Actores:** Personal de RR.HH., Supervisor, Administrador, Sistema, Base de Datos  
 **Precondición:** Trabajador registrado  
 **Flujo Principal:**
 1. Usuario busca trabajador por:
@@ -900,16 +961,19 @@
    - Nombre
    - Código de empleado
    - Área
-2. Sistema muestra resultados
-3. Usuario selecciona trabajador
-4. Sistema muestra ficha completa:
+2. Base de Datos consulta según criterio
+3. Sistema muestra resultados
+4. Usuario selecciona trabajador
+5. Base de Datos consulta información completa
+6. Sistema muestra ficha completa:
    - Datos personales
    - Datos laborales
    - Contratos (histórico)
    - Certificados médicos
    - Historial de consumos
    - Usuario del sistema (si tiene)
-5. Usuario puede imprimir ficha
+7. Usuario puede imprimir ficha
+8. Sistema genera PDF
 
 **Postcondición:** Información consultada
 
@@ -918,13 +982,14 @@
 ## 8️⃣ MÓDULO: GESTIÓN DE CONTRATOS LABORALES
 
 ### CU-36: Crear Contrato Laboral
-**Actor:** Personal de RR.HH., Administrador  
+**Actores:** Personal de RR.HH., Administrador, Sistema, Base de Datos  
 **Precondición:** Trabajador debe existir y plantilla de contrato disponible  
 **Flujo Principal:**
 1. Usuario accede a trabajador
-2. Usuario hace clic en "Nuevo Contrato"
-3. Sistema muestra formulario
-4. Usuario ingresa:
+2. Base de Datos consulta información del trabajador
+3. Usuario hace clic en "Nuevo Contrato"
+4. Sistema muestra formulario
+5. Usuario ingresa:
    - Tipo de contrato (plazo fijo, indefinido, por obra)
    - Fecha de inicio
    - Fecha de fin (si es temporal)
@@ -933,28 +998,30 @@
    - Beneficios
    - Horario de trabajo
    - Condiciones especiales
-5. Usuario selecciona plantilla de contrato
-6. Sistema genera vista previa del contrato con datos
-7. Usuario revisa y confirma
-8. Sistema genera documento PDF
-9. Sistema guarda contrato con estado "Pendiente de Firma"
-10. Sistema puede enviar por email al trabajador
+6. Base de Datos consulta plantillas disponibles
+7. Usuario selecciona plantilla de contrato
+8. Sistema genera vista previa del contrato con datos
+9. Usuario revisa y confirma
+10. Sistema genera documento PDF
+11. Base de Datos guarda contrato con estado "Pendiente de Firma"
+12. Sistema puede enviar por email al trabajador
 
 **Flujo Alternativo:**
-- 5a. No hay plantillas: Usuario debe crear una primero
+- 6a. No hay plantillas: Usuario debe crear una primero
 
 **Postcondición:** Contrato creado en estado "Pendiente"
 
 ---
 
 ### CU-37: Generar PDF de Contrato
-**Actor:** Personal de RR.HH.  
+**Actores:** Personal de RR.HH., Sistema, Base de Datos  
 **Precondición:** Contrato debe existir con plantilla  
 **Flujo Principal:**
 1. Usuario accede a contrato
 2. Usuario hace clic en "Generar PDF"
-3. Sistema carga plantilla seleccionada
-4. Sistema reemplaza variables:
+3. Base de Datos consulta datos del contrato y trabajador
+4. Sistema carga plantilla seleccionada
+5. Sistema reemplaza variables:
    - {nombre_trabajador}
    - {dni}
    - {fecha_inicio}
@@ -963,9 +1030,9 @@
    - {salario}
    - {fecha_actual}
    - etc.
-5. Sistema genera documento PDF
-6. Sistema muestra vista previa
-7. Usuario puede:
+6. Sistema genera documento PDF
+7. Sistema muestra vista previa
+8. Usuario puede:
    - Descargar
    - Imprimir
    - Enviar por email
@@ -975,7 +1042,7 @@
 ---
 
 ### CU-38: Subir Contrato Firmado
-**Actor:** Personal de RR.HH.  
+**Actores:** Personal de RR.HH., Sistema, Base de Datos  
 **Precondición:** Contrato generado previamente  
 **Flujo Principal:**
 1. Usuario accede a contrato
@@ -984,16 +1051,17 @@
 4. Usuario selecciona archivo PDF escaneado
 5. Sistema valida formato (PDF, tamaño máximo)
 6. Usuario sube archivo
-7. Sistema guarda documento
-8. Sistema cambia estado a "Firmado"
-9. Sistema registra fecha de firma
+7. Sistema guarda documento en storage
+8. Base de Datos actualiza ruta del archivo
+9. Base de Datos cambia estado a "Firmado"
+10. Base de Datos registra fecha de firma
 
 **Postcondición:** Contrato firmado registrado
 
 ---
 
 ### CU-39: Activar Contrato
-**Actor:** Personal de RR.HH., Administrador  
+**Actores:** Personal de RR.HH., Administrador, Sistema, Base de Datos  
 **Precondición:** Contrato en estado "Firmado"  
 **Flujo Principal:**
 1. Usuario accede a contrato
@@ -1001,20 +1069,21 @@
 3. Sistema verifica:
    - Contrato firmado
    - Fecha de inicio (hoy o futura)
-   - No hay contratos activos del mismo trabajador
-4. Sistema cambia estado a "Activo"
-5. Sistema registra fecha de activación
-6. Si trabajador estaba inactivo: Sistema reactiva
+4. Base de Datos consulta contratos activos del trabajador
+5. Sistema valida que no hay contratos activos
+6. Base de Datos cambia estado a "Activo"
+7. Base de Datos registra fecha de activación
+8. Base de Datos reactiva trabajador si estaba inactivo
 
 **Flujo Alternativo:**
-- 3a. Ya existe contrato activo: Sistema sugiere finalizar el anterior
+- 5a. Ya existe contrato activo: Sistema sugiere finalizar el anterior
 
 **Postcondición:** Contrato activo y vigente
 
 ---
 
 ### CU-40: Finalizar Contrato
-**Actor:** Personal de RR.HH., Administrador  
+**Actores:** Personal de RR.HH., Administrador, Sistema, Base de Datos  
 **Precondición:** Contrato en estado "Activo"  
 **Flujo Principal:**
 1. Usuario accede a contrato
@@ -1025,8 +1094,8 @@
    - Observaciones
 4. Usuario ingresa datos
 5. Sistema confirma finalización
-6. Sistema cambia estado a "Finalizado"
-7. Sistema registra fecha de finalización
+6. Base de Datos cambia estado a "Finalizado"
+7. Base de Datos registra fecha de finalización
 8. Sistema puede generar liquidación (futuro)
 
 **Postcondición:** Contrato finalizado
@@ -1034,17 +1103,18 @@
 ---
 
 ### CU-41: Crear Plantilla de Contrato
-**Actor:** Administrador  
+**Actores:** Administrador, Sistema, Base de Datos  
 **Precondición:** Permiso de configuración  
 **Flujo Principal:**
 1. Administrador accede a "Plantillas de Contrato"
-2. Administrador hace clic en "Nueva Plantilla"
-3. Sistema muestra editor
-4. Administrador ingresa:
+2. Sistema muestra lista de plantillas
+3. Administrador hace clic en "Nueva Plantilla"
+4. Sistema muestra editor
+5. Administrador ingresa:
    - Nombre de la plantilla
    - Tipo de contrato (plazo fijo, indefinido, etc.)
    - Descripción
-5. Administrador escribe contenido del contrato usando variables:
+6. Administrador escribe contenido del contrato usando variables:
    - {nombre_trabajador}
    - {dni}
    - {direccion}
@@ -1056,37 +1126,40 @@
    - {empresa_nombre}
    - {empresa_ruc}
    - {empresa_representante}
-6. Sistema muestra lista de variables disponibles
-7. Administrador puede formatear texto (negrita, cursiva, etc.)
-8. Administrador guarda plantilla
-9. Sistema valida sintaxis de variables
+7. Sistema muestra lista de variables disponibles
+8. Administrador puede formatear texto (negrita, cursiva, etc.)
+9. Administrador guarda plantilla
+10. Sistema valida sintaxis de variables
+11. Base de Datos guarda plantilla
 
 **Postcondición:** Plantilla creada y disponible
 
 ---
 
 ### CU-42: Consultar Contratos por Vencer
-**Actor:** Personal de RR.HH., Administrador  
+**Actores:** Personal de RR.HH., Administrador, Sistema, Base de Datos  
 **Precondición:** Contratos activos existentes  
 **Flujo Principal:**
 1. Usuario accede a "Contratos por Vencer"
-2. Sistema filtra contratos:
+2. Base de Datos consulta contratos activos
+3. Sistema filtra contratos:
    - Estado: Activo
    - Fecha fin <= (hoy + 30 días)
-3. Sistema muestra lista con:
+4. Sistema muestra lista con:
    - Trabajador
    - Tipo de contrato
    - Fecha de inicio
    - Fecha de fin
    - Días restantes
-4. Sistema marca con colores:
+5. Sistema marca con colores:
    - Rojo: Vence en menos de 7 días
    - Amarillo: Vence en 7-15 días
    - Verde: Vence en 16-30 días
-5. Usuario puede:
+6. Usuario puede:
    - Ver detalle del contrato
    - Renovar contrato
    - Exportar lista
+7. Sistema genera archivo de exportación
 
 **Postcondición:** Lista consultada
 
@@ -1095,13 +1168,14 @@
 ## 9️⃣ MÓDULO: CERTIFICADOS MÉDICOS
 
 ### CU-43: Registrar Certificado Médico
-**Actor:** Personal de RR.HH., Supervisor  
+**Actores:** Personal de RR.HH., Supervisor, Sistema, Base de Datos  
 **Precondición:** Trabajador debe existir  
 **Flujo Principal:**
 1. Usuario accede a trabajador
-2. Usuario hace clic en "Nuevo Certificado Médico"
-3. Sistema muestra formulario
-4. Usuario ingresa:
+2. Base de Datos consulta información del trabajador
+3. Usuario hace clic en "Nuevo Certificado Médico"
+4. Sistema muestra formulario
+5. Usuario ingresa:
    - Tipo de examen (pre-ocupacional, anual, por cambio de puesto)
    - Fecha del examen
    - Institución/clínica
@@ -1110,32 +1184,35 @@
    - Restricciones (si aplica)
    - Fecha de vencimiento
    - Observaciones
-5. Usuario sube documento PDF (opcional)
-6. Sistema valida fechas
-7. Sistema guarda certificado
-8. Si resultado es "No Apto": Sistema genera alerta
+6. Usuario sube documento PDF (opcional)
+7. Sistema valida fechas
+8. Base de Datos guarda certificado
+9. Sistema guarda archivo PDF en storage
+10. Sistema genera alerta si resultado es "No Apto"
 
 **Flujo Alternativo:**
-- 8a. Resultado "No Apto": Sistema sugiere desactivar trabajador
+- 10a. Resultado "No Apto": Sistema sugiere desactivar trabajador
 
 **Postcondición:** Certificado registrado
 
 ---
 
 ### CU-44: Consultar Certificados por Vencer
-**Actor:** Personal de RR.HH.  
+**Actores:** Personal de RR.HH., Sistema, Base de Datos  
 **Precondición:** Certificados registrados  
 **Flujo Principal:**
 1. Usuario accede a "Certificados por Vencer"
-2. Sistema filtra certificados:
+2. Base de Datos consulta certificados activos
+3. Sistema filtra certificados:
    - Fecha vencimiento <= (hoy + 30 días)
    - Trabajador activo
-3. Sistema muestra lista
-4. Sistema marca con colores según días restantes
-5. Usuario puede:
+4. Sistema muestra lista
+5. Sistema marca con colores según días restantes
+6. Usuario puede:
    - Ver detalle
    - Renovar certificado
    - Notificar a trabajador
+7. Sistema envía notificación si se solicita
 
 **Postcondición:** Lista consultada
 
@@ -1559,6 +1636,10 @@
 
 ## 📝 NOTAS ADICIONALES
 
+### Actores del Sistema (OBLIGATORIOS EN TODOS LOS CU):
+- **Sistema:** Actor técnico que procesa lógica de negocio, valida datos, ejecuta operaciones y genera cálculos. DEBE estar presente en TODOS los casos de uso.
+- **Base de Datos:** Actor técnico que almacena información, consulta datos, actualiza registros y mantiene integridad referencial. DEBE estar presente en TODOS los casos de uso (excepto CU-54, CU-55 que solo interactúan con archivos de caché).
+
 ### Integraciones Externas:
 - **RENIEC:** Para validación de DNI en CU-32, CU-28
 - **SUNAT:** Para consulta de RUC en CU-19
@@ -1578,6 +1659,7 @@
 
 **Documento generado para:** Sistema CESODO v1.0  
 **Fecha:** Octubre 2025  
+**Versión:** 2.0 (Actualizado con Sistema y Base de Datos como actores obligatorios)  
 **Total de Casos de Uso:** 57  
-**Total de Actores:** 7 (5 humanos + 2 de sistema)
+**Total de Actores:** 8 (5 humanos + 2 técnicos obligatorios + 1 externo)
 
