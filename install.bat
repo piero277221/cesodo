@@ -171,7 +171,7 @@ if /i "%seed%"=="S" (
     echo.
     echo Cargando datos de ejemplo...
     php artisan db:seed --force
-    
+
     if %errorlevel% neq 0 (
         echo ⚠️  Advertencia: Hubo problemas al cargar los datos de ejemplo
     ) else (

@@ -8,7 +8,6 @@ use App\Models\Producto;
 use App\Models\Trabajador;
 use App\Models\Proveedor;
 use App\Models\Pedido;
-use App\Helpers\DatabaseHelper;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -66,10 +65,9 @@ class ReporteController extends Controller
         ];
 
         // Consumos por mes (últimos 12 meses) - solo conteo de registros
-        // Función compatible con SQLite y MySQL
         $consumosPorMes = Consumo::select(
-            DB::raw(DatabaseHelper::yearExpression('fecha_consumo') . ' as año'),
-            DB::raw(DatabaseHelper::monthExpression('fecha_consumo') . ' as mes'),
+            DB::raw('YEAR(fecha_consumo) as año'),
+            DB::raw('MONTH(fecha_consumo) as mes'),
             DB::raw('COUNT(*) as total')
         )
         ->where('fecha_consumo', '>=', Carbon::now()->subMonths(12))

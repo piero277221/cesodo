@@ -285,7 +285,7 @@ function agregarProducto() {
 
     // Actualizar el índice en el data-attribute
     clone.querySelector('.producto-item').setAttribute('data-index', productoIndex);
-    
+
     // Reemplazar INDEX por el número de índice actual en todos los name attributes
     const inputs = clone.querySelectorAll('[name*="INDEX"]');
     inputs.forEach(input => {

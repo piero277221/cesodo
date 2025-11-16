@@ -155,7 +155,7 @@ Usuario Normal:
    └─ Ejecuta: php artisan optimize:clear
 
 ❌ Los estilos no cargan
-   └─ Solución: 
+   └─ Solución:
    └─ npm install
    └─ npm run dev
 

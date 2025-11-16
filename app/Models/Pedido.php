@@ -73,10 +73,7 @@ class Pedido extends Model
 
         static::creating(function ($pedido) {
             if (empty($pedido->numero_pedido)) {
-                $year = date('Y');
-                $query = static::query();
-                $count = \App\Helpers\DatabaseHelper::whereYear($query, 'created_at', $year)->count();
-                $pedido->numero_pedido = 'PED-' . $year . '-' . str_pad($count + 1, 6, '0', STR_PAD_LEFT);
+                $pedido->numero_pedido = 'PED-' . date('Y') . '-' . str_pad(static::whereYear('created_at', date('Y'))->count() + 1, 6, '0', STR_PAD_LEFT);
             }
         });
     }

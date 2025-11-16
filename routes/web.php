@@ -26,6 +26,11 @@ use App\Http\Controllers\ConfigurationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+// 🔍 Ruta de diagnóstico temporal (ELIMINAR EN PRODUCCIÓN)
+Route::get('/diagnostico', function() {
+    return view('diagnostico');
+});
+
 // Ruta AJAX para analizar ingredientes de receta
 Route::post('/recetas/analizar-ingredientes', [RecetaController::class, 'analizarIngredientes'])->name('recetas.analizarIngredientes');
 

@@ -20,13 +20,13 @@ class DatabaseServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Agregar macros globales para compatibilidad con SQLite
+        // Agregar macros globales para compatibilidad con fechas
         Builder::macro('compatibleWhereYear', function ($column, $year) {
-            return \App\Helpers\DatabaseHelper::whereYear($this, $column, $year);
+            return $this->whereYear($column, $year);
         });
 
         Builder::macro('compatibleWhereMonth', function ($column, $month) {
-            return \App\Helpers\DatabaseHelper::whereMonth($this, $column, $month);
+            return $this->whereMonth($column, $month);
         });
     }
 }
