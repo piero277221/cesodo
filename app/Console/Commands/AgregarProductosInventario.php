@@ -100,7 +100,10 @@ class AgregarProductosInventario extends Command
 
                 if ($inventario) {
                     // Actualizar stock
-                    $inventario->update(['stock_actual' => $ingrediente['cantidad']]);
+                    $inventario->update([
+                        'stock_actual' => $ingrediente['cantidad'],
+                        'stock_disponible' => $ingrediente['cantidad'] // stock_disponible = stock_actual (sin reservas)
+                    ]);
                     $productosActualizados++;
                     $this->info("✓ Actualizado: {$producto->nombre} - {$ingrediente['cantidad']} {$ingrediente['unidad']}");
                 } else {
@@ -108,6 +111,8 @@ class AgregarProductosInventario extends Command
                     Inventario::create([
                         'producto_id' => $producto->id,
                         'stock_actual' => $ingrediente['cantidad'],
+                        'stock_reservado' => 0,
+                        'stock_disponible' => $ingrediente['cantidad'], // stock_disponible = stock_actual - stock_reservado
                         'stock_minimo' => 1,
                         'ubicacion' => 'Almacén General',
                     ]);
