@@ -41,35 +41,35 @@ class AgregarProductosInventario extends Command
         $ingredientes = [
             // Carnes
             ['nombre' => 'Pollo - Piernas y Encuentros', 'cantidad' => 25, 'unidad' => 'unidades', 'precio' => 5.50],
-            
+
             // Aceites y bases
             ['nombre' => 'Aceite Vegetal', 'cantidad' => 4, 'unidad' => 'litros', 'precio' => 8.00],
-            
+
             // Cebolla y ajos
             ['nombre' => 'Cebolla Picada', 'cantidad' => 4, 'unidad' => 'kg', 'precio' => 2.50],
             ['nombre' => 'Ajo Molido', 'cantidad' => 1.5, 'unidad' => 'kg', 'precio' => 15.00],
-            
+
             // Ají
             ['nombre' => 'Ají Amarillo Molido', 'cantidad' => 1.2, 'unidad' => 'kg', 'precio' => 12.00],
             ['nombre' => 'Ají Mirasol', 'cantidad' => 1.2, 'unidad' => 'kg', 'precio' => 10.00],
-            
+
             // Hierbas
             ['nombre' => 'Culantro Licuado', 'cantidad' => 3, 'unidad' => 'litros', 'precio' => 4.50],
             ['nombre' => 'Culantro Picado', 'cantidad' => 4, 'unidad' => 'kg', 'precio' => 3.00],
-            
+
             // Caldos y condimentos
             ['nombre' => 'Caldo de Pollo Concentrado', 'cantidad' => 8, 'unidad' => 'cubos', 'precio' => 1.50],
             ['nombre' => 'Sal', 'cantidad' => 2, 'unidad' => 'kg', 'precio' => 1.00],
             ['nombre' => 'Pimienta', 'cantidad' => 1, 'unidad' => 'kg', 'precio' => 20.00],
             ['nombre' => 'Comino', 'cantidad' => 0.5, 'unidad' => 'kg', 'precio' => 18.00],
-            
+
             // Arroz y base
             ['nombre' => 'Arroz', 'cantidad' => 12, 'unidad' => 'kg', 'precio' => 3.50],
             ['nombre' => 'Agua', 'cantidad' => 12, 'unidad' => 'litros', 'precio' => 0.50],
-            
+
             // Bebidas
             ['nombre' => 'Cerveza Negra', 'cantidad' => 3, 'unidad' => 'litros', 'precio' => 8.00],
-            
+
             // Vegetales
             ['nombre' => 'Arvejas', 'cantidad' => 4, 'unidad' => 'kg', 'precio' => 6.00],
             ['nombre' => 'Zanahoria Picada', 'cantidad' => 4, 'unidad' => 'kg', 'precio' => 2.00],

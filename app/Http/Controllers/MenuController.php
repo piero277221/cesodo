@@ -671,7 +671,7 @@ class MenuController extends Controller
 
                 foreach ($plato->receta->ingredientes as $ingrediente) {
                     $productoId = $ingrediente->producto_id;
-                    
+
                     if (!isset($ingredientesAgrupados[$productoId])) {
                         $ingredientesAgrupados[$productoId] = [
                             'producto' => $ingrediente->producto,
@@ -679,7 +679,7 @@ class MenuController extends Controller
                             'platos' => []
                         ];
                     }
-                    
+
                     $ingredientesAgrupados[$productoId]['platos'][] = $plato->id;
                 }
             }
@@ -692,8 +692,8 @@ class MenuController extends Controller
 
                 // Calcular cantidad total necesaria:
                 // cantidad_unitaria × numero_personas × numero_de_platos_diferentes
-                $cantidadNecesaria = $cantidadUnitaria * 
-                    $menu->numero_personas * 
+                $cantidadNecesaria = $cantidadUnitaria *
+                    $menu->numero_personas *
                     $numeroPlatosDiferentes;
 
                 if (!$producto->inventario) {
