@@ -14,8 +14,11 @@ trait KardexTrait
             ->orderBy('id', 'desc')
             ->first();
 
-        // Calcular saldo inicial
-        $saldoInicial = $ultimoKardex ? $ultimoKardex->saldo_cantidad : 0;
+        // Obtener el inventario actual del producto
+        $inventario = \App\Models\Inventario::where('producto_id', $datos['producto_id'])->first();
+
+        // Si no hay registro kardex previo, usar el stock_actual actual como base
+        $saldoInicial = $ultimoKardex ? $ultimoKardex->saldo_cantidad : ($inventario ? $inventario->stock_actual : 0);
 
         // Calcular el nuevo saldo
         $cantidadEntrada = $datos['cantidad_entrada'] ?? 0;
