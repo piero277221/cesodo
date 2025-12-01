@@ -33,8 +33,8 @@ class TestSQLiteCompatibility extends Command
         try {
             // Probar la función que causaba el error original
             $consumosPorMes = Consumo::select(
-                DB::raw('YEAR(fecha_consumo) as año'),
-                DB::raw('MONTH(fecha_consumo) as mes'),
+                DB::raw("strftime('%Y', fecha_consumo) as año"),
+                DB::raw("strftime('%m', fecha_consumo) as mes"),
                 DB::raw('COUNT(*) as total')
             )
             ->where('fecha_consumo', '>=', Carbon::now()->subMonths(12))
@@ -49,8 +49,8 @@ class TestSQLiteCompatibility extends Command
             // Probar otras funciones
             $this->info('Probando otras funciones de fecha...');
 
-            $yearExpr = 'YEAR(created_at)';
-            $monthExpr = 'MONTH(created_at)';
+            $yearExpr = "strftime('%Y', created_at)";
+            $monthExpr = "strftime('%m', created_at)";
 
             $this->info("Expresión de año: {$yearExpr}");
             $this->info("Expresión de mes: {$monthExpr}");
