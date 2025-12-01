@@ -661,50 +661,73 @@ class MenuController extends Controller
             // Cargar las relaciones necesarias
             $menu->load('menuPlatos.receta.ingredientes.producto.inventario');
 
-            // Procesar cada plato del menú
+            // Mapeo para evitar procesar el mismo ingrediente múltiples veces
+            // Si un ingrediente aparece en múltiples platos, se procesa solo una vez
+            $ingredientesAgrupados = [];
+
+            // Agrupar ingredientes por producto
             foreach ($menu->menuPlatos as $plato) {
                 if (!$plato->receta) continue;
 
-                // Procesar los ingredientes de cada receta
                 foreach ($plato->receta->ingredientes as $ingrediente) {
-                    $producto = $ingrediente->producto;
-                    $cantidadNecesaria = $ingrediente->cantidad *
-                        $menu->numero_personas *
-                        ($menu->porciones_por_persona ?? 1);
-
-                    if (!$producto->inventario) {
-                        throw new \Exception("No hay inventario registrado para el producto: {$producto->nombre}");
+                    $productoId = $ingrediente->producto_id;
+                    
+                    if (!isset($ingredientesAgrupados[$productoId])) {
+                        $ingredientesAgrupados[$productoId] = [
+                            'producto' => $ingrediente->producto,
+                            'cantidad_unitaria' => $ingrediente->cantidad,
+                            'platos' => []
+                        ];
                     }
-
-                    $inventario = $producto->inventario;
-
-                    // Verificar stock disponible
-                    if ($inventario->stock_disponible < $cantidadNecesaria) {
-                        throw new \Exception("Stock insuficiente para el producto: {$producto->nombre}. Disponible: {$inventario->stock_disponible}, Necesario: {$cantidadNecesaria}");
-                    }
-
-                    // Actualizar inventario
-                    $inventario->stock_actual -= $cantidadNecesaria;
-                    $inventario->stock_disponible -= $cantidadNecesaria;
-                    $inventario->fecha_ultimo_movimiento = now();
-                    $inventario->save();
-
-                    // Registrar en kardex usando el trait
-                    $this->registrarKardex([
-                        'producto_id' => $producto->id,
-                        'fecha' => now(),
-                        'tipo_movimiento' => 'salida',
-                        'modulo' => 'menu',
-                        'concepto' => "Consumo por menú: {$menu->nombre}",
-                        'numero_documento' => "MENU-{$menu->id}",
-                        'cantidad_salida' => $cantidadNecesaria,
-                        'precio_unitario' => $producto->precio_unitario ?? 0,
-                        'observaciones' => "Consumo para {$plato->receta->nombre} - {$plato->tipo_comida}",
-                        'user_id' => Auth::id(),
-                        'referencia_tipo' => 'menu',
-                        'referencia_id' => $menu->id
-                    ]);
+                    
+                    $ingredientesAgrupados[$productoId]['platos'][] = $plato->id;
                 }
+            }
+
+            // Procesar cada ingrediente único
+            foreach ($ingredientesAgrupados as $ingredienteGrouped) {
+                $producto = $ingredienteGrouped['producto'];
+                $cantidadUnitaria = $ingredienteGrouped['cantidad_unitaria'];
+                $numeroPlatosDiferentes = count(array_unique($ingredienteGrouped['platos']));
+
+                // Calcular cantidad total necesaria:
+                // cantidad_unitaria × numero_personas × numero_de_platos_diferentes
+                $cantidadNecesaria = $cantidadUnitaria * 
+                    $menu->numero_personas * 
+                    $numeroPlatosDiferentes;
+
+                if (!$producto->inventario) {
+                    throw new \Exception("No hay inventario registrado para el producto: {$producto->nombre}");
+                }
+
+                $inventario = $producto->inventario;
+
+                // Verificar stock disponible
+                if ($inventario->stock_disponible < $cantidadNecesaria) {
+                    throw new \Exception("Stock insuficiente para el producto: {$producto->nombre}. Disponible: {$inventario->stock_disponible}, Necesario: {$cantidadNecesaria}");
+                }
+
+                // Actualizar inventario
+                $inventario->stock_actual -= $cantidadNecesaria;
+                $inventario->stock_disponible -= $cantidadNecesaria;
+                $inventario->fecha_ultimo_movimiento = now();
+                $inventario->save();
+
+                // Registrar en kardex usando el trait
+                $this->registrarKardex([
+                    'producto_id' => $producto->id,
+                    'fecha' => now(),
+                    'tipo_movimiento' => 'salida',
+                    'modulo' => 'menu',
+                    'concepto' => "Consumo por menú: {$menu->nombre}",
+                    'numero_documento' => "MENU-{$menu->id}",
+                    'cantidad_salida' => $cantidadNecesaria,
+                    'precio_unitario' => $producto->precio_unitario ?? 0,
+                    'observaciones' => "Consumo para {$numeroPlatosDiferentes} platos diferentes del menú",
+                    'user_id' => Auth::id(),
+                    'referencia_tipo' => 'menu',
+                    'referencia_id' => $menu->id
+                ]);
             }
         } catch (\Exception $e) {
             throw new \Exception("Error al actualizar inventario: " . $e->getMessage());
